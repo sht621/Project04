@@ -1,3 +1,12 @@
+/*******************************************************************
+***  File Name		: PatmentModel.java
+***  Version		: V1.0
+***  Designer		: 東野　魁耶
+***  Date		: 2024.06.18
+***  Purpose       	: アノテーションを用いてデータベース処理を行う際のmodel
+***
+*******************************************************************/
+
 package com.example.demo.model;
 
 public class PaymentModel {
@@ -8,7 +17,24 @@ public class PaymentModel {
     private int day;
     private String itemId;
     private int userId;
-
+    
+    
+    /****************************************************************************
+     *** Method Name         : getId()  getUserId() getIncome() getSpend() getday() getItemId()
+     *** Designer            : 東野　魁耶
+     *** Date                : 2024.06.18
+     *** Function            : getterとして値を取り出すメソッド
+     *** Return              : int, int , int, int, int, String
+     ****************************************************************************/
+    
+    /****************************************************************************
+     *** Method Name         : setId()  setUserId() setIncome() setSpend() setday() setItemId()
+     *** Designer            : 東野　魁耶
+     *** Date                : 2024.06.18
+     *** Function            : setterとして値を取り出すメソッド
+     *** Return              : 返り値なし
+     ****************************************************************************/
+    
     public int getId() {
         return id;
     }
