@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>新規登録</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .registration-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        text-align: center;
+      }
+      .registration-container h1 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+      .registration-container table {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .registration-container th, .registration-container td {
+        padding: 10px;
+        text-align: left;
+      }
+      .registration-container th {
+        color: #555;
+      }
+      .registration-container input[type="text"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .registration-container button {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .registration-container button:hover {
+        background-color: #218838;
+      }
+      .registration-container a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      .registration-container a:hover {
+        text-decoration: underline;
+      }
+      .error {
+        color: red;
+        margin-top: 10px;
+      }
+      .error2 {
+        color: red;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="registration-container">
+      <h1>新規登録</h1>
+      <div th:if="${param.error}">
+        <p class="error">この名前は使用できません。</p>
+      </div>
+      <div th:if="${param.error2}">
+        <p class="error2">このアカウントは存在します。</p>
+      </div>
+      <form action="#" th:action="@{/new}" th:object="${User}" method="post">
+        <table>
+          <tr>
+            <th class="cell_title">名前</th>
+            <td><input type="text" th:field="*{Name}" pattern="^[0-9A-Za-z]+$" title="名前は数字のみ"></td>
+          </tr>
+          <tr>
+            <th class="cell_title">パスワード</th>
+            <td><input type="text" th:field="*{Password}"></td>
+          </tr>
+        </table>
+        
+        <button type="submit">登録</button>
+        <div><a th:href="@{/login}">ログイン画面に戻る</a></div>
+      </form>
+    </div>
+  </body>
+</html>
