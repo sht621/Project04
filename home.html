@@ -4,13 +4,154 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>home</title>
-	<link rel="stylesheet" href="Style.css">
+	<style>
+		body{
+			max-width: 95%;
+			margin: 0 auto;
+		}
+		
+		.top{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 0px;
+		}
+		
+		/*ナビゲーション*/
+		nav{
+			text-align: right;
+			background-color: #eeeeee;
+		}
+		
+		nav a{
+			color: black;
+			font-weight: bold;
+			margin: 0.7vw;
+			text-decoration: none;
+		}
+		
+		nav a:hover{
+			background-color: #cccccc;
+		}
+		
+		/*mainとasideを横並びに*/
+		.contents{
+			display: flex;
+			justify-content: space-between;
+		}
+		
+		/*メインバー*/
+		main{
+			width: 70%;
+			border-right: solid;
+			border-color: #cccccc;
+		}
+		
+		/*サイドバー*/
+		aside{
+			display: block;
+			width: 28%;
+		}
+		
+		section{
+			margin-bottom: 20px;
+		}
+		
+		h2{
+			margin-top: 0px;
+		}
+		
+		h3{
+			display: flex;
+			justify-content: space-between;
+			margin: 2% 5% 2% 5%;
+			border-bottom: solid;
+			border-color: #cccccc;
+		}
+		
+		h4{
+			margin-right: 3vw;
+		}
+		
+		graphContents{
+			justify-content: center;
+		}
+		
+		/*円グラフ*/
+		#graph{
+			display: inline-block;
+			width: 300px;
+		}
+		
+		canvas{
+			display: block;
+		    width: 100%;
+		    height: 100%;
+		}
+		
+		/*グラフ詳細*/
+		#details{
+			display: inline-block;
+			vertical-align: top;
+			width: 350px; 
+		}
+		
+		/*もっと見る*/
+		.showMore{
+			display: flex;
+			justify-content: flex-end;
+		}
+		
+		.showMore a{
+			margin-right: 5%;
+			font-weight: bold;
+			text-decoration: none;
+		}
+		
+		/*入力ボタン*/
+		#paymentLink{
+			display: block;
+			background-color: skyblue;
+			width: 85%;
+			color: black;
+			font-size: 3vw;
+			font-weight: bold;
+			text-align: center;
+			text-decoration: none;
+			padding: 5%;
+			margin-bottom: 10%; 
+			border-radius: 10vw;
+		}
+		
+		#paymentLink:hover{
+			transform: scale(1.05);
+		}
+		
+		
+		/*レシピボタン*/
+		#recipeLink{
+			display: block;
+			background-color: orange;
+			width: 85%;
+			color: black;
+			font-size: 3vw;
+			font-weight: bold;
+			text-align: center;
+			text-decoration: none;
+			padding: 5%;
+			border-radius: 10vw;
+		}
+		
+		#recipeLink:hover{
+			transform: scale(1.05);
+		}
+	</style>
 </head>
 <body>
 	<header>
 		<div class="top">
         	<h1>HOME</h1>
-        	<h4><span th:text="${username}"></span>さん</h4>
+        	<h4><span th:text="${userId}"></span>さん</h4>
         </div>
         <nav>
             <ul>
