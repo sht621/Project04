@@ -74,8 +74,8 @@ public class LoginController {
     	
     	
     	
-    	String enteredUsername = user.getName();
-    	String enteredUserpass = user.getPassword();
+    	String enteredUsername = user.getUserid();
+    	String enteredUserpass = user.getPass();
 
     	List<LoginUserModel> use = userService.selectAll(); 
     	
@@ -85,13 +85,13 @@ public class LoginController {
         		return "redirect:userlist";
         		
         	}
-        	else if (enteredUsername.equals(existingUser.getName()) && enteredUserpass.equals(existingUser.getPassword())) {
+        	else if (enteredUsername.equals(existingUser.getUserid()) && enteredUserpass.equals(existingUser.getPass())) {
         		
         		session.setAttribute("loggedInUser", existingUser.getId());
                 model.addAttribute("users", use);
                 return "redirect:home";
                 
-            }else if(enteredUsername.equals(existingUser.getName()) && !enteredUserpass.equals(existingUser.getPassword())) {
+            }else if(enteredUsername.equals(existingUser.getUserid()) && !enteredUserpass.equals(existingUser.getPass())) {
             	
             	model.addAttribute("error", "パスワードが違います");
                 return "redirect:login?error=true";
@@ -132,8 +132,8 @@ public class LoginController {
     public String newcreate(@Validated @ModelAttribute LoginUserModel user, Model model) {
         
         
-        String enteredUsername = user.getName();
-    	String enteredUserpass = user.getPassword();
+        String enteredUsername = user.getUserid();
+    	String enteredUserpass = user.getPass();
     	
 
     	List<LoginUserModel> use = userService.selectAll(); 
@@ -141,15 +141,15 @@ public class LoginController {
     	
 
         for (LoginUserModel existingUser : use) {
-        	if(enteredUsername.equals(existingUser.getName()) && enteredUserpass.equals(existingUser.getPassword())) {
+        	if(enteredUsername.equals(existingUser.getUserid()) && enteredUserpass.equals(existingUser.getPass())) {
         		validCredentials = false;
         		model.addAttribute("error2", "このアカウントは存在します");
         		
         		return "redirect:new?error2=true";
         	}
         	
-        	else if (enteredUsername.equals(existingUser.getName()) 
-        			&& !enteredUserpass.equals(existingUser.getPassword())) {
+        	else if (enteredUsername.equals(existingUser.getUserid()) 
+        			&& !enteredUserpass.equals(existingUser.getPass())) {
         		validCredentials = false;
         		model.addAttribute("error", "この名前は使用できません");
                 
@@ -157,7 +157,7 @@ public class LoginController {
             }
         }
         
-        user.Id = Integer.toString(use.size()+1);
+        user.Id = use.size()+1;
         userService.insert(user);
         return "redirect:login";
     }
@@ -176,20 +176,20 @@ public class LoginController {
         return "UserList.html";
     }
     
-    /****************************************************************************
-     *** Method Name         : home(Model model, HttpSession session)
-     *** Designer            : 堀江咲希
-     *** Date                : 2024.06.18
-     *** Function            : ホーム画面に飛ぶ
-     *** Return              : home.html
-     ****************************************************************************/
-    @GetMapping("/home")
-    public String home(Model model, HttpSession session) {
-    	
-    	String loggedInUser = (String) session.getAttribute("loggedInUser");
-        model.addAttribute("loggedInUser", loggedInUser);
-         return "home.html";
-    }
+//    /****************************************************************************
+//     *** Method Name         : home(Model model, HttpSession session)
+//     *** Designer            : 堀江咲希
+//     *** Date                : 2024.06.18
+//     *** Function            : ホーム画面に飛ぶ
+//     *** Return              : home.html
+//     ****************************************************************************/
+//    @GetMapping("/home")
+//    public String home(Model model, HttpSession session) {
+//    	
+//    	String loggedInUser = (String) session.getAttribute("loggedInUser");
+//        model.addAttribute("loggedInUser", loggedInUser);
+//         return "home.html";
+//    }
 //    
 //    @GetMapping("/income_expense")
 //    public String incomeExpense(Model model, HttpSession session) {

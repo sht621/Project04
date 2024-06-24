@@ -32,8 +32,8 @@ public interface LoginUserMapper {
      *** Date                : 2024.06.18
      *** Function            : ユーザデータベースにデータを入れる
      ****************************************************************************/
-    @Insert("INSERT INTO USER(Id, Name, Password)"
-            + "VALUES(#{Id}, #{Name}, #{Password})")
+    @Insert("INSERT INTO USER(Id, Userid, Pass)"
+            + "VALUES(#{Id}, #{Userid}, #{Pass})")
     int insert(LoginUserModel model);
     
     /****************************************************************************
