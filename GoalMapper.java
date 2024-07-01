@@ -1,8 +1,8 @@
 /*******************************************************************
 ***  File Name		: GoalMapper.java
-***  Version		: V1.0
+***  Version		: V1.1
 ***  Designer		: 上村　結
-***  Date			: 2024.06.18
+***  Date			: 2024.06.29
 ***  Purpose       	: MonthModel.javaを経由してデータベースにINSERTを行い
 ***					  PaymentModel.javaを経由してデータベースにSELECTを行う
 ***
@@ -10,11 +10,11 @@
 /*
 *** Revision :
 *** V1.0 : 上村結, 2024.06.18
+*** V1.1 : 上村結, 2024.06.29
 */
 
 package com.example.demo.mapper;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -65,7 +65,16 @@ public interface GoalMapper {
 	@Select("SELECT MAX(Id) FROM MONTH")
 	Integer selectMaxIdFromMonth();
 	
-	//デバッグ用
-	@Select("SELECT * FROM MONTH ")
-	List<MonthModel> selectAll();	
+	
+	/****************************************************************************
+	*** Method Name         : isExistin()
+	*** Designer            : 上村　結
+	*** Date                : 2024.06.29
+	*** Function            : 今月のデータがすでにあるかどうかを確認する
+	*** Return              : MONTHデータベースからとってきたデータをリストで返す
+	****************************************************************************/
+	@Select("SELECT * FROM MONTH "
+			+ "WHERE MONTH = #{month}")
+	ArrayList<MonthModel> isExisting(@Param("month") int month);
+	
 }

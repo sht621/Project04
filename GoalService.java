@@ -1,19 +1,19 @@
 /*******************************************************************
 ***  File Name		: GoalService.java
-***  Version		: V1.0
+***  Version		: V1.1
 ***  Designer		: 上村　結
-***  Date			: 2024.06.18
+***  Date			: 2024.06.29
 ***  Purpose       	: GoalController.javaとGoalMapper.java をつなぐ
 ***
 *******************************************************************/
 /*
 *** Revision :
 *** V1.0 : 上村結, 2024.06.18
+*** V1.1 : 上村結, 2024.06.29
 */
 
 package com.example.demo.service;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,8 +66,8 @@ public class GoalService {
 		
 		int startId = max + 1;	//ID計算用(最大IDに1足したもの)
 		//引数に変更する
-		int yearMonth = 202005;	//現在の年月
-		int userId = 1111;		//ユーザID
+		int yearMonth = monthList.get(0).getMonth();	//現在の年月
+		int userId = monthList.get(0).getUserId();		//ユーザID
 		
 		//monthModelにセットしていく
 		for(int i = 0 ; i < monthList.size() ; ++i) {
@@ -100,17 +100,6 @@ public class GoalService {
 	}
 	
 	
-	/****************************************************************************
-	*** Method Name         : sellectAll()
-	*** Designer            : 上村　結
-	*** Date                : 2024.06.18
-	*** Function            : MONTHデータベースのデータを全てリスト型で返す
-	*** Return              : データベースからとってきたデータのリスト
-	****************************************************************************/
-	@Transactional
-	public List<MonthModel> selectAll(){
-		return goalMapper.selectAll();
-	}
 	
 	
 	/****************************************************************************
@@ -228,5 +217,24 @@ public class GoalService {
 		int newDiffer = target - sum;
 		return newDiffer;
 		
+	}
+	
+	
+	/****************************************************************************
+	*** Method Name         : calculateDiffer()
+	*** Designer            : 上村　結
+	*** Date                : 2024.06.29
+	*** Function            : 今月のデータがあるかどうかを判定する
+	*** Return              : すでにあればtrue、なければfalse を返す
+	****************************************************************************/
+	public boolean isExisting(int month) {
+		boolean exist;
+		if(goalMapper.isExisting(month).size() == 0) {
+			exist = false;
+		}
+		else {
+			exist = true;
+		}
+		return exist;
 	}
 }
