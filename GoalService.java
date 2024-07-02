@@ -51,12 +51,13 @@ public class GoalService {
 	public boolean insertGoalDatabase(ArrayList<MonthModel> monthList) {
 		boolean success = false;	//データベース挿入の成功判定
 		MonthModel monthModel = new MonthModel();
-		int max = 0;	//現在の年月の最大の日数
+		int max = 0;	//現在のデータベースのIDの最大値
 		String itemId = null;	//商品項目名
 		int result = -1;	//mapperクラスの返り値格納用(>0なら挿入成功)
 		int spendSum;		//合計
 		int differ;			//差額
 		
+		//IDがnullなら0、最大のIDがあればその値を代入
 		if(goalMapper.selectMaxIdFromMonth() != null) {
 			max = goalMapper.selectMaxIdFromMonth().intValue();
 		}
@@ -65,7 +66,8 @@ public class GoalService {
 		}
 		
 		int startId = max + 1;	//ID計算用(最大IDに1足したもの)
-		//引数に変更する
+		
+		//すでにセットされている現在の年月とユーザIDを取得
 		int yearMonth = monthList.get(0).getMonth();	//現在の年月
 		int userId = monthList.get(0).getUserId();		//ユーザID
 		
