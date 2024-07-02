@@ -67,9 +67,9 @@ public class GoalController {
     @GetMapping("/objective")
     public String addNewTarget( Model model, HttpSession session) {
     	
-//    	String userIdStr = (String) session.getAttribute("loggedInUser");
 		int userId = (int) session.getAttribute("loggedInUser");
 		int yearMonth = yearMonth();
+		
 		
 		if(goalService.isExisting(yearMonth) == false) {
 			model.addAttribute("month", new MonthModel());
@@ -85,7 +85,7 @@ public class GoalController {
 	        return "objective.html";
 	        
 		}else {	
-			return "redirect:updatediffer";
+			return "redirect:updatediffer?userid="+userId;
 		}
     }
 
