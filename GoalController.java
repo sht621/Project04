@@ -85,7 +85,7 @@ public class GoalController {
 	        return "objective.html";
 	        
 		}else {	
-			return "redirect:updatediffer?userid="+userId;
+			return "redirect:updatediffer?userId="+userId;
 		}
     }
 
