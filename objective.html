@@ -43,6 +43,11 @@
 		button[type="submit"]:hover {
 			background-color: #45a049;
 		}
+		.error-message{
+			color: red;
+			text-align: center;
+			margin-top: 20px;
+		}
 		
 		
 	</style>
@@ -76,6 +81,7 @@
       </div>
 
     </form>
+    <div class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
    </div>
   </body>
 </html>

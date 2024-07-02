@@ -105,8 +105,20 @@ public class GoalController {
         	try {
         		monthModel = this.monthList.get(i);
         		int target = targetValues[i];
+        		if(target < 0 || target > 10000000) {
+        			throw new IllegalArgumentException("目標金額は0以上10000000以下にしてください");
+        		}
         		this.monthList.get(i).setTarget(target);
-        	}catch(Exception e) {
+        	}catch(NumberFormatException e) {
+        		model.addAttribute("errorMessage", "半角数字を入力してください");
+        		model.addAttribute("monthList", this.monthList);
+        		return "objective.html";
+        	}catch(IllegalArgumentException e) {
+        		model.addAttribute("errorMessage", e.getMessage());
+        		model.addAttribute("monthList", this.monthList);
+        		return "objective.html";
+        	}
+        	catch(Exception e) {
         		e.printStackTrace();
         	}
         }
