@@ -118,7 +118,7 @@ public class GoalController {
         		//0未満または10000000より大きい金額が入力された場合
         		int target = targetValues[i].intValue();
         		if(target < 0 || target > 10000000) {
-        			throw new IllegalArgumentException("目標金額は0以上10000000以下にしてください");
+        			throw new IllegalArgumentException("目標金額は0円から10000000円の範囲にしてください");
         		}
         		//問題ない場合リストに入力されたデータを追加
         		this.monthList.get(i).setTarget(target);
