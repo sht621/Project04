@@ -1,14 +1,15 @@
 /*******************************************************************
 ***  File Name		: DifferController.java
-***  Version		: V1.0
+***  Version		: V1.1
 ***  Designer		: 東野　魁耶
-***  Date		: 2024.06.18
+***  Date		: 2024.06.24
 ***  Purpose       	: Serviceクラスを呼び出し画面遷移の処理を行う
 ***
 *******************************************************************/
 
 package com.example.demo.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.model.MonthModel;
 import com.example.demo.service.DifferService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class DifferController {
     private final DifferService paymentService;
@@ -34,17 +37,19 @@ public class DifferController {
     public DifferController(DifferService paymentServise) {
         this.paymentService = paymentServise;
     }
-    
+
     /****************************************************************************
-    *** Method Name         : displayDiffer(Model model)
-    *** Designer            : 東野　魁耶
-    *** Date                : 2024.06.18
-    *** Function            : 現在の年月を計算し、それを基に差額計算を行い、
-    						　対応したhtmlを返す
-    *** Return              : htmlファイル
-    ****************************************************************************/
+     *** Method Name         : displayDiffer(Model model, HttpSession session)
+     *** Designer            : 東野　魁耶
+     *** Date                : 2024.06.24
+     *** Function            : 現在の年月を計算し、それを基に差額計算を行い、
+     						 　対応したhtmlを返す
+     *** Return              : htmlファイル
+     ****************************************************************************/
     @GetMapping("/difference")
-    public String displayDiffer(Model model) {
+    public String displayDiffer(Model model, HttpSession session) {
+    	
+    	int userId = (int) session.getAttribute("loggedInUser");
         // 年の選択肢を生成（2024年から2026年まで）
         List<Integer> years = generateYearList();
         model.addAttribute("years", years);
@@ -54,23 +59,34 @@ public class DifferController {
         model.addAttribute("months", months);
         
         // 初回表示は現在の年月で表示
-        List<MonthModel> differ = paymentService.differCalculation();
+        List<MonthModel> differ = paymentService.differCalculation(userId);
         model.addAttribute("differ", differ);
+        
+        model.addAttribute("userId", userId);
+        
+        LocalDate today = LocalDate.now();
+    	int year = today.getYear();
+    	int month = today.getMonthValue();
+    	
+    	model.addAttribute("year", year);
+    	model.addAttribute("month", month);
         
         return "difference.html";
     }
+
     
     /****************************************************************************
-     *** Method Name         : displayDifferByMonth(@RequestParam("year") int year, 
-     											@RequestParam("month") int month, Model model)
+     *** Method Name         : displayDifferByMonth(@RequestParam("year") int year,
+     *								 @RequestParam("month") int month, @RequestParam("userId") int userId, Model model)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.18
+     *** Date                : 2024.06.24
      *** Function            : htmlファイルから受けとった年月を基に差額計算を行い
      						　対応したhtmlを返す
      *** Return              : htmlファイル
      ****************************************************************************/
     @PostMapping("/difference")
-    public String displayDifferByMonth(@RequestParam("year") int year, @RequestParam("month") int month, Model model) {
+    public String displayDifferByMonth(@RequestParam("year") int year, @RequestParam("month") int month,
+    										@RequestParam("userId") int userId, Model model) {
         // 年の選択肢を生成（2024年から2026年まで）
         List<Integer> years = generateYearList();
         model.addAttribute("years", years);
@@ -79,21 +95,27 @@ public class DifferController {
         List<String> months = generateMonthList();
         model.addAttribute("months", months);
         
-        List<MonthModel> differ = paymentService.differCalculation(year, month);
+        List<MonthModel> differ = paymentService.differCalculation(year, month, userId);
         model.addAttribute("differ", differ);
+        
+        model.addAttribute("userId", userId);
+        
+        model.addAttribute("year", year);
+    	model.addAttribute("month", month);
+        
         return "difference.html";
     }
     
     
     /****************************************************************************
-     *** Method Name         : updatedisplay(Model model)
+     *** Method Name         : updateDisplay(Model model, @RequestParam("userId") int userId)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.18
+     *** Date                : 2024.06.24
      *** Function            : 年月の取得を行いデータベースを更新する次のhtmlを返す
      *** Return              : htmlファイル
      ****************************************************************************/
     @GetMapping("/updatediffer")
-    public String updatedisplay(Model model) {
+    public String updateDisplay(Model model, @RequestParam("userId") int userId) {
         // 年の選択肢を生成（2024年から2026年まで）
         List<Integer> years = generateYearList();
         model.addAttribute("years", years);
@@ -102,6 +124,7 @@ public class DifferController {
         List<String> months = generateMonthList();
         model.addAttribute("months", months);
         
+        model.addAttribute("userId", userId);
         
         return "updatediffer.html";
     }
@@ -109,22 +132,22 @@ public class DifferController {
     /****************************************************************************
      *** Method Name         : updateTarget(Model model, @RequestParam("year") int year, @RequestParam("month") String month,
                 			   @RequestParam("itemId") String itemId, @RequestParam(value = "target", required = false) Integer target,
-                               RedirectAttributes redirectAttributes)
+                               RedirectAttributes redirectAttributes, @RequestParam("userId") int userId)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.18
+     *** Date                : 2024.06.24
      *** Function            : htmlから受けとった値を基にデータベース更新を行う
      *** Return              : htmlファイル
      ****************************************************************************/
     @PostMapping("/updatetarget")
-    public String updateTarget(Model model, @RequestParam("year") int year, @RequestParam("month") String month,
-                			   @RequestParam("itemId") String itemId, @RequestParam(value = "target", required = false) Integer target,
-                               RedirectAttributes redirectAttributes) {
+    public String updateTarget(Model model, @RequestParam("year") int year, @RequestParam("month") int month,
+                			   @RequestParam("itemId") String itemId, @RequestParam(value = "target", required = false) int target,
+                               RedirectAttributes redirectAttributes, @RequestParam("userId") int userId) {
         try {
-            int monthInt = Integer.parseInt(month);
-            int updateYear = year * 100 + monthInt;
-            paymentService.updateTarget(updateYear, itemId, target);
+            int updateYear = year * 100 + month;
+            paymentService.updateTarget(updateYear, itemId, target, userId);
         } catch (NumberFormatException e) {
             redirectAttributes.addFlashAttribute("message", "目標金額に正しく数字を入力してください");
+            model.addAttribute("userId", userId);
             return "redirect:/errornumber";
         }
 
@@ -137,10 +160,10 @@ public class DifferController {
         model.addAttribute("months", months);
 
         // 初回表示は現在の年月で表示
-        List<MonthModel> differ = paymentService.differCalculation();
+        List<MonthModel> differ = paymentService.differCalculation(userId);
         model.addAttribute("differ", differ);
 
-        return "redirect:/difference"; // 更新後の画面にリダイレクト
+        return "redirect:/difference?userId=" + userId; // 更新後の画面にリダイレクト
     }
 
     /****************************************************************************

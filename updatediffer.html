@@ -68,11 +68,13 @@
         </select><br>
         <label for="target">金額:</label>
         <input type="text" id="target" name="target" value="0" /><br> 
+        <input type="hidden" name="userId" th:value="${userId}" />
         <input type="submit" value="更新">
     </form>
 
     <form action="/difference" method="get">
         <input type="submit" value="戻る">
+        <input type="hidden" name="userId" th:value="${userId}" />
     </form>
 </body>
 </html>

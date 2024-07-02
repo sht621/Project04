@@ -1,8 +1,8 @@
 /*******************************************************************
 ***  File Name		: DifferService.java
-***  Version		: V1.0
+***  Version		: V1.1
 ***  Designer		: 東野　魁耶
-***  Date		: 2024.06.18
+***  Date		: 2024.06.24
 ***  Purpose       	: Mapperクラスから処理を呼び出し、Controllerから呼ばれた処理を行うクラス
 ***
 *******************************************************************/
@@ -29,29 +29,27 @@ public class DifferService {
     }
 
     /****************************************************************************
-     *** Method Name         : differCalculation()
+     *** Method Name         : differCalculation(int userId)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.18
+     *** Date                : 2024.06.24
      *** Function            : 現在の年月を取得し、次の差額を計算するメソッドに渡す
      *** Return              : List<MonthModel>
      ****************************************************************************/
-    public List<MonthModel> differCalculation() {
-    	//本来ならコントローラークラスからuseIdを受け取り次の関数に渡す
+    public List<MonthModel> differCalculation(int userId) {
     	LocalDate today = LocalDate.now();
     	int year = today.getYear();
     	int month = today.getMonthValue();
-        return differCalculation(year, month);
+        return differCalculation(year, month, userId);
     }
     
     /****************************************************************************
-     *** Method Name         : differCalculation(int year, int month)
+     *** Method Name         : differCalculation(int year, int month, int userId)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.18
+     *** Date                : 2024.06.24
      *** Function            : 受け取った年月を基に差額データの計算を行いListとして返す
      *** Return              : List<MonthModel>
      ****************************************************************************/
-    public List<MonthModel> differCalculation(int year, int month){
-    	int userId = 1;
+    public List<MonthModel> differCalculation(int year, int month, int userId){
         int intToday = year * 100 + month;
     	int[] sum = calculateTotalSpends(userId, intToday);
     	List<MonthModel> listMon = dao.selectMonth(userId, intToday);
@@ -73,14 +71,13 @@ public class DifferService {
     }
     
     /****************************************************************************
-     *** Method Name         : differCalculation(int year, int month)
+     *** Method Name         : updateTarget(int month, String itemId, int target, int userId)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.18
+     *** Date                : 2024.06.24
      *** Function            : 受け取った月、itemId、目標金額を基にデータベースを更新する
      *** Return              : 返り値なし
      ****************************************************************************/
-    public void updateTarget(int month, String itemId, int target) {
-    	int userId = 1;
+    public void updateTarget(int month, String itemId, int target, int userId) {
         dao.updateTarget(userId, month, itemId, target);
     }
     
@@ -91,9 +88,9 @@ public class DifferService {
      *** Function            : 受け取った年月、userIdを基にデータベースから情報を取り出し収支データを返す
      *** Return              : sum[]
      ****************************************************************************/
-    private int[] calculateTotalSpends(int userId, int inttoday) {
+    private int[] calculateTotalSpends(int userId, int yaerMonth) {
         int[] sum = new int[14]; // 0~13まであらかじめ何のジャンルが入るか決まっている
-        List<PaymentModel> listPay = dao.selectPayment(userId, inttoday);
+        List<PaymentModel> listPay = dao.selectPayment(userId, yaerMonth);
         
         for (PaymentModel pay : listPay) {
             int index = getItemIndex(pay.getItemId());
@@ -106,7 +103,7 @@ public class DifferService {
     /****************************************************************************
      *** Method Name         : getItemIndex(String itemId)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.18
+     *** Date                : 2024.06.24
      *** Function            : 受け取ったitemIdを基にそれに対応した数字を返す
      *** Return              : int型の1~13 or -1
      ****************************************************************************/
@@ -124,7 +121,7 @@ public class DifferService {
             case "医療・保険":return 9;
             case "水道・光熱費":return 10;
             case "住まい":    return 11;
-            case "税品":      return 12;
+            case "税金":      return 12;
             case "その他":    return 13;
             default:         return -1; // マッピングされていない場合
         }

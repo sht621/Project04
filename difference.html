@@ -54,7 +54,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>支出差額一覧</h1>
+    <h1>支出差額一覧 <span th:text="${year + '年' + month + '月'}"></span></h1>
     
     <!-- 年と月の選択フォーム -->
     <form action="#" method="post">
@@ -67,6 +67,7 @@
             <option th:each="m : ${months}" th:value="${m}" th:text="${m}"></option>
         </select>
         <input type="submit" value="表示">
+        <input type="hidden" name="userId" th:value="${userId}" />
     </form>
     
     <!-- 表 -->
@@ -96,11 +97,13 @@
     <!-- Updateに飛ぶボタン -->
     <form action="/updatediffer" method="get">
         <input type="submit" value="目標金額を更新">
+        <input type="hidden" name="userId" th:value="${userId}" />
     </form>
 	
 	<!-- ここのボタンには本来ホーム画面のボタンが入る -->
-    <form action="/difference" method="get">
+    <form action="/home" method="get">
         <input type="submit" value="戻る">
+        <input type="hidden" name="userId" th:value="${userId}" />
     </form>
     
     <script th:inline="javascript">
