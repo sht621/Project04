@@ -73,7 +73,7 @@ public class GoalService {
 		for(int i = 0 ; i < monthList.size() ; ++i) {
 			monthModel = monthList.get(i);
 			itemId = monthModel.getItemId();	
-			//月とユーザIDはとりあえず固定（引数）
+			//月とユーザIDのセット
 			monthModel.setMonth(yearMonth);
 			monthModel.setUserId(userId);
 			//支出合計の算出とセット
@@ -227,9 +227,9 @@ public class GoalService {
 	*** Function            : 今月のデータがあるかどうかを判定する
 	*** Return              : すでにあればtrue、なければfalse を返す
 	****************************************************************************/
-	public boolean isExisting(int month) {
+	public boolean isExisting(int month, int userId) {
 		boolean exist;
-		if(goalMapper.isExisting(month).size() == 0) {
+		if(goalMapper.isExisting(month, userId).size() == 0) {
 			exist = false;
 		}
 		else {

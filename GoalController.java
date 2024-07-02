@@ -70,8 +70,8 @@ public class GoalController {
 		int userId = (int) session.getAttribute("loggedInUser");
 		int yearMonth = yearMonth();
 		
-		
-		if(goalService.isExisting(yearMonth) == false) {
+		//今月のデータがまだ存在しない場合
+		if(goalService.isExisting(yearMonth, userId) == false) {
 			model.addAttribute("month", new MonthModel());
 	        model.addAttribute("monthList", this.monthList);
 	        model.addAttribute("loggedInUser", userId);
@@ -84,7 +84,9 @@ public class GoalController {
 	        
 	        return "objective.html";
 	        
-		}else {	
+		}
+		//すでに存在する場合更新画面を推移
+		else {	
 			return "redirect:updatediffer?userId="+userId;
 		}
     }
@@ -97,23 +99,38 @@ public class GoalController {
 	*** 					  また、入力されたデータをリストで引数とし、GoalServiceクラスのデータ挿入を行うメソッドを呼び出す
 	*** Return              : "新規"ボタンを入力後に表示するために"redirect:difference.html"のStringを返す
 	****************************************************************************/
+
+    
     @PostMapping("/objective")
-    public String createNewObject(@Validated @RequestParam("targetValues") int[] targetValues, Model model) {
+    public String createNewObject(@Validated @RequestParam("targetValues") Integer[] targetValues, Model model, HttpSession session) {
         MonthModel monthModel = new MonthModel();
+        int userId = (int) session.getAttribute("loggedInUser");
+        model.addAttribute("loggedInUser", userId);
         
+        //入力されたデータを格納
     	for(int i = 0 ; i < this.monthList.size() ; ++i) {
         	try {
         		monthModel = this.monthList.get(i);
-        		int target = targetValues[i];
+        		//入力されていない項目がある場合
+        		if(targetValues[i] == null) {
+        			throw new IllegalArgumentException("目標金額を入力してください");
+        		}
+        		//0未満または10000000より大きい金額が入力された場合
+        		int target = targetValues[i].intValue();
         		if(target < 0 || target > 10000000) {
         			throw new IllegalArgumentException("目標金額は0以上10000000以下にしてください");
         		}
+        		//問題ない場合リストに入力されたデータを追加
         		this.monthList.get(i).setTarget(target);
-        	}catch(NumberFormatException e) {
+        	}
+        	//数字以外が入力された場合
+        	catch(NumberFormatException e) {
         		model.addAttribute("errorMessage", "半角数字を入力してください");
         		model.addAttribute("monthList", this.monthList);
         		return "objective.html";
-        	}catch(IllegalArgumentException e) {
+        	}
+        	//入力エラーがある場合
+        	catch(IllegalArgumentException e) {
         		model.addAttribute("errorMessage", e.getMessage());
         		model.addAttribute("monthList", this.monthList);
         		return "objective.html";

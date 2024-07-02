@@ -67,14 +67,14 @@ public interface GoalMapper {
 	
 	
 	/****************************************************************************
-	*** Method Name         : isExistin()
+	*** Method Name         : isExisting()
 	*** Designer            : 上村　結
 	*** Date                : 2024.06.29
 	*** Function            : 今月のデータがすでにあるかどうかを確認する
 	*** Return              : MONTHデータベースからとってきたデータをリストで返す
 	****************************************************************************/
 	@Select("SELECT * FROM MONTH "
-			+ "WHERE MONTH = #{month}")
-	ArrayList<MonthModel> isExisting(@Param("month") int month);
+			+ "WHERE MONTH = #{month} AND USERID = #{userId}")
+	ArrayList<MonthModel> isExisting(@Param("month") int month, @Param("userId") int userId);
 	
 }
