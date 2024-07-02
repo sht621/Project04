@@ -44,38 +44,38 @@ public class LoginUserModel {
      *** Designer            : 堀江咲希
      *** Date                : 2024.06.18
      *** Function            : Userid取得
-     *** Return              : Name
+     *** Return              : Userid
      ****************************************************************************/
     public String getUserid() {
         return Userid;
     }
     
     /****************************************************************************
-     *** Method Name         : setName()
+     *** Method Name         : setUserid()
      *** Designer            : 堀江咲希
      *** Date                : 2024.06.18
-     *** Function            : Name挿入
+     *** Function            : Userid挿入
      ****************************************************************************/
     public void setUserid(String name) {
         Userid = name;
     }
     
     /****************************************************************************
-     *** Method Name         : getPassword()
+     *** Method Name         : getPass()
      *** Designer            : 堀江咲希
      *** Date                : 2024.06.18
-     *** Function            : Password取得
-     *** Return              : Password
+     *** Function            : Pass取得
+     *** Return              : Pass
      ****************************************************************************/
     public String getPass() {
         return Pass;
     }
     
     /****************************************************************************
-     *** Method Name         : setPassword()
+     *** Method Name         : setPass()
      *** Designer            : 堀江咲希
      *** Date                : 2024.06.18
-     *** Function            : Password挿入
+     *** Function            : Pass挿入
      ****************************************************************************/
     public void setPass(String Password) {
         this.Pass = Password;
