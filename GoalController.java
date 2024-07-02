@@ -67,8 +67,8 @@ public class GoalController {
     @GetMapping("/objective")
     public String addNewTarget( Model model, HttpSession session) {
     	
-    	String userIdStr = (String) session.getAttribute("loggedInUser");
-		int userId = Integer.parseInt(userIdStr);
+//    	String userIdStr = (String) session.getAttribute("loggedInUser");
+		int userId = (int) session.getAttribute("loggedInUser");
 		int yearMonth = yearMonth();
 		
 		if(goalService.isExisting(yearMonth) == false) {
