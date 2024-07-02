@@ -76,7 +76,7 @@ public class GoalController {
 	        model.addAttribute("monthList", this.monthList);
 	        model.addAttribute("loggedInUser", userId);
 	        model.addAttribute("yearmonth", yearMonth);
-	        
+	        //ユーザIDと年月をセット
 	        for(int i = 0 ; i < this.monthList.size() ; ++i) {
 	        	this.monthList.get(i).setUserId(userId);
 	        	this.monthList.get(i).setMonth(yearMonth);
@@ -85,7 +85,7 @@ public class GoalController {
 	        return "objective.html";
 	        
 		}
-		//すでに存在する場合更新画面を推移
+		//すでに存在する場合更新画面へ推移
 		else {	
 			return "redirect:updatediffer?userId="+userId;
 		}
