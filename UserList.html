@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一覧画面</title>
     <style>
         body {
@@ -66,6 +67,29 @@
             text-align: center;
             margin-top: 20px; /* リンクの上部に余白を追加 */
         }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 768px) {
+            .user-list-container {
+                width: 90%;
+                padding: 15px;
+            }
+            .navbar {
+                padding: 10px 5px;
+            }
+            .navbar a {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-list-container h1 {
+                font-size: 18px;
+            }
+            .user-list-container th, .user-list-container td {
+                padding: 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -77,15 +101,14 @@
     <table>
         <thead>
         <tr>
-			<th>ID</th>
+            <th>ID</th>
             <th>名前</th>
             <th>パスワード</th>
-            
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${users}" th:object="${user}">
-			<td th:text="*{Id}"></td>
+            <td th:text="*{Id}"></td>
             <td th:text="*{Userid}"></td>
             <td th:text="*{Pass}"></td>
         </tr>
