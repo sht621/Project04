@@ -176,26 +176,5 @@ public class LoginController {
         return "UserList.html";
     }
     
-//    /****************************************************************************
-//     *** Method Name         : home(Model model, HttpSession session)
-//     *** Designer            : 堀江咲希
-//     *** Date                : 2024.06.18
-//     *** Function            : ホーム画面に飛ぶ
-//     *** Return              : home.html
-//     ****************************************************************************/
-//    @GetMapping("/home")
-//    public String home(Model model, HttpSession session) {
-//    	
-//    	String loggedInUser = (String) session.getAttribute("loggedInUser");
-//        model.addAttribute("loggedInUser", loggedInUser);
-//         return "home.html";
-//    }
-//    
-//    @GetMapping("/income_expense")
-//    public String incomeExpense(Model model, HttpSession session) {
-//    	
-//    	String loggedInUser = (String) session.getAttribute("loggedInUser");
-//        model.addAttribute("loggedInUser", loggedInUser);
-//    	return "income_expense.html";
-//    }
+
 }
