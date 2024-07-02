@@ -1,8 +1,8 @@
 /*******************************************************************
 ***  File Name		: DifferPatmentMapper.java
-***  Version		: V1.0
+***  Version		: V1.1
 ***  Designer		: 東野　魁耶
-***  Date		: 2024.06.18
+***  Date		: 2024.07.02
 ***  Purpose       	: Serviceから呼ばれた処理を行うクラス。データベース処理を行う
 ***
 *******************************************************************/
@@ -28,13 +28,14 @@ public interface DifferPaymentMapper {
 	/****************************************************************************
      *** Method Name         : selectPayment(@Param("userid") int userId, @Param("day") int day)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.18
+     *** Date                : 2024.07.02
      *** Function            : 受け取った年月、userIdを基にデータベースからデータを取り出す
      *** Return              : List<PaymentModel>
      ****************************************************************************/
-    @Select("SELECT * FROM PAYMENT "
-    		+ "WHERE USERId = #{userid} AND DAY = #{day}")
-    List<PaymentModel> selectPayment(@Param("userid") int userId, @Param("day") int day);
+	@Select("SELECT * FROM PAYMENT "
+	        + "WHERE USERId = #{userid} AND DAY LIKE #{day} || '%'")
+	List<PaymentModel> selectPayment(@Param("userid") int userId, @Param("day") int day);
+
     
     /****************************************************************************
      *** Method Name         : selectMonth(@Param("userid") int userId, @Param("month") int month)

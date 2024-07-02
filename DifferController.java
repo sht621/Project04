@@ -63,7 +63,6 @@ public class DifferController {
         model.addAttribute("differ", differ);
         
         model.addAttribute("userId", userId);
-        
         LocalDate today = LocalDate.now();
     	int year = today.getYear();
     	int month = today.getMonthValue();
@@ -140,9 +139,15 @@ public class DifferController {
      ****************************************************************************/
     @PostMapping("/updatetarget")
     public String updateTarget(Model model, @RequestParam("year") int year, @RequestParam("month") int month,
-                			   @RequestParam("itemId") String itemId, @RequestParam(value = "target", required = false) int target,
+                               @RequestParam("itemId") String itemId, @RequestParam(value = "target", required = false) Integer target,
                                RedirectAttributes redirectAttributes, @RequestParam("userId") int userId) {
         try {
+        	if (target == null || target < 0) {
+                redirectAttributes.addFlashAttribute("message", "目標金額に正しい正の数字を入力してください");
+                model.addAttribute("userId", userId);
+                return "errornumber";
+            }
+
             int updateYear = year * 100 + month;
             paymentService.updateTarget(updateYear, itemId, target, userId);
         } catch (NumberFormatException e) {
