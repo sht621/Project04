@@ -1,14 +1,15 @@
 /*******************************************************************
 ***  File Name		: HomeController.java
-***  Version		: V1.0
+***  Version		: V1.1
 ***  Designer		: 菅 匠汰
-***  Date			: 2024.06.18
+***  Date			: 2024.07.04
 ***  Purpose       	: ホーム画面を表示する
 ***
 *******************************************************************/
 /*
 *** Revision :
 *** V1.0 : 菅 匠汰, 2024.06.18
+*** V1.1 : 菅 匠汰, 2024.07.04
 */
 
 package com.example.demo.controller;
@@ -38,7 +39,11 @@ public class HomeController {
 	 ****************************************************************************/
 	@GetMapping("/home")
 	public String displayHome(Model model, HttpSession session) {
-		int userId = (int) session.getAttribute("loggedInUser");
+		Object loggedInUser =  session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login"; //idを取得できない場合はログイン画面にリダイレクト
+        }
+        int userId = (int) loggedInUser;
 		
 		//今月の収入、支出、収支を取得するメソッドを利用
 		int[] homeData = homeService.getHomeData(userId);
