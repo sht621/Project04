@@ -1,14 +1,15 @@
 /*******************************************************************
 ***  File Name		: RecipeController.java
-***  Version		: V1.0
+***  Version		: V1.1
 ***  Designer		: 菅 匠汰
-***  Date			: 2024.06.13
+***  Date			: 2024.07.04
 ***  Purpose       	: 予算に基づいた料理のレシピを生成して表示する
 ***
 *******************************************************************/
 /*
 *** Revision :
 *** V1.0 : 菅 匠汰, 2024.06.13
+*** V1.1 : 菅 匠汰, 2024.07.04
 */
 
 package com.example.demo.controller;
@@ -50,7 +51,11 @@ public class RecipeController {
     
 	@GetMapping("/recipe")
 	String suggestRecipe(Model model, HttpSession session) {
-		int userId = (int) session.getAttribute("loggedInUser");
+		Object loggedInUser =  session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login"; //idを取得できない場合はログイン画面にリダイレクト
+        }
+        int userId = (int) loggedInUser;
 		
 		//差額計算メソッドを実行
 		List<MonthModel> differPay = differService.differCalculation(userId);
