@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>一覧画面</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        table {
+            margin: 20px auto; /* グラフとの間隔を調整 */
+            border-collapse: collapse;
+            width: 80%; /* 表の幅を調整 */
+            max-width: 800px; /* 最大幅を指定 */
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .positive {
+            color: blue;
+        }
+        .negative {
+            color: red;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        select {
+            width: 20%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        #chart-container {
+            margin: 20px auto; /* グラフの上下の間隔を調整 */
+            max-width: 800px; /* グラフの最大幅を指定 */
+        }
+    </style>
+    <!-- Chart.jsの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>支出差額一覧 <span th:text="${year + '年' + month + '月'}"></span></h1>
+    
+    <!-- 年と月の選択フォーム -->
+    <form action="#" method="post">
+        <label for="year">年:</label>
+        <select id="year" name="year">
+            <option th:each="y : ${years}" th:value="${y}" th:text="${y}"></option>
+        </select>
+        <label for="month">月:</label>
+        <select id="month" name="month">
+            <option th:each="m : ${months}" th:value="${m}" th:text="${m}"></option>
+        </select>
+        <input type="submit" value="表示">
+        <input type="hidden" name="userId" th:value="${userId}" />
+    </form>
+    
+    <!-- 表 -->
+    <table>
+        <thead>
+            <tr>
+                <th>差額</th>
+                <th>目標金額</th>
+                <th>ジャンル</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="differ : ${differ}">
+                <!-- 差額に応じてクラスを条件付与 -->
+                <td th:text="${differ.differ}" th:class="${differ.differ >= 0} ? 'positive' : 'negative'"></td>
+                <td th:text="${differ.target}"></td>
+                <td th:text="${differ.itemId}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <!-- グラフ -->
+    <div id="chart-container" style="width: 100%; max-width: 800px;">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <!-- Updateに飛ぶボタン -->
+    <form action="/updatediffer" method="get">
+        <input type="submit" value="目標金額を更新">
+        <input type="hidden" name="userId" th:value="${userId}" />
+    </form>
+	
+	<!-- ここのボタンには本来ホーム画面のボタンが入る -->
+    <form action="/home" method="get">
+        <input type="submit" value="戻る">
+        <input type="hidden" name="userId" th:value="${userId}" />
+    </form>
+    
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // Thymeleafの変数をJavaScriptに渡す
+        var differData = /*[[${differ}]]*/ [];
+        
+        // ラベルを取得
+        var labels = differData.map(function(item) { return item.itemId; });
+        // 差額を取得
+        var differences = differData.map(function(item) { return item.differ; });
+        // 目標金額を取得
+        var targets = differData.map(function(item) { return item.target; });
+
+        // Chart.jsを使用してグラフを描画
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '差額',
+                    data: differences,
+                    backgroundColor: differences.map(function(differ) {
+                        return differ >= 0 ? 'rgba(75, 192, 192, 0.2)' : 'rgba(255, 99, 132, 0.2)';
+                    }),
+                    borderColor: differences.map(function(differ) {
+                        return differ >= 0 ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)';
+                    }),
+                    borderWidth: 1
+                }, {
+                    label: '目標金額',
+                    data: targets,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        /*]]>*/
+    </script>
+</body>
+</html>

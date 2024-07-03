@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>支出目標金額更新</title>
+    <style>
+        body {
+            text-align: center;
+            padding: 20px;
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>目標金額更新</h1>
+    
+    <form action="/updatetarget" method="post">
+        <label for="year">年:</label>
+        <select id="year" name="year">
+            <option th:each="y : ${years}" th:value="${y}" th:text="${y}"></option>
+        </select><br>
+        <label for="month">月:</label>
+        <select id="month" name="month">
+            <option th:each="m : ${months}" th:value="${m}" th:text="${m}"></option>
+        </select><br>
+        <label for="itemId">ジャンル:</label>
+        <select id="itemId" name="itemId">
+            <option value="食費">食費</option>
+            <option value="外食費">外食費</option>
+            <option value="日用品">日用品</option>
+            <option value="交際費">交際費</option>
+            <option value="趣味・娯楽">趣味・娯楽</option>
+            <option value="教育・教養">教育・教養</option>
+            <option value="美容・衣服">美容・衣服</option>
+            <option value="通信費">通信費</option>
+            <option value="交通費">交通費</option>
+            <option value="医療・保険">医療・保険</option>
+            <option value="水道・光熱費">水道・光熱費</option>
+            <option value="住まい">住まい</option>
+            <option value="税金">税金</option>
+            <option value="その他">その他</option>
+        </select><br>
+        <label for="target">金額:</label>
+        <input type="text" id="target" name="target" value="0" /><br> 
+        <input type="hidden" name="userId" th:value="${userId}" />
+        <input type="submit" value="更新">
+    </form>
+
+    <form action="/difference" method="get">
+        <input type="submit" value="戻る">
+        <input type="hidden" name="userId" th:value="${userId}" />
+    </form>
+</body>
+</html>
