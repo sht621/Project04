@@ -88,13 +88,13 @@ public class ChatGPTService {
                     retry++;
                 } else {
                 	//それ以外のエラー
-                    throw new IOException("Unexpected response from server: " + responseCode);
+                    return "レシピを生成できませんでした";
                 }
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
-                throw new RuntimeException(e);
+                return "レシピを生成できませんでした";
             }
         }
-        throw new RuntimeException("Exceeded max retry attempts"); //3回失敗した場合
+        return "レシピを生成できませんでした";
     }
 }
