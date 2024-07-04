@@ -14,7 +14,6 @@
 
 package com.example.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +61,12 @@ public class HomeController {
 		model.addAttribute("difference", difference);
 		
 		//円グラフのデータを取得
-		List<Object> graphData = new ArrayList<Object>();//メソッドができたら置き換え
-		model.addAttribute("graphData", graphData);
+		List<Object> sortedData = homeService.getSortedData(userId);
+		int[] chartData = (int[]) sortedData.get(0);
+		String[] chartLabels = (String[]) sortedData.get(1);
+		model.addAttribute("chartData", chartData);
+		model.addAttribute("chartLabels", chartLabels);
+		
 		
 		//直近の入力履歴を新しい順に最大10件表示
 		List<String[]> record = homeService.getRecords(userId);

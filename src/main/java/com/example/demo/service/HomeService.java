@@ -78,15 +78,55 @@ public class HomeService {
 		homeData[3] = target;
 		homeData[4] = difference;
 		
-		return homeData; //上のデータが入った配列
-		
-		
-	//今月の支出内訳をリストで取得
-
+		return homeData; //上のデータが入った配列		
+	}
 	
-	//履歴データを10件取得
-	//日時、カテゴリ、金額
+    /****************************************************************************
+    *** Method Name         : getSortedData()
+    *** Designer            : 菅 匠汰
+    *** Date                : 2024.07.04
+    *** Function            : ホームに表示するグラフのデータを取得する
+    *** Return              : ホームに表示するグラフのデータ
+    ****************************************************************************/
+    
+	public List<Object> getSortedData(int userId) {
 		
+		LocalDate today = LocalDate.now();
+    	int year = today.getYear();
+    	int month = today.getMonthValue();
+		int yearMonth = year * 100 + month;
+		
+		List<MonthModel> dataList = homeMapper.getExpenseData(userId, yearMonth);
+
+        List<Integer> chartData = new ArrayList<>();
+        List<String> chartLabels = new ArrayList<>();
+
+        for (int i=0; i<dataList.size(); i++) {
+        	int spendSum = dataList.get(i).getSpendSum();
+        	String itemId = dataList.get(i).getItemId();
+        	if(spendSum > 0) { //支出が0円の場合は除く
+        		chartData.add(spendSum);
+        		chartLabels.add(itemId);
+        	}else {
+        		break;
+        	}
+        }
+        
+        int[] dataArray = new int[chartData.size()];
+        for (int i = 0; i < chartData.size(); i++) {
+            dataArray[i] = chartData.get(i);
+        }
+        
+        String[] labelsArray = new String[chartLabels.size()];
+        for (int i = 0; i < chartLabels.size(); i++) {
+            labelsArray[i] = chartLabels.get(i);
+        }
+
+        List<Object> sortedData = new ArrayList<>();
+        sortedData.add(dataArray);
+        sortedData.add(labelsArray);
+
+        return sortedData;
 	}
 	
     /****************************************************************************
