@@ -1,8 +1,8 @@
 /*******************************************************************
 ***  File Name		: DifferController.java
-***  Version		: V1.1
+***  Version		: V1.2
 ***  Designer		: 東野　魁耶
-***  Date		: 2024.06.24
+***  Date		: 2024.07.02
 ***  Purpose       	: Serviceクラスを呼び出し画面遷移の処理を行う
 ***
 *******************************************************************/
@@ -133,7 +133,7 @@ public class DifferController {
                 			   @RequestParam("itemId") String itemId, @RequestParam(value = "target", required = false) Integer target,
                                RedirectAttributes redirectAttributes, @RequestParam("userId") int userId)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.24
+     *** Date                : 2024.07.02
      *** Function            : htmlから受けとった値を基にデータベース更新を行う
      *** Return              : htmlファイル
      ****************************************************************************/
@@ -178,7 +178,7 @@ public class DifferController {
      *** Function            : 例外が起こった場合の処理行う
      *** Return              : htmlファイル
      ****************************************************************************/
-    @ExceptionHandler(NumberFormatException.class)
+    @ExceptionHandler(NumberFormatException.class)//90
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleNumberFormatException(NumberFormatException e, Model model) {
         model.addAttribute("message", "目標金額に正しく数字を入力してください");
