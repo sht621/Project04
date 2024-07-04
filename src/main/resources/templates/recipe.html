@@ -4,39 +4,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>recipe</title>
-	<link rel="stylesheet" href="Style.css">
+	<link rel="stylesheet" href="/style.css">
 	<style>
 		body{
 			max-width: 95%;
 			margin: 0 auto;
 		}
 		
-		.top{
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin: 0px;
-		}
-		
-		/*ナビゲーション*/
-		nav{
-			text-align: right;
-			background-color: #eeeeee;
-		}
-		
-		nav a{
-			color: black;
-			font-weight: bold;
-			margin: 0.7vw;
-			text-decoration: none;
-		}
-		
-		nav a:hover{
-			background-color: #cccccc;
-		}
-		
 		h2{
-			margin-top: 0px;
+			margin-top: 5%;
 		}
 		
 		h3{
@@ -54,20 +30,49 @@
 			padding: 3%;
 			margin-bottom: 20px;
 		}
+		
+		@media (max-width: 450px){
+			h3{
+				margin: 2% 3% 2% 3%;
+				font-size: 5vw;
+			}
+		}
 	</style>
 </head>
 <body>
 	<header>
+		<div class="top">
         <h1>レシピ提案</h1>
+        <button class="menu-toggle" aria-label="メニューを開閉する">☰</button>
+		</div>
+		<ul class="menu">                
+            <li><a href="/home">ホーム</a></li>
+	        <li><a href="/objective">目標入力</a></li>
+	        <li><a href="/graph">グラフ</a></li>
+	        <li><a href="/recipe">レシピ</a></li>
+	        <li><a href="/payment">収支入力</a></li>
+	        <li><a href="/difference">目標差額</a></li>
+	        <li><a href="/dataview">履歴</a></li>
+        </ul>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+			    const menuToggle = document.querySelector('.menu-toggle');
+			    const menu = document.querySelector('.menu');
+			    
+			    menuToggle.addEventListener('click', function() {
+			        menu.classList.toggle('open');
+			    });
+			});
+		</script>
         <nav>
-            <ul>
-				<a href="/home">ホーム</a>
-				<a href="/objective">目標入力</a>
-				<a href="/graph">グラフ</a>
-				<a href="/recipe">レシピ</a>
-                <a href="/payment">収支入力</a>
-                <a href="/difference">目標差額</a>
-                <a href="/dataview">履歴</a>
+            <ul>                
+	            <a href="/home">ホーム</a>
+		        <a href="/objective">目標入力</a>
+		        <a href="/graph">グラフ</a>
+		        <a href="/recipe">レシピ</a>
+		        <a href="/payment">収支入力</a>
+		        <a href="/difference">目標差額</a>
+		        <a href="/dataview">履歴</a>
             </ul>
         </nav>
     </header>

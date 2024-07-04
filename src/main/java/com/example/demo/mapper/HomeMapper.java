@@ -20,6 +20,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.model.MonthModel;
 import com.example.demo.model.PaymentModel;
 
 @Mapper
@@ -52,5 +53,19 @@ public interface HomeMapper {
 	        + "ORDER BY ID DESC "
 	        + "LIMIT 10")
 	List<PaymentModel> getRecord(@Param("userid")int userId);
+
+	
+    /****************************************************************************
+    *** Method Name         : getExpenseData()
+    *** Designer            : 菅 匠汰
+    *** Date                : 2024.07.04
+    *** Function            : 指定されたユーザと月のカテゴリごとの支出を多い順に取得
+    *** Return              : 月の支出データ
+    ****************************************************************************/
+	
+    @Select("SELECT * FROM MONTH "
+            + "WHERE USERId = #{userid} AND MONTH = #{month} "
+            + "ORDER BY spendSum DESC")
+	List<MonthModel> getExpenseData(@Param("userid") int userId, @Param("month") int month);
 
 }

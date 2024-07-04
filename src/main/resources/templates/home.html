@@ -4,34 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>home</title>
+	<link rel="stylesheet" href="/style.css">
 	<style>
 		body{
 			max-width: 95%;
 			margin: 0 auto;
-		}
-		
-		.top{
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin: 0px;
-		}
-		
-		/*ナビゲーション*/
-		nav{
-			text-align: right;
-			background-color: #eeeeee;
-		}
-		
-		nav a{
-			color: black;
-			font-weight: bold;
-			margin: 0.7vw;
-			text-decoration: none;
-		}
-		
-		nav a:hover{
-			background-color: #cccccc;
 		}
 		
 		/*mainとasideを横並びに*/
@@ -74,32 +51,33 @@
 		}
 		
 		graphContents{
-			justify-content: center;
+			justify-content: space-between;
 		}
 		
 		/*円グラフ*/
 		#graph{
 			display: inline-block;
-			width: 300px;
+			position: relative;
 		}
 		
 		canvas{
 			display: block;
-		    width: 100%;
-		    height: 100%;
+		    max-width: 100%;
+		    height: auto;
 		}
 		
 		/*グラフ詳細*/
 		#details{
 			display: inline-block;
 			vertical-align: top;
-			width: 350px; 
+			width: 400px; 
 		}
 		
 		table{
 			width: 95%;
             border-collapse: collapse;
             font-size: 1.17em;
+            margin-left: 3%;
 		}
 		
 		th{
@@ -107,7 +85,7 @@
 			border-color: #cccccc;
 			font-weight: bold; 
 			text-align: justify;
-			padding: 8px; 
+			padding: 4px 0px 4px 0px;
 		}
 		
 		td{
@@ -117,6 +95,10 @@
 			text-align: justify; 
 			padding: 4px 0px 4px 0px;
 		}
+		
+		.right-align {
+            text-align: right;
+        }
 		
 		th:nth-child(3) {
             text-align: right;
@@ -154,8 +136,10 @@
 			text-align: center;
 			text-decoration: none;
 			padding: 5%;
-			margin-bottom: 10%; 
+			margin-bottom: 3vw; 
 			border-radius: 10vw;
+			position: sticky;
+			top: 2vw;
 		}
 		
 		#paymentLink:hover{
@@ -175,25 +159,88 @@
 			text-decoration: none;
 			padding: 5%;
 			border-radius: 10vw;
+			position: sticky;
+			top: 12vw;
 		}
 		
 		#recipeLink:hover{
 			transform: scale(1.05);
 		}
+		
+		@media(max-width: 600px){
+			nav a{
+				font-size: 2.9vw;
+			}
+			
+			table{
+				font-size: 3vw;
+			}
+			
+			#details{
+				width: 100%;
+			}
+		}
+		
+		@media (max-width: 450px){
+			main{
+				width: 100%;
+				border: none;
+			}
+			
+			aside{
+				display: none;
+			}
+			
+			h2{
+				font-size: 6vw;
+			}
+			
+			h3{
+				margin: 2% 3% 2% 3%;
+				font-size: 5vw;
+			}
+			
+			table{
+				font-size: 4.5vw;
+			}
+		}
 	</style>
 </head>
 <body>
 	<header>
+		<div class="top">
         <h1>HOME</h1>
+        <button class="menu-toggle" aria-label="メニューを開閉する"></button>
+		</div>
+		<ul class="menu">                
+            <li><a href="/home">ホーム</a></li>
+	        <li><a href="/objective">目標入力</a></li>
+	        <li><a href="/graph">グラフ</a></li>
+	        <li><a href="/recipe">レシピ</a></li>
+	        <li><a href="/payment">収支入力</a></li>
+	        <li><a href="/difference">目標差額</a></li>
+	        <li><a href="/dataview">履歴</a></li>
+        </ul>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+			    const menuToggle = document.querySelector('.menu-toggle');
+			    const menu = document.querySelector('.menu');
+			    
+			    menuToggle.addEventListener('click', function() {
+			        menu.classList.toggle('open');
+			        menuToggle.classList.toggle('close');
+			    });
+			});
+		</script>
         <nav>
-            <ul>
-				<a href="/home">ホーム</a>
-				<a href="/objective">目標入力</a>
-				<a href="/graph">グラフ</a>
-				<a href="/recipe">レシピ</a>
-                <a href="/payment">収支入力</a>
-                <a href="/difference">目標差額</a>
-                <a href="/dataview">履歴</a>
+            <ul>                
+	            <a href="/home">ホーム</a>
+		        <a href="/objective">目標入力</a>
+		        <a href="/graph">グラフ</a>
+		        <a href="/recipe">レシピ</a>
+		        <a href="/payment">収支入力</a>
+		        <a href="/difference">目標差額</a>
+		        <a href="/dataview">履歴</a>
             </ul>
         </nav>
     </header>
@@ -212,52 +259,73 @@
 			<h2>今月の支出内訳</h2>
 			<div id="graphContents">
 				<div id="graph">
-				<canvas id="homePieChart">ここに円グラフを表示</canvas>
+				<canvas id="homePieChart"></canvas>
 				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-				<script>
-					new Chart(document.getElementById('homePieChart'), {
-			            type: 'pie',
-			            data: {
-			                labels: ['食費', '交通費', '光熱費', '家賃', '日用品', 'その他'],
-			                datasets: [{
-			                    data: [30000, 20000, 8000, 50000, 3000, 4000], // 適当な値
-			                    backgroundColor: [
-			                        'rgba(255, 99, 132, 0.7)',
-			                        'rgba(54, 162, 235, 0.7)',
-			                        'rgba(255, 206, 86, 0.7)',
-			                        'rgba(100, 256, 86, 0.7)',
-			                        'rgba(200, 100, 86, 0.7)',
-			                        'rgba(75, 192, 192, 0.7)'
-			                    ],
-			                }]
-			            },
-			            options: {
-			                responsive: true,
-			                plugins: {
-			                    legend: {
-			                        position: 'bottom',
-			                    }
-			                },
-			                 onClick: () => {
-    						window.location.href = 'graph.html';
-    						}
-			            }
-			        });
+				<script th:inline="javascript">
+					document.addEventListener('DOMContentLoaded', function() {
+	        			var labels = /*[[${chartLabels}]]*/ [];
+	        			var data = /*[[${chartData}]]*/ [];
+						
+						var homePieChart = new Chart(document.getElementById('homePieChart').getContext('2d'), {
+				            type: 'pie',
+				            data: {
+				                labels: labels,
+				                datasets: [{
+				                    data: data,
+				                }]
+				            },
+				            options: {
+				                responsive: true,
+				                plugins: {
+				                    legend: {
+				                        position: 'bottom',
+				                    }
+				                },
+				                 onClick: () => {
+	    						window.location.href = 'graph.html';
+	    						}
+				            }
+				        });
+			        
+			        	function resizeChart() {
+					        var chartContainer = document.getElementById('homePieChart').parentNode;
+					        var containerWidth = chartContainer.offsetWidth;
+					        var chart = homePieChart.chart;
+					        chart.canvas.parentNode.style.height = 'auto';
+					        chart.canvas.parentNode.style.width = 'auto';
+					
+					        if (containerWidth < 450) {
+					            chart.canvas.parentNode.style.width = containerWidth + 'px';
+					            chart.canvas.parentNode.style.height = containerWidth + 'px';
+					        }
+					    }
+					
+					    // 初回のチャートサイズ調整
+					    resizeChart();
+					
+					    // ウィンドウサイズが変更されたらチャートのサイズを再調整する
+					    window.addEventListener('resize', resizeChart);
+					});
 				</script>	
 				</div>
-	<!--		//今月の支出を円グラフにするメソッドを利用-->
-	<!--		//円グラフを出力-->
 				<div id="details">
-					<h3>食費<div class="value">30000円</div></h3>
-					<h3>交通費<div class="value">20000円</div></h3>
-					<h3>光熱費<div class="value">8000円</div></h3>
-					<h3>家賃<div class="value">50000円</div></h3>
-					<h3>日用品<div class="value">3000円</div></h3>
-					<h3>その他<div class="value">4000円</div></h3>
-				</div>
-				<div class="showMore">
-					<a href="/graph">もっと見る</a>
-				</div>
+				<table>
+				    <thead>
+				        <tr>
+				            <th>カテゴリ</th>
+				            <th class="right-align">金額</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+			            <tr th:each="index : ${#numbers.sequence(0, chartData.length-1)}">
+			                <td th:text="${chartLabels[index]}"></td>
+			                <td th:text="${chartData[index]} + 円" class="right-align"></td>
+				        </tr>
+				    </tbody>
+				</table>
+			</div>
+			<div class="showMore">
+				<a href="/graph">もっと見る</a>
 			</div>	
 		</section>
 		
