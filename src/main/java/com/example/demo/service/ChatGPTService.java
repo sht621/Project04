@@ -1,14 +1,15 @@
 /*******************************************************************
-***  File Name		: GPTProcess.java
-***  Version		: V1.0
+***  File Name		: ChatGPTService.java
+***  Version		: V1.1
 ***  Designer		: 菅 匠汰
-***  Date			: 2024.06.13
+***  Date			: 2024.07.02
 ***  Purpose       	: GPTに指示文を送り、レシピを生成する
 ***
 *******************************************************************/
 /*
 *** Revision :
 *** V1.0 : 菅 匠汰, 2024.06.13
+*** V1.1 : 菅 匠汰, 2024.07.02
 */
 
 package com.example.demo.service;
