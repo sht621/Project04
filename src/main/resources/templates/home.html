@@ -31,6 +31,7 @@
 		}
 		
 		section{
+			width: 95%;
 			margin-bottom: 20px;
 		}
 		
@@ -41,7 +42,7 @@
 		h3{
 			display: flex;
 			justify-content: space-between;
-			margin: 2% 5% 2% 5%;
+			margin: 2% 0% 2% 0%;
 			border-bottom: solid;
 			border-color: #cccccc;
 		}
@@ -50,34 +51,39 @@
 			margin-right: 3vw;
 		}
 		
-		graphContents{
-			justify-content: space-between;
+		#graphContents{
+			display: flex;
+		    flex-direction: row;
+		    align-items: flex-start;
+		    justify-content: space-between;
+		    width: 100%;
+		    max-width: 1200px;
 		}
 		
 		/*円グラフ*/
 		#graph{
-			display: inline-block;
-			position: relative;
+			flex: 0 0 350px; /* グラフの幅を固定 */
+    		display: flex;
+    		justify-content: center;
 		}
 		
 		canvas{
-			display: block;
-		    max-width: 100%;
-		    height: auto;
+			width: 350px;
+			height: 350px;
 		}
 		
 		/*グラフ詳細*/
 		#details{
-			display: inline-block;
-			vertical-align: top;
-			width: 400px; 
+			flex: 1;
+			margin-left: 10px;
 		}
 		
 		table{
-			width: 95%;
+			width: 100%;
             border-collapse: collapse;
-            font-size: 1.17em;
-            margin-left: 3%;
+            font-size: 4.5vw;
+            font-size: clamp(1rem, 3vw, 1.17rem);
+
 		}
 		
 		th{
@@ -112,15 +118,18 @@
 			color: blue;
 		}
 		
+		#expenseGraph{
+			width: 95%;
+		}
+		
 		/*もっと見る*/
 		.showMore{
-			margin-top: 2%;
 			display: flex;
+			margin-top: 5%;
 			justify-content: flex-end;
 		}
 		
 		.showMore a{
-			margin-right: 5%;
 			font-weight: bold;
 			text-decoration: none;
 		}
@@ -167,24 +176,30 @@
 			transform: scale(1.05);
 		}
 		
-		@media(max-width: 600px){
-			nav a{
-				font-size: 2.9vw;
-			}
-			
-			table{
-				font-size: 3vw;
-			}
-			
-			#details{
-				width: 100%;
-			}
+		@media(max-width: 950px){			
+			#graphContents {
+		        flex-direction: column;
+		        align-items: center;
+		    }
+		
+		    #details {
+		        margin-left: 0;
+		        width: 100%;
+		    }
+		    
+		    #details table {
+		        width: 100%;
+		    }
 		}
 		
 		@media (max-width: 450px){
 			main{
 				width: 100%;
 				border: none;
+			}
+			
+			section{
+    			margin-left: 2.5vw;
 			}
 			
 			aside{
@@ -196,13 +211,23 @@
 			}
 			
 			h3{
-				margin: 2% 3% 2% 3%;
+				margin: 2% 0% 2% 0%;
 				font-size: 5vw;
 			}
 			
-			table{
-				font-size: 4.5vw;
-			}
+			#graphContents {
+		        width: 100%;
+		    }
+		
+		    #graph {
+		        width: 100%;
+		        margin-bottom: 20px;
+		    }
+		
+		    #graph canvas {
+		        width: 100%;
+		        height: auto;
+		    }
 		}
 	</style>
 </head>
@@ -218,7 +243,7 @@
 	        <li><a href="/graph">グラフ</a></li>
 	        <li><a href="/recipe">レシピ</a></li>
 	        <li><a href="/payment">収支入力</a></li>
-	        <li><a href="/difference">目標差額</a></li>
+	        <li><a href="/difference">支出差額</a></li>
 	        <li><a href="/dataview">履歴</a></li>
         </ul>
 		<script>
@@ -239,7 +264,7 @@
 		        <a href="/graph">グラフ</a>
 		        <a href="/recipe">レシピ</a>
 		        <a href="/payment">収支入力</a>
-		        <a href="/difference">目標差額</a>
+		        <a href="/difference">支出差額</a>
 		        <a href="/dataview">履歴</a>
             </ul>
         </nav>
@@ -248,15 +273,17 @@
     <main>
 		<section id="balanceInfomation">
 			<h2>今月の収支情報</h2>
-			<h3>収支<div class="value"><span th:text="${balance}">-</span>円</div></h3>
-			<h3>収入<div class="value"><span th:text="${income}">-</span>円</div></h3>
-			<h3>支出<div class="value"><span th:text="${expense}">-</span>円</div></h3>
-			<h3>目標支出<div class="value"><span th:text="${target}">-</span>円</div></h3>
-			<h3>今月使えるお金<div class="value"><span th:text="${difference}">-</span>円</div></h3>
+			<h3>収支<span th:if="${balance > 0}"th:text="'+' + ${balance} + '円'">
+					<span th:unless="${balance > 0}"th:text="${balance} + '円'">-</span></h3>
+			<h3>収入<span th:text="${income} + '円'">-</span></h3>
+			<h3>支出<span th:text="${expense} + '円'">-</span></h3>
+			<h3>目標支出<span th:text="${target} + '円'">-</span></h3>
+			<h3>今月使えるお金<span th:text="${difference} + '円'">-</span></h3>
 		</section>
 		
 		<section id="expenseGraph">
 			<h2>今月の支出内訳</h2>
+			<div>
 			<div id="graphContents">
 				<div id="graph">
 				<canvas id="homePieChart"></canvas>
@@ -323,6 +350,7 @@
 				        </tr>
 				    </tbody>
 				</table>
+			</div>
 			</div>
 			<div class="showMore">
 				<a href="/graph">もっと見る</a>

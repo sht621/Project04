@@ -18,7 +18,7 @@
 		h3{
 			display: flex;
 			justify-content: space-between;
-			margin: 2% 5% 2% 5%;
+			margin: 2% 0% 2% 0%;
 			border-bottom: solid;
 			border-color: #cccccc;
 		}
@@ -43,7 +43,7 @@
 	<header>
 		<div class="top">
         <h1>レシピ提案</h1>
-        <button class="menu-toggle" aria-label="メニューを開閉する">☰</button>
+        <button class="menu-toggle" aria-label="メニューを開閉する"></button>
 		</div>
 		<ul class="menu">                
             <li><a href="/home">ホーム</a></li>
@@ -51,7 +51,7 @@
 	        <li><a href="/graph">グラフ</a></li>
 	        <li><a href="/recipe">レシピ</a></li>
 	        <li><a href="/payment">収支入力</a></li>
-	        <li><a href="/difference">目標差額</a></li>
+	        <li><a href="/difference">支出差額</a></li>
 	        <li><a href="/dataview">履歴</a></li>
         </ul>
 		<script>
@@ -76,8 +76,8 @@
             </ul>
         </nav>
     </header>
-		<h3>今月の残り金額 <div class="value"><span th:text="${difference}"></span>円</div></h3>
-		<h3>１食分の予算   <div class="value"><span th:text="${budget}"></span>円</div></h3>
+		<h3>今月の残り金額<span th:text="${difference} + '円'"></span></h3>
+		<h3>１食分の予算<span th:text="${budget} + '円'"></span></h3>
 		<h2>本日のおすすめレシピ</h2>
 		<div id="recipeText"></div>
 	    
