@@ -2,13 +2,13 @@
 ***  File Name		: HomeService.java
 ***  Version		: V1.0
 ***  Designer		: 菅 匠汰
-***  Date			: 2024.07.02
+***  Date			: 2024.07.08
 ***  Purpose       	: ホーム画面に表示するデータを取得する
 ***
 *******************************************************************/
 /*
 *** Revision :
-*** V1.0 : 菅 匠汰, 2024.07.02
+*** V1.0 : 菅 匠汰, 2024.07.08
 */
 
 package com.example.demo.service;
@@ -84,18 +84,22 @@ public class HomeService {
     /****************************************************************************
     *** Method Name         : getSortedData()
     *** Designer            : 菅 匠汰
-    *** Date                : 2024.07.04
-    *** Function            : ホームに表示するグラフのデータを取得する
-    *** Return              : ホームに表示するグラフのデータ
+    *** Date                : 2024.07.08
+    *** Function            : 月の支出グラフのデータを取得する
+    *** Return              : 月の支出グラフのデータ
     ****************************************************************************/
-    
+	
 	public List<Object> getSortedData(int userId) {
-		
 		LocalDate today = LocalDate.now();
     	int year = today.getYear();
     	int month = today.getMonthValue();
 		int yearMonth = year * 100 + month;
-		
+		//今月のyearMonthを入れて取得
+		return getSortedData(userId, yearMonth);
+	}
+    
+	public List<Object> getSortedData(int userId, int yearMonth) {
+		//引数のIDと年月を使いデータを取得
 		List<MonthModel> dataList = homeMapper.getExpenseData(userId, yearMonth);
 
         List<Integer> chartData = new ArrayList<>();
@@ -126,7 +130,7 @@ public class HomeService {
         sortedData.add(dataArray);
         sortedData.add(labelsArray);
 
-        return sortedData;
+        return sortedData; //月の支出データ
 	}
 	
     /****************************************************************************
