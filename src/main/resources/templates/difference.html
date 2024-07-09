@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/style.css">
     <title>一覧画面</title>
     <style>
         body {
@@ -54,21 +55,57 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>支出差額一覧 <span th:text="${year + '年' + month + '月'}"></span></h1>
+	<header>
+		<div class="top">
+        <h1>支出差額一覧 <span th:text="${year + '年' + month + '月'}"></span></h1>
+        <button class="menu-toggle" aria-label="メニューを開閉する"></button>
+		</div>
+		<ul class="menu">                
+            <li><a href="/home">ホーム</a></li>
+	        <li><a href="/objective">目標入力</a></li>
+	        <li><a href="/graph">グラフ</a></li>
+	        <li><a href="/recipe">レシピ</a></li>
+	        <li><a href="/payment">収支入力</a></li>
+	        <li><a href="/difference">支出差額</a></li>
+	        <li><a href="/dataview">履歴</a></li>
+        </ul>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+			    const menuToggle = document.querySelector('.menu-toggle');
+			    const menu = document.querySelector('.menu');
+			    
+			    menuToggle.addEventListener('click', function() {
+			        menu.classList.toggle('open');
+			        menuToggle.classList.toggle('close');
+			    });
+			});
+		</script>
+        <nav>
+            <ul>                
+	            <a href="/home">ホーム</a>
+		        <a href="/objective">目標入力</a>
+		        <a href="/graph">グラフ</a>
+		        <a href="/recipe">レシピ</a>
+		        <a href="/payment">収支入力</a>
+		        <a href="/difference">支出差額</a>
+		        <a href="/dataview">履歴</a>
+            </ul>
+        </nav>
+    </header>
     
     <!-- 年と月の選択フォーム -->
     <form action="#" method="post">
-        <label for="year">年:</label>
-        <select id="year" name="year">
-            <option th:each="y : ${years}" th:value="${y}" th:text="${y}"></option>
-        </select>
-        <label for="month">月:</label>
-        <select id="month" name="month">
-            <option th:each="m : ${months}" th:value="${m}" th:text="${m}"></option>
-        </select>
-        <input type="submit" value="表示">
-        <input type="hidden" name="userId" th:value="${userId}" />
-    </form>
+    	<label for="year">年:</label>
+    	<select id="year" name="year">
+        	<option th:each="y : ${years}" th:value="${y}" th:text="${y}" th:selected="${y} == ${currentYear}"></option>
+    	</select>
+    	<label for="month">月:</label>
+    	<select id="month" name="month">
+        	<option th:each="m : ${months}" th:value="${m}" th:text="${m}" th:selected="${m} == ${currentMonth}"></option>
+    	</select>
+    	<input type="submit" value="表示">
+    	<input type="hidden" name="userId" th:value="${userId}" />
+	</form>
     
     <!-- 表 -->
     <table>
