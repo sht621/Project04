@@ -7,30 +7,35 @@
         body {
             text-align: center;
             padding: 20px;
+            font-size: 1.3em; /* 全体のフォントサイズを1.5倍に設定 */
         }
         form {
             display: inline-block;
             text-align: left;
+            height: 100;
         }
         label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 15px; /* ラベル間の間隔を広くする */
+            font-size: 1.0em; /* ラベルのフォントサイズを調整 */
         }
-        input[type="text"],
-        select {
+        select,
+        input[type="text"] {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
+            padding: 12px;
+            margin-bottom: 15px; /* 入力フォーム間の間隔を広くする */
             box-sizing: border-box;
             cursor: pointer;
+            font-size: 1.0em; /* 入力フォームのフォントサイズを調整 */
         }
         input[type="submit"] {
             background-color: #4CAF50;
             color: white;
-            padding: 10px 15px;
+            padding: 12px 20px; /* ボタンのパディングを調整 */
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            font-size: 1.0em; /* ボタンのフォントサイズを調整 */
         }
         input[type="submit"]:hover {
             background-color: #45a049;
