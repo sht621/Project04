@@ -71,6 +71,10 @@
       color: red;
       margin-top: 10px;
     }
+    .error3 {
+      color: red;
+      margin-top: 10px;
+    }
 
     /* Media Queries for Responsive Design */
     @media (max-width: 768px) {
@@ -102,6 +106,9 @@
     </div>
     <div th:if="${param.error2}">
       <p class="error2">このアカウントは存在します。</p>
+    </div>
+    <div th:if="${param.error3}">
+      <p class="error3">1文字以上入力してください。</p>
     </div>
     <form action="#" th:action="@{/new}" th:object="${User}" method="post">
       <table>
