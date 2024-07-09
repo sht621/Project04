@@ -1,8 +1,8 @@
 /*******************************************************************
 ***  File Name		: DifferService.java
-***  Version		: V1.1
+***  Version		: V1.2
 ***  Designer		: 東野　魁耶
-***  Date		: 2024.06.24
+***  Date		: 2024.07.02
 ***  Purpose       	: Mapperクラスから処理を呼び出し、Controllerから呼ばれた処理を行うクラス
 ***
 *******************************************************************/
@@ -77,14 +77,20 @@ public class DifferService {
      *** Function            : 受け取った月、itemId、目標金額を基にデータベースを更新する
      *** Return              : 返り値なし
      ****************************************************************************/
-    public void updateTarget(int month, String itemId, int target, int userId) {
-        dao.updateTarget(userId, month, itemId, target);
+    public boolean updateTarget(int month, String itemId, int target, int userId) {
+        int updatenumber = dao.updateTarget(userId, month, itemId, target);
+        if(updatenumber <= 0) {	
+			return false;
+		}
+		else {			
+			return true;
+		}
     }
     
     /****************************************************************************
      *** Method Name         : calculateTotalSpends(int userId, int inttoday)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.06.18
+     *** Date                : 2024.07.02
      *** Function            : 受け取った年月、userIdを基にデータベースから情報を取り出し収支データを返す
      *** Return              : sum[]
      ****************************************************************************/
@@ -94,7 +100,7 @@ public class DifferService {
         
         for (PaymentModel pay : listPay) {
             int index = getItemIndex(pay.getItemId());
-            if(index != -1) {
+            if( index != -1 ) {
             	sum[index] += pay.getSpend();
             }
         }
