@@ -1,3 +1,16 @@
+/*******************************************************************
+***  File Name		: PaymentController.java
+***  Version		: V1.0
+***  Designer		: 佐藤　巧都
+***  Date			: 2024.07.09
+***  Purpose       	: 収支入力、更新、削除処理を操作する
+***
+*******************************************************************/
+/*
+*** Revision :
+*** V1.0 : 佐藤　巧都, 2024.07.09
+*/
+
 package com.example.demo.controller;
 
 import java.util.List;
@@ -18,6 +31,8 @@ import jakarta.servlet.http.HttpSession;
 public class PaymentController {
 
     private final PaymentService service;
+    
+    @Autowired
     private PaymentModel payment;
     
     @Autowired
@@ -25,6 +40,13 @@ public class PaymentController {
         this.service = service;
     }
     
+    /****************************************************************************
+     *** Method Name         : goInput()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.09
+     *** Function            : 収入支出画面を表示する
+     *** Return              : 収入支出画面
+     ****************************************************************************/
     @GetMapping("/input")
     public String goInput(Model model, HttpSession session) {
     	Object loggedInUser =  session.getAttribute("loggedInUser");
@@ -37,12 +59,24 @@ public class PaymentController {
     	return "payment-input";
     }
     
+    /****************************************************************************
+     *** Method Name         : inputIncome()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.09
+     *** Function            : 収入入力処理を行う
+     *** Return              : 入力完了画面
+     ****************************************************************************/
     @PostMapping("/inputIncome")
     public String inputIncome(
     			@RequestParam("date") String date,
     			@RequestParam("income") int income,
     			@RequestParam("itemId") String itemId,
-    			Model model) {
+    			Model model, HttpSession session) {
+    	Object loggedInUser =  session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login"; //idを取得できない場合はログイン画面にリダイレクト
+        }
+        int userId = (int) loggedInUser;
     	
     // 日付を日付フォーマットに変換し、dayに設定する
     	try {
@@ -52,22 +86,34 @@ public class PaymentController {
     		model.addAttribute("error", "Invalid date format");
     		return "payment-input";
     	}
-    	
+    	payment.setUserId(userId);
     	payment.setSpend(0);
-    	
     	payment.setIncome(income);
     	payment.setItemId(itemId);
     	model.addAttribute("payment", payment);
-    	service.insertIncome(payment);
+    	service.insertPayment(payment);
     	return "input-complete";
     }
-
+    
+    /****************************************************************************
+     *** Method Name         : inputSpend()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.09
+     *** Function            : 収入支出画面を表示する
+     *** Return              : 入力完了画面
+     ****************************************************************************/
     @PostMapping("/inputSpend")
     public String inputSpend(
     			@RequestParam("date") String date,
     			@RequestParam("spend") int spend,
     			@RequestParam("itemId") String itemId,
-    			Model model) {
+    			Model model, HttpSession session) {
+    	Object loggedInUser =  session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login"; //idを取得できない場合はログイン画面にリダイレクト
+        }
+        int userId = (int) loggedInUser;
+    	
     // 日付を日付フォーマットに変換し、dayに設定する
     	try {
     		int day = Integer.parseInt(date.replaceAll("-", ""));
@@ -76,18 +122,24 @@ public class PaymentController {
     		model.addAttribute("error", "Invalid date format");
     		return "payment-input";
     	}
-    	
+    	payment.setUserId(userId);
     	payment.setIncome(0);
     	payment.setSpend(spend);
     	payment.setItemId(itemId);
     	model.addAttribute("payment", payment);
-    	service.insertSpend(payment);
+    	service.insertPayment(payment);
     	return "input-complete";
     }
 
-
+    /****************************************************************************
+     *** Method Name         : goUpdate()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.05
+     *** Function            : データ一覧(更新)画面を表示する
+     *** Return              : 収入支出画面
+     ****************************************************************************/
     // 更新画面へ遷移
-    @GetMapping("/update")
+    @GetMapping("/record")
     public String goUpdate(Model model, HttpSession session) {
     	Object loggedInUser =  session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
@@ -97,9 +149,16 @@ public class PaymentController {
     	List<PaymentModel> list = service.findAll(userId);
         model.addAttribute("list", list);
         model.addAttribute("payment", payment);
-        return "update"; 
+        return "record"; 
     }
     
+    /****************************************************************************
+     *** Method Name         : goUpdateInput()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.05
+     *** Function            : 収入支出画面を表示する
+     *** Return              : 収入支出画面
+     ****************************************************************************/
     @GetMapping("/updateInput")
     public String goUpdateInput(
             @RequestParam("userId") int userId,
@@ -110,13 +169,19 @@ public class PaymentController {
         if (payment == null) {
             // IDに対応するデータが見つからない場合の処理
             model.addAttribute("error", "Payment not found");
-            return "update";
+            return "record";
         }
         model.addAttribute("payment", payment);
         return "update-input";
     }
 
-    
+    /****************************************************************************
+     *** Method Name         : goInput()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.05
+     *** Function            : 収入支出画面を表示する
+     *** Return              : 収入支出画面
+     ****************************************************************************/
     // 更新処理を行う
     @PostMapping("/updateInput")
     public String updateInput(
@@ -133,7 +198,7 @@ public class PaymentController {
     		payment.setDay(day);
     	} catch (NumberFormatException e) {
     		model.addAttribute("error", "Invalid date format");
-    		return "update";
+    		return "record";
     	}
     	
     	payment.setIncome(income);
@@ -145,9 +210,16 @@ public class PaymentController {
 		service.paymentUpdate(income, spend, DAY, itemId, id, userId);
         return "update-complete";
     }
-
+    
+    /****************************************************************************
+     *** Method Name         : goInput()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.05
+     *** Function            : 収入支出画面を表示する
+     *** Return              : 収入支出画面
+     ****************************************************************************/
     // 削除画面へ遷移
-    @GetMapping("/delete")
+    @GetMapping("/record")
     public String goDelete(Model model, HttpSession session) {
     	Object loggedInUser =  session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
@@ -157,9 +229,16 @@ public class PaymentController {
     	List<PaymentModel> list = service.findAll(userId);
         model.addAttribute("list", list);
         model.addAttribute("userId", userId);
-        return "delete"; // Assuming delete.html is your template file name
+        return "record"; // Assuming delete.html is your template file name
     }
-
+    
+    /****************************************************************************
+     *** Method Name         : goInput()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.05
+     *** Function            : 収入支出画面を表示する
+     *** Return              : 収入支出画面
+     ****************************************************************************/
     // 削除処理を行う
     @PostMapping("/delete")
     public String deletePayment(Model model, int id, int userId) {
