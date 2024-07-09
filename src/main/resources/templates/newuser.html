@@ -57,8 +57,10 @@
       background-color: #218838;
     }
     .registration-container a {
-      color: #007bff;
+      color: #28a745; /* Match button color */
       text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
     }
     .registration-container a:hover {
       text-decoration: underline;
@@ -114,11 +116,11 @@
       <table>
         <tr>
           <th class="cell_title">名前</th>
-          <td><input type="text" th:field="*{Userid}" pattern="^[0-9A-Za-z]+$" title="名前は英数字のみ"></td>
+          <td><input type="text" th:field="*{Userid}" pattern="^[0-9A-Za-z]{1,16}$" title="英数字のみ、1文字以上16文字以下"></td>
         </tr>
         <tr>
           <th class="cell_title">パスワード</th>
-          <td><input type="text" th:field="*{Pass}"></td>
+          <td><input type="text" th:field="*{Pass}" pattern="^[0-9A-Za-z]{8,16}$" title="英数字のみ、8文字以上16文字以下"></td>
         </tr>
       </table>
       <button type="submit">登録</button>

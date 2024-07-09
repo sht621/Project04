@@ -80,7 +80,19 @@ public class LoginController {
     	List<LoginUserModel> use = userService.selectAll(); 
     	
         for (LoginUserModel existingUser : use) {
-        	if(enteredUsername.equals("kanri00") && enteredUserpass.equals("kanri010")){
+        	if(enteredUsername.equals("")) {
+        		
+        		model.addAttribute("error3", "");
+                return "redirect:login?error3=true";
+        		
+        	}
+        	else if(enteredUserpass.equals("")) {
+        		
+        		model.addAttribute("error4", "");
+                return "redirect:login?error4=true";
+        		
+        	}
+        	else if(enteredUsername.equals("kanri00") && enteredUserpass.equals("kanri010")){
         		
         		return "redirect:userlist";
         		
@@ -184,26 +196,47 @@ public class LoginController {
         return "UserList.html";
     }
     
-//    /****************************************************************************
-//     *** Method Name         : home(Model model, HttpSession session)
-//     *** Designer            : 堀江咲希
-//     *** Date                : 2024.06.18
-//     *** Function            : ホーム画面に飛ぶ
-//     *** Return              : home.html
-//     ****************************************************************************/
-//    @GetMapping("/home")
-//    public String home(Model model, HttpSession session) {
-//    	
-//    	String loggedInUser = (String) session.getAttribute("loggedInUser");
-//        model.addAttribute("loggedInUser", loggedInUser);
-//         return "home.html";
-//    }
-//    
-//    @GetMapping("/income_expense")
-//    public String incomeExpense(Model model, HttpSession session) {
-//    	
-//    	String loggedInUser = (String) session.getAttribute("loggedInUser");
-//        model.addAttribute("loggedInUser", loggedInUser);
-//    	return "income_expense.html";
-//    }
+    /****************************************************************************
+     *** Method Name         : pass(Model model)
+     *** Designer            : 堀江咲希
+     *** Date                : 2024.07.09
+     *** Function            : パスワード変更画面に遷移
+     *** Return              : passupdate.html
+     ****************************************************************************/
+    @GetMapping("/passupdate")
+    public String pass(Model model) {
+    	model.addAttribute("User", new LoginUserModel());
+    	return "passupdate.html";
+    }
+    
+    /****************************************************************************
+     *** Method Name         : up(@Validated @ModelAttribute LoginUserModel user, Model model)
+     *** Designer            : 堀江咲希
+     *** Date                : 2024.07.09
+     *** Function            : パスワード更新
+     *** Return              : ログイン画面
+     *　　　　　　　　　　　　エラー時はエラーメッセージ
+     ****************************************************************************/
+    @PostMapping("/passupdate")
+    public String up(@Validated @ModelAttribute LoginUserModel user, Model model) {
+    	
+    	String newpass = user.getPass();
+    	List<LoginUserModel> use = userService.selectAll(); 
+    	
+    	for (LoginUserModel existingUser : use) {
+            // ユーザーIDが一致するかチェックする
+            if (existingUser.getUserid().equals(user.getUserid())) {
+                // パスワードを更新する
+                existingUser.setPass(newpass);
+                // サービス内の更新メソッドを呼び出す
+                userService.update(existingUser);
+                return "redirect:login";
+            }
+        }
+        
+        // ユーザーが見つからない場合はエラー処理などを行う
+        model.addAttribute("error", "ユーザーが見つかりませんでした。");
+        return "redirect:passupdate?error=true"; // エラーが発生した場合の遷移先ページを指定
+    }
+    
 }

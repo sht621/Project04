@@ -69,5 +69,18 @@ public class LoginUserService extends HttpServlet{
     	return dao.select();
     }
     
+    /****************************************************************************
+     *** Method Name         : update()
+     *** Designer            : 堀江咲希
+     *** Date                : 2024.07.09
+     *** Function            : データを更新
+     *** Return              : 更新したデータ
+     ****************************************************************************/
+    public boolean update(LoginUserModel user) {
+        return dao.update(user) > 0;
+    }
+
+    
+    
     
 }
