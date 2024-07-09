@@ -12,33 +12,10 @@
             background-color: #f5f5f5;
         }
         header {
-            background-color: #3498db;
-            color: white;
+  	        background-color: #ffffff;
             padding: 20px;
             text-align: center;
             position: relative;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 1.8em;
-        }
-        .home-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #2980b9;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            text-decoration: none;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-        .home-button:hover {
-            background-color: #1a6a9e;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
         .container {
             display: grid;
@@ -95,13 +72,13 @@
 		#chart-container {
 		     background-color: #ffffff;
 		     border-radius: 10px;
-		     padding: 15px;
+		     padding: 10px;
 		     display: flex;
 		     flex-direction: column;
 		     justify-content: center;
 		     align-items: center;
 		     width: 100%;
-		     height: 400px; /* Adjusted height */
+		     height: 500px; /* Adjusted height */
 		 }
 		 canvas {
 		     width: 100% !important;
@@ -118,9 +95,42 @@
 </head>
 <body>
     <header>
+		<div class="top">
         <h1>月別支出金額</h1>
-        <a href="/home" class="home-button">ホーム</a>
-    </header>
+		    <button class="menu-toggle" aria-label="メニューを開閉する"></button>
+			</div>
+			<ul class="menu">                
+		        <li><a href="/home">ホーム</a></li>
+		        <li><a href="/objective">目標入力</a></li>
+		        <li><a href="/graph">グラフ</a></li>
+		        <li><a href="/recipe">レシピ</a></li>
+		        <li><a href="/payment">収支入力</a></li>
+		        <li><a href="/difference">支出差額</a></li>
+		        <li><a href="/dataview">履歴</a></li>
+		    </ul>
+			<script>
+				document.addEventListener('DOMContentLoaded', function() {
+				    const menuToggle = document.querySelector('.menu-toggle');
+				    const menu = document.querySelector('.menu');
+				    
+				    menuToggle.addEventListener('click', function() {
+				        menu.classList.toggle('open');
+				        menuToggle.classList.toggle('close');
+				    });
+				});
+			</script>
+		    <nav>
+		        <ul>                
+		            <a href="/home">ホーム</a>
+			        <a href="/objective">目標入力</a>
+			        <a href="/graph">グラフ</a>
+			        <a href="/recipe">レシピ</a>
+			        <a href="/payment">収支入力</a>
+			        <a href="/difference">支出差額</a>
+			        <a href="/dataview">履歴</a>
+		        </ul>
+		    </nav>
+		</header>
 
     <div class="container">
         <div class="left-panel">
