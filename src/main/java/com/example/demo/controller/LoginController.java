@@ -222,6 +222,9 @@ public class LoginController {
     	
     	String newpass = user.getPass();
     	List<LoginUserModel> use = userService.selectAll(); 
+    	if(newpass.equals("")) {
+    		return "redirect:passupdate?error2=true";
+    	}
     	
     	for (LoginUserModel existingUser : use) {
             // ユーザーIDが一致するかチェックする

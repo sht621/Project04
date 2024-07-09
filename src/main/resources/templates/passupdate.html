@@ -74,6 +74,10 @@
       color: red;
       margin-top: 10px;
     }
+    .error2 {
+      color: red;
+      margin-top: 10px;
+    }
     
 
     /* Media Queries for Responsive Design */
@@ -108,7 +112,9 @@
     <div th:if="${param.error}">
       <p class="error">アカウントが存在しません</p>
     </div>
-    
+    <div th:if="${param.error2}">
+      <p class="error2">パスワードを入力してください</p>
+    </div>
     <form action="#" th:action="@{/passupdate}" th:object="${User}" method="post">
       <table>
          <tr>
