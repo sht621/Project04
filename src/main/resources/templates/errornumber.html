@@ -30,10 +30,9 @@
     </style>
 </head>
 <body>
-    <h1>目標が存在しません</h1>
-    <form action="/updatediffer" method="get">
-        <input type="submit" value="戻る">
-        <input type="hidden" name="userId" th:value="${userId}" />
+    <h1><span th:text="${year + '年' + month + '月'}"></span>の目標が存在しません</h1>
+    <form action="/objective" method="get">
+        <input type="submit" value="新規目標登録">
     </form>
 </body>
 </html>
