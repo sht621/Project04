@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>収支登録</title>
+    <link rel="stylesheet" href="/style.css">
     <style>
         .tab-content {
             display: none;
@@ -13,7 +14,34 @@
     </style>
 </head>
 <body>
-    <h1>収入支出登録</h1>
+    <header>
+		<div class="top">
+        <h1>収入支出登録</h1>
+        <button class="menu-toggle" aria-label="メニューを開閉する"></button>
+		</div>
+		<ul class="menu">                
+            <li><a href="/home">ホーム</a></li>
+	        <li><a href="/objective">目標入力</a></li>
+	        <li><a href="/graph">グラフ</a></li>
+	        <li><a href="/recipe">レシピ</a></li>
+	        <li><a href="/input">収支入力</a></li>
+	        <li><a href="/difference">支出差額</a></li>
+	        <li><a href="/record">履歴</a></li>
+        </ul>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+			    const menuToggle = document.querySelector('.menu-toggle');
+			    const menu = document.querySelector('.menu');
+			    
+			    menuToggle.addEventListener('click', function() {
+			        menu.classList.toggle('open');
+			        menuToggle.classList.toggle('close');
+			    });
+			    // 初期表示で支出登録タブを表示
+                showTab('spend');
+			});
+		</script>
+    </header>
 
     <div>
         <button onclick="showTab('income')">収入登録</button>
@@ -33,7 +61,7 @@
                 <input type="date" id="incomeDay" name="date" required><br>
             </div>
             <div>
-                <label for="incomeItemId">ジャンル:</label>
+                <label for="incomeItemId">項目:</label>
                 <select id="incomeItemId" name="itemId" required>
                     <option value="給料">給料</option>
                 </select><br>
@@ -56,7 +84,7 @@
                 <input type="date" id="spendDay" name="date" required><br>
             </div>
             <div>
-                <label for="spendItemId">ジャンル:</label>
+                <label for="spendItemId">項目:</label>
                 <select id="spendItemId" name="itemId" required>
                     <option value="食費">食費</option>
                     <option value="外食費">外食費</option>
@@ -85,6 +113,14 @@
                 tab.style.display = 'none';
             });
             document.getElementById(tabName + 'Tab').style.display = 'block';
+        
+        	// 現在の日付を取得して設定する
+            const today = new Date().toISOString().split('T')[0];
+            if(tabName === 'income') {
+                document.getElementById('incomeDay').value = today;
+            } else if(tabName === 'spend') {
+                document.getElementById('spendDay').value = today;
+            }
         }
     </script>
 </body>
