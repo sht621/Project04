@@ -205,7 +205,8 @@ public class DifferController {
             int updateYear = year * 100 + month;
             boolean result = paymentService.updateTarget(updateYear, itemId, target, userId);
             if (!result) {
-                model.addAttribute("userId", userId);
+                model.addAttribute("year", year);
+                model.addAttribute("month", month);
                 return "errornumber";
             }
             
