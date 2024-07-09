@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ログイン画面</title>
+  <title>パスワード変更</title>
   
   <style>
     body {
@@ -52,7 +52,7 @@
       border-radius: 4px;
     }
     .login-container button {
-      background-color: #007bff;
+      background-color: rgb(128, 128, 255);
       color: #fff;
       border: none;
       padding: 10px 20px;
@@ -64,7 +64,7 @@
       background-color: #0056b3;
     }
     .login-container a {
-      color: #007bff;
+      color: rgb(128, 128, 255);
       text-decoration: none;
     }
     .login-container a:hover {
@@ -74,18 +74,7 @@
       color: red;
       margin-top: 10px;
     }
-    .error2 {
-      color: red;
-      margin-top: 10px;
-    }
-    .error3 {
-      color: red;
-      margin-top: 10px;
-    }
-    .error4 {
-      color: red;
-      margin-top: 10px;
-    }
+    
 
     /* Media Queries for Responsive Design */
     @media (max-width: 768px) {
@@ -113,35 +102,26 @@
   </style>
 </head>
 <body>
-  <div class="title">家計簿アプリ</div> <!-- 家計簿アプリのタイトルを追加 -->
   <div class="login-container">
-    <h1>ログイン</h1>
+	  <h1>パスワード変更</h1>
     <!-- エラーメッセージ表示 -->
     <div th:if="${param.error}">
-      <p class="error">パスワードが違います。</p>
+      <p class="error">アカウントが存在しません</p>
     </div>
-    <div th:if="${param.error2}">
-      <p class="error2">このアカウント名は存在しません。</p>
-    </div>
-    <div th:if="${param.error3}">
-      <p class="error3">名前を入力してください。</p>
-    </div>
-    <div th:if="${param.error4}">
-      <p class="error4">パスワードを入力してください。</p>
-    </div>
-    <form action="#" th:action="@{/login}" th:object="${User}" method="post">
+    
+    <form action="#" th:action="@{/passupdate}" th:object="${User}" method="post">
       <table>
-        <tr>
+         <tr>
           <th class="cell_title">名前</th>
-          <td><input type="text" th:field="*{Userid}"></td>
+          <td><input type="text" th:field="*{Userid}" pattern="^[0-9A-Za-z]{1,16}$" title="英数字のみ、1文字以上16文字以下"></td>
         </tr>
         <tr>
-          <th class="cell_title">パスワード</th>
-          <td><input type="password" th:field="*{Pass}"></td>
+          <th class="cell_title">新しいパスワード</th>
+          <td><input type="text" th:field="*{Pass}" pattern="^[0-9A-Za-z]{8,16}$" title="英数字のみ、8文字以上16文字以下"></td>
         </tr>
       </table>
-      <button type="submit">ログイン</button>
-      <div>--<a th:href="@{/new}">新規登録</a>------<a th:href="@{/passupdate}">パスワード変更</a>--</div>
+      <button type="submit">パスワード変更</button>
+      <div><a th:href="@{/login}">ログイン画面に戻る</a></div>
     </form>
   </div>
 </body>

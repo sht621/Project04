@@ -18,6 +18,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.model.LoginUserModel;
@@ -53,4 +54,14 @@ public interface LoginUserMapper {
      ****************************************************************************/
     @Select("SELECT NAME FROM USER")
     List<LoginUserModel> select();
+    
+    /****************************************************************************
+     *** Method Name         : update()
+     *** Designer            : 堀江咲希
+     *** Date                : 2024.07.09
+     *** Function            : ユーザデータベースのPassを更新
+     ****************************************************************************/
+    @Update("UPDATE USER SET Pass = #{pass} WHERE Userid = #{userid}")
+    int update(LoginUserModel user);
+
 }
