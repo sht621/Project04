@@ -9,6 +9,7 @@
 
 package com.example.demo.model;
 
+@Component
 public class PaymentModel {
 	
 	private int id;
