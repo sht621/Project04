@@ -17,6 +17,7 @@ package com.example.demo.controller;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,7 @@ import jakarta.servlet.http.HttpSession;
 public class GoalController {
 	private final GoalService goalService;
 	private ArrayList<MonthModel> monthList;	//入力されたデータをリストでやり取りする
+	private DifferController differController;
 	
 	/****************************************************************************
 	*** Method Name         : GoalController()
@@ -47,6 +49,7 @@ public class GoalController {
 	public GoalController(GoalService goalService) {
 		this.goalService = goalService;
 		this.monthList = new ArrayList<MonthModel>();
+		
 		String[] itemName = {"食費","外食費","日用品","交際費","趣味・娯楽","教育・教養","美容・衣服",
 							 "通信費","交通費","医療・保険","水道・光熱費","住まい","税金","その他"};
         for(String item : itemName) {
@@ -66,29 +69,46 @@ public class GoalController {
 	****************************************************************************/
     @GetMapping("/objective")
     public String addNewTarget( Model model, HttpSession session) {
-    	
+    	if((Integer)session.getAttribute("loggedInUser") == null) {
+    		return "redirect:login";
+    	}
 		int userId = (int) session.getAttribute("loggedInUser");
+		//現在の年月をセットする
 		int yearMonth = yearMonth();
+		String monthStr = Integer.toString(yearMonth).substring(4);
+		String yearStr = Integer.toString(yearMonth).substring(0, 4);
+		int month = Integer.parseInt(monthStr);
+		int year = Integer.parseInt(yearStr);
+		model.addAttribute("defaultYear", year);
+		model.addAttribute("defaultMonth", month);
+		
+		// 年の選択肢を生成（2024年から2026年まで）
+        List<Integer> years = generateYearList();
+        model.addAttribute("years", years);
+        
+        // 月の選択肢を生成（01月から12月まで）
+        List<String> months = generateMonthList();
+        model.addAttribute("months", months);
 		
 		//今月のデータがまだ存在しない場合
-		if(goalService.isExisting(yearMonth, userId) == false) {
+//		if(goalService.isExisting(yearMonth, userId) == false) {
 			model.addAttribute("month", new MonthModel());
 	        model.addAttribute("monthList", this.monthList);
 	        model.addAttribute("loggedInUser", userId);
-	        model.addAttribute("yearmonth", yearMonth);
-	        //ユーザIDと年月をセット
+//	        model.addAttribute("yearmonth", yearMonth);
+//	        //ユーザIDと年月をセット
 	        for(int i = 0 ; i < this.monthList.size() ; ++i) {
 	        	this.monthList.get(i).setUserId(userId);
-	        	this.monthList.get(i).setMonth(yearMonth);
+//	        	this.monthList.get(i).setMonth(yearMonth);
 	        }
 	        
 	        return "objective.html";
 	        
-		}
-		//すでに存在する場合更新画面へ推移
-		else {	
-			return "redirect:updatediffer?userId="+userId;
-		}
+//		}
+//		//すでに存在する場合更新画面へ推移
+//		else {	
+//			return "redirect:updatediffer?userId="+userId;
+//		}
     }
 
     /****************************************************************************
@@ -102,12 +122,47 @@ public class GoalController {
 
     
     @PostMapping("/objective")
-    public String createNewObject(@Validated @RequestParam("targetValues") Integer[] targetValues, Model model, HttpSession session) {
-        MonthModel monthModel = new MonthModel();
+    public String createNewObject(@Validated @RequestParam("targetValues") Integer[] targetValues, Model model, HttpSession session,
+    		 					  @RequestParam("year") int year, @RequestParam("month") int month) {
+    	if((Integer)session.getAttribute("loggedInUser") == null) {
+    		return "redirect:login";
+    	}
+    	
+    	MonthModel monthModel = new MonthModel();
         int userId = (int) session.getAttribute("loggedInUser");
         model.addAttribute("loggedInUser", userId);
+        List<Integer> errorFields = new ArrayList<>();
+        //現在の年月のセット
+        int nowYearMonth = yearMonth();
+		String monthStr = Integer.toString(nowYearMonth).substring(4);
+		String yearStr = Integer.toString(nowYearMonth).substring(0, 4);
+		int nowMonth = Integer.parseInt(monthStr);
+		int nowYear = Integer.parseInt(yearStr);
+		model.addAttribute("defaultYear", nowYear);
+		model.addAttribute("defaultMonth", nowMonth);
+        
+     // 更新が完了したらリダイレクトするなどの処理を行う
+        List<Integer> years = generateYearList();
+        model.addAttribute("years", years);
+
+        // 月の選択肢を生成（01月から12月まで）
+        List<String> months = generateMonthList();
+        model.addAttribute("months", months);
+        
+        int yearMonth = year * 100 + month;
         
         //入力されたデータを格納
+        try {
+	        if(goalService.isExisting(yearMonth, userId) == true) {
+	        	throw new IllegalArgumentException("この月の目標金額はすでに設定されています．目標更新画面から更新してください");
+	        }
+        }
+	     catch(IllegalArgumentException e) {
+	    	model.addAttribute("errorMessage", e.getMessage());
+     		model.addAttribute("monthList", this.monthList);
+     		return "objective.html";
+	     }
+        
     	for(int i = 0 ; i < this.monthList.size() ; ++i) {
         	try {
         		monthModel = this.monthList.get(i);
@@ -122,6 +177,7 @@ public class GoalController {
         		}
         		//問題ない場合リストに入力されたデータを追加
         		this.monthList.get(i).setTarget(target);
+        		this.monthList.get(i).setMonth(yearMonth);
         	}
         	//数字以外が入力された場合
         	catch(NumberFormatException e) {
@@ -140,6 +196,9 @@ public class GoalController {
         	}
         }
     	
+    	if(!errorFields.isEmpty()) {
+    		
+    	}
     	
     	goalService.insertGoalDatabase(this.monthList);
         return "redirect:difference";
@@ -153,7 +212,7 @@ public class GoalController {
 	*** Function            : 現在の年月をyyyyMM形式で取得
 	*** Return              : 現在の年月をyyyyMM形式で返す　
 	****************************************************************************/
-    public int yearMonth() {
+    private int yearMonth() {
     	int yearMonth = 0;
     	YearMonth currentYearMonth = YearMonth.now();
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
@@ -163,5 +222,36 @@ public class GoalController {
     	return yearMonth;
     }
 	
-		
+    /****************************************************************************
+     *** Method Name         : generateYearList()
+     *** Designer            : 東野　魁耶
+     *** Date                : 2024.06.18
+     *** Function            : 年の生成を行う
+     *** Return              : List<Integer>
+     ****************************************************************************/
+    // 年の選択肢を生成するメソッド
+    private List<Integer> generateYearList() {
+        List<Integer> years = new ArrayList<>();
+        for (int year = 2000; year <= 2099; year++) {
+            years.add(year);
+        }
+        return years;
+    }
+    
+    /****************************************************************************
+     *** Method Name         : generateMonthList()
+     *** Designer            : 東野　魁耶
+     *** Date                : 2024.06.18
+     *** Function            : 月の生成を行う
+     *** Return              : List<Integer>
+     ****************************************************************************/
+    private List<String> generateMonthList() {
+        List<String> months = new ArrayList<>();
+        for (int month = 1; month <= 12; month++) {
+            String monthStr = String.format("%02d", month); // 1桁の月を2桁にフォーマット
+            months.add(monthStr);
+        }
+        return months;
+    }
 }
+		

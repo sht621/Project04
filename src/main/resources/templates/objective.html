@@ -10,7 +10,7 @@
 		}
 		h1 {
 			text-align: center;
-			coler: #333;
+			color: #333;
 		}
 		.container {
 			max-width: 600px;
@@ -54,9 +54,22 @@
   </head>
   <body>
 	<div class="container">
-    <h1>今月の新規目標登録</h1>
-    <h2><span th:text="${loggedInUser}"></span>さん</h2>
+    <h1>新規目標登録</h1>
+	
+
+    
+	
     <form action="#" th:action="@{/objective}" th:object="${month}" method="post">
+		<!-- 年と月の選択フォーム -->
+		<label for="year">年:</label>
+        <select id="year" name="year">
+            <option th:each="y : ${years}" th:value="${y}" th:text="${y}" th:selected="${y}==${defaultYear}"></option>
+        </select>
+        <label for="month">月:</label>
+        <select id="month" name="month">
+            <option th:each="m : ${months}" th:value="${m}" th:text="${m}" th:selected="${m}==${defaultMonth}"></option>
+        </select>
+		
       <table>
 		  <thead>
 			  <tr>
@@ -69,7 +82,8 @@
 		  <tbody>
 	        <tr th:each="month, index : ${monthList}" >
 	          <th class="cell_title" th:text="${month.itemId}"></th>
-	          <td><input type="number" name="targetValues"></td>
+	          <td><input type="number" name="targetValues" th:value="${month.target}" 
+						 max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);"></td>
 	       		  <input type="hidden" name="itemIds" value="${month.itemId}" />
 	       		  <input type="hidden" name="loggedInUser" value="${month.userId}" />
 
