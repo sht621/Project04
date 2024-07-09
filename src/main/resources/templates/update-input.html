@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>更新入力</title>
+</head>
+<body>
+    <h1>更新入力</h1>
+    <form action="/updateInput" method="post">
+		<input type="hidden" name="id" th:value="${payment.id}" />
+        <div>
+			<label for="income">収入:</label>
+        <input type="number" id="income" name="income" required><br>
+		</div>
+        <div>
+			<label for="spend">支出:</label>
+        <input type="number" id="spend" name="spend" required><br>
+		</div>
+        <div>
+			<label for="day">年月:</label>
+			<input type="date" id="day" name="date" required><br>
+		</div>
+        <div>
+			<label for="itemId">ジャンル:</label>
+        	<select id="itemId" name="itemId" required>
+            	<option value="食費">食費</option>
+                <option value="外食費">外食費</option>
+                <option value="日用品">日用品</option>
+                <option value="交際費">交際費</option>
+                <option value="趣味・娯楽">趣味・娯楽</option>
+                <option value="教育・教養">教育・教養</option>
+                <option value="美容・衣服">美容・衣服</option>
+                <option value="通信費">通信費</option>
+                <option value="交通費">交通費</option>
+                <option value="医療・保険">医療・保険</option>
+                <option value="水道・光熱費">水道・光熱費</option>
+                <option value="住まい">住まい</option>
+                <option value="税金">税金</option>
+                <option value="給料">給料</option>
+                <option value="その他">その他</option>
+        	</select><br>
+		</div>
+        <input type="submit" value="更新">
+        <p th:if="${error}" th:text="${error}"></p>
+    </form>
+</body>
+</html>
+

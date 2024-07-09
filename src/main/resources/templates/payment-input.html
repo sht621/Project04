@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>収支登録</title>
+    <style>
+        .tab-content {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>収入支出登録</h1>
+
+    <div>
+        <button onclick="showTab('income')">収入登録</button>
+        <button onclick="showTab('spend')">支出登録</button>
+    </div>
+
+    <!-- 収入登録フォーム -->
+    <div id="incomeTab" class="tab-content">
+        <h2>収入登録</h2>
+        <form action="/inputIncome" method="post">
+            <div>
+                <label for="income">収入:</label>
+                <input type="number" id="income" name="income" required><br>
+            </div>
+            <div>
+                <label for="incomeDay">年月:</label>
+                <input type="date" id="incomeDay" name="date" required><br>
+            </div>
+            <div>
+                <label for="incomeItemId">ジャンル:</label>
+                <select id="incomeItemId" name="itemId" required>
+                    <option value="給料">給料</option>
+                </select><br>
+            </div>
+            <button type="submit">登録</button>
+        </form>
+        <p th:if="${error}" th:text="${error}"></p>
+    </div>
+
+    <!-- 支出登録フォーム -->
+    <div id="spendTab" class="tab-content">
+        <h2>支出登録</h2>
+        <form action="/inputSpend" method="post">
+            <div>
+                <label for="spend">支出:</label>
+                <input type="number" id="spend" name="spend" required><br>
+            </div>
+            <div>
+                <label for="spendDay">年月:</label>
+                <input type="date" id="spendDay" name="date" required><br>
+            </div>
+            <div>
+                <label for="spendItemId">ジャンル:</label>
+                <select id="spendItemId" name="itemId" required>
+                    <option value="食費">食費</option>
+                    <option value="外食費">外食費</option>
+                    <option value="日用品">日用品</option>
+                    <option value="交際費">交際費</option>
+                    <option value="趣味・娯楽">趣味・娯楽</option>
+                    <option value="教育・教養">教育・教養</option>
+                    <option value="美容・衣服">美容・衣服</option>
+                    <option value="通信費">通信費</option>
+                    <option value="交通費">交通費</option>
+                    <option value="医療・保険">医療・保険</option>
+                    <option value="水道・光熱費">水道・光熱費</option>
+                    <option value="住まい">住まい</option>
+                    <option value="税金">税金</option>
+                    <option value="その他">その他</option>
+                </select><br>
+            </div>
+            <button type="submit">登録</button>
+        </form>
+        <p th:if="${error}" th:text="${error}"></p>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(function(tab) {
+                tab.style.display = 'none';
+            });
+            document.getElementById(tabName + 'Tab').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
