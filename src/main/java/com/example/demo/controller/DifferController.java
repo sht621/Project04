@@ -138,11 +138,13 @@ public class DifferController {
      *** Return              : htmlファイル
      ****************************************************************************/
     @GetMapping("/updatediffer")
-    public String updateDisplay(Model model, @RequestParam(value = "userId", required = false, defaultValue = "0") int userId) {
+    public String updateDisplay(Model model, HttpSession session) {
     	
-    	if (userId == 0) {
-            return "redirect:/login"; // idを取得できない場合はログイン画面にリダイレクト
+    	Object loggedInUser =  session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login"; //idを取得できない場合はログイン画面にリダイレクト
         }
+        int userId = (int) loggedInUser;
     	
     	LocalDate now = LocalDate.now();
         int currentYear = now.getYear();
