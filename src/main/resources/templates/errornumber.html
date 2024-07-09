@@ -1,0 +1,38 @@
+<!-- error.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center; /* 文字を中央揃え */
+        }
+        h1 {
+            margin-top: 50px;
+            color: #333;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* ホバー時のアニメーション */
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>目標金額に正しく数字を入力してください</h1>
+    <form action="/difference" method="get">
+        <input type="submit" value="戻る">
+    </form>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>新規目標作成画面</title>
+    <style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px
+		}
+		h1 {
+			text-align: center;
+			coler: #333;
+		}
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+		}
+		th, td {
+			padding: 10px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+		th {
+			background-color: #f2f2f2;
+			color: #333;
+			font-weight: normal;
+		}
+		button[type="submit"] {
+			padding: 10px, 20px;
+			background-color: #4CaF50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 15px;
+		}
+		button[type="submit"]:hover {
+			background-color: #45a049;
+		}
+		.error-message{
+			color: red;
+			text-align: center;
+			margin-top: 20px;
+		}
+		
+		
+	</style>
+  </head>
+  <body>
+	<div class="container">
+    <h1>今月の新規目標登録</h1>
+    <h2><span th:text="${loggedInUser}"></span>さん</h2>
+    <form action="#" th:action="@{/objective}" th:object="${month}" method="post">
+      <table>
+		  <thead>
+			  <tr>
+				  <th>項目</th>
+				  <th>目標金額</th>
+			  </tr>
+			  
+		  </thead>
+		  
+		  <tbody>
+	        <tr th:each="month, index : ${monthList}" >
+	          <th class="cell_title" th:text="${month.itemId}"></th>
+	          <td><input type="number" name="targetValues"></td>
+	       		  <input type="hidden" name="itemIds" value="${month.itemId}" />
+	       		  <input type="hidden" name="loggedInUser" value="${month.userId}" />
+
+	        </tr>
+         </tbody>
+      </table>
+      <div style="text-align: center; margin-top: 20px">
+      	<button type="submit">新規</button>
+      </div>
+
+    </form>
+    <div class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+   </div>
+  </body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>home</title>
+	<link rel="stylesheet" href="/style.css">
+	<style>
+		body{
+			max-width: 95%;
+			margin: 0 auto;
+		}
+		
+		/*mainとasideを横並びに*/
+		.contents{
+			display: flex;
+			justify-content: space-between;
+		}
+		
+		/*メインバー*/
+		main{
+			width: 70%;
+			border-right: solid;
+			border-color: #cccccc;
+		}
+		
+		/*サイドバー*/
+		aside{
+			display: block;
+			width: 28%;
+		}
+		
+		section{
+			width: 95%;
+			margin-bottom: 20px;
+		}
+		
+		h2{
+			margin-top: 0px;
+		}
+		
+		h3{
+			display: flex;
+			justify-content: space-between;
+			margin: 2% 0% 2% 0%;
+			border-bottom: solid;
+			border-color: #cccccc;
+		}
+		
+		h4{
+			margin-right: 3vw;
+		}
+		
+		#graphContents{
+			display: flex;
+		    flex-direction: row;
+		    align-items: flex-start;
+		    justify-content: space-between;
+		    width: 100%;
+		    max-width: 1200px;
+		}
+		
+		/*円グラフ*/
+		#graph{
+			flex: 0 0 350px; /* グラフの幅を固定 */
+    		display: flex;
+    		justify-content: center;
+    		border-radius: 10px;
+    		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		
+		canvas{
+			width: 350px;
+			height: 350px;
+		}
+		
+		/*グラフ詳細*/
+		#details{
+			flex: 1;
+			margin-left: 10px;
+		}
+		
+		table{
+			width: 100%;
+            border-collapse: collapse;
+            font-size: 4.5vw;
+            font-size: clamp(1rem, 3vw, 1.17rem);
+
+		}
+		
+		th{
+			border-bottom: solid;
+			border-color: #cccccc;
+			font-weight: bold; 
+			text-align: justify;
+			padding: 4px 0px 4px 0px;
+		}
+		
+		td{
+			border-bottom: solid;
+			border-color: #cccccc;
+			font-weight: bold;
+			text-align: justify; 
+			padding: 4px 0px 4px 0px;
+		}
+		
+		.right-align {
+            text-align: right;
+        }
+		
+		th:nth-child(3) {
+            text-align: right;
+        }
+        
+        td:nth-child(3) {
+            text-align: right;
+        }
+        
+        .income-row{
+			color: blue;
+		}
+		
+		#expenseGraph{
+			width: 95%;
+		}
+		
+		/*もっと見る*/
+		.showMore{
+			display: flex;
+			margin-top: 5%;
+			justify-content: flex-end;
+		}
+		
+		.showMore a{
+			font-weight: bold;
+			text-decoration: none;
+		}
+		
+		/*入力ボタン*/
+		#paymentLink{
+			display: block;
+			background-color: skyblue;
+			width: 85%;
+			color: black;
+			font-size: 3vw;
+			font-weight: bold;
+			text-align: center;
+			text-decoration: none;
+			padding: 5%;
+			margin-bottom: 3vw; 
+			border-radius: 10vw;
+			position: sticky;
+			top: 2vw;
+    		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		
+		#paymentLink:hover{
+			transform: scale(1.05);
+		}
+		
+		
+		/*レシピボタン*/
+		#recipeLink{
+			display: block;
+			background-color: orange;
+			width: 85%;
+			color: black;
+			font-size: 3vw;
+			font-weight: bold;
+			text-align: center;
+			text-decoration: none;
+			padding: 5%;
+			border-radius: 10vw;
+			position: sticky;
+			top: 12vw;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		
+		#recipeLink:hover{
+			transform: scale(1.05);
+		}
+		
+		@media(max-width: 950px){			
+			#graphContents {
+		        flex-direction: column;
+		        align-items: center;
+		    }
+		
+		    #details {
+		        margin-left: 0;
+		        width: 100%;
+		    }
+		    
+		    #details table {
+		        width: 100%;
+		    }
+		}
+		
+		@media (max-width: 450px){
+			main{
+				width: 100%;
+				border: none;
+			}
+			
+			section{
+    			margin-left: 2.5vw;
+			}
+			
+			aside{
+				display: none;
+			}
+			
+			h2{
+				font-size: 6vw;
+			}
+			
+			h3{
+				margin: 2% 0% 2% 0%;
+				font-size: 5vw;
+			}
+			
+			#graphContents {
+		        width: 100%;
+		    }
+		
+		    #graph {
+		        width: 100%;
+		        margin-bottom: 20px;
+		    }
+		
+		    #graph canvas {
+		        width: 100%;
+		        height: auto;
+		    }
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="top">
+        <h1>HOME</h1>
+        <button class="menu-toggle" aria-label="メニューを開閉する"></button>
+		</div>
+		<ul class="menu">                
+            <li><a href="/home">ホーム</a></li>
+	        <li><a href="/objective">目標入力</a></li>
+	        <li><a href="/graph">グラフ</a></li>
+	        <li><a href="/recipe">レシピ</a></li>
+	        <li><a href="/payment">収支入力</a></li>
+	        <li><a href="/difference">支出差額</a></li>
+	        <li><a href="/dataview">履歴</a></li>
+        </ul>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+			    const menuToggle = document.querySelector('.menu-toggle');
+			    const menu = document.querySelector('.menu');
+			    
+			    menuToggle.addEventListener('click', function() {
+			        menu.classList.toggle('open');
+			        menuToggle.classList.toggle('close');
+			    });
+			});
+		</script>
+        <nav>
+            <ul>                
+	            <a href="/home">ホーム</a>
+		        <a href="/objective">目標入力</a>
+		        <a href="/graph">グラフ</a>
+		        <a href="/recipe">レシピ</a>
+		        <a href="/payment">収支入力</a>
+		        <a href="/difference">支出差額</a>
+		        <a href="/dataview">履歴</a>
+            </ul>
+        </nav>
+    </header>
+    <div class="contents">
+    <main>
+		<section id="balanceInfomation">
+			<h2>今月の収支情報</h2>
+			<h3>収支<span th:if="${balance > 0}"th:text="'+' + ${balance} + '円'">
+					<span th:unless="${balance > 0}"th:text="${balance} + '円'">-</span></h3>
+			<h3>収入<span th:text="${income} + '円'">-</span></h3>
+			<h3>支出<span th:text="${expense} + '円'">-</span></h3>
+			<h3>目標支出<span th:text="${target} + '円'">-</span></h3>
+			<h3>今月使えるお金<span th:text="${difference} + '円'">-</span></h3>
+		</section>
+		
+		<section id="expenseGraph">
+			<h2>今月の支出内訳</h2>
+			<div>
+			<div id="graphContents">
+				<div id="graph">
+				<canvas id="homePieChart"></canvas>
+				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+				<script th:inline="javascript">
+					document.addEventListener('DOMContentLoaded', function() {
+	        			var labels = /*[[${chartLabels}]]*/ [];
+	        			var data = /*[[${chartData}]]*/ [];
+						
+						var homePieChart = new Chart(document.getElementById('homePieChart').getContext('2d'), {
+				            type: 'pie',
+				            data: {
+				                labels: labels,
+				                datasets: [{
+				                    data: data,
+				                }]
+				            },
+				            options: {
+				                responsive: true,
+				                plugins: {
+				                    legend: {
+				                        position: 'bottom',
+				                    }
+				                },
+				                 onClick: () => {
+	    						window.location.href = 'graph.html';
+	    						}
+				            }
+				        });
+			        
+			        	function resizeChart() {
+					        var chartContainer = document.getElementById('homePieChart').parentNode;
+					        var containerWidth = chartContainer.offsetWidth;
+					        var chart = homePieChart.chart;
+					        chart.canvas.parentNode.style.height = 'auto';
+					        chart.canvas.parentNode.style.width = 'auto';
+					
+					        if (containerWidth < 450) {
+					            chart.canvas.parentNode.style.width = containerWidth + 'px';
+					            chart.canvas.parentNode.style.height = containerWidth + 'px';
+					        }
+					    }
+					
+					    // 初回のチャートサイズ調整
+					    resizeChart();
+					
+					    // ウィンドウサイズが変更されたらチャートのサイズを再調整する
+					    window.addEventListener('resize', resizeChart);
+					});
+				</script>	
+				</div>
+				<div id="details">
+				<table>
+				    <thead>
+				        <tr>
+				            <th>カテゴリ</th>
+				            <th class="right-align">金額</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+			            <tr th:each="index : ${#numbers.sequence(0, chartData.length-1)}">
+			                <td th:text="${chartLabels[index]}"></td>
+			                <td th:text="${chartData[index]} + 円" class="right-align"></td>
+				        </tr>
+				    </tbody>
+				</table>
+			</div>
+			</div>
+			<div class="showMore">
+				<a href="/graph">もっと見る</a>
+			</div>	
+		</section>
+		
+		<section id="inputRecord">
+			<h2>入力履歴</h2>
+			    <table>
+				    <thead>
+				        <tr>
+				            <th>日付</th>
+				            <th>カテゴリ</th>
+				            <th>金額</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				        <tr th:each="data : ${record}"
+				        	th:classappend="${data[1] == '収入'} ? 'income-row' : ''">
+				            <td th:text="${data[0]}">Data 1-1</td>
+				            <td th:text="${data[1]}">Data 1-2</td>
+				            <td th:text="${data[2]}">Data 1-3</td>
+				        </tr>
+				    </tbody>
+				</table>
+			<div class="showMore">
+				<a href="/dataview">もっと見る</a>
+			</div>
+		</section>
+    </main>	
+	
+	<aside>	<!--サイドバー-->
+		<a href="/payment" id="paymentLink">入力する</a>
+		<a href="/recipe" id="recipeLink">本日のおすすめレシピ</a>
+
+	</aside>
+	</div>
+</body>
+</html>

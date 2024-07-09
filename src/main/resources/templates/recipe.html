@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>recipe</title>
+	<link rel="stylesheet" href="/style.css">
+	<style>
+		body{
+			max-width: 95%;
+			margin: 0 auto;
+		}
+		
+		h2{
+			margin-top: 5%;
+		}
+		
+		h3{
+			display: flex;
+			justify-content: space-between;
+			margin: 2% 0% 2% 0%;
+			border-bottom: solid;
+			border-color: #cccccc;
+		}
+		
+		#recipeText{
+			background-color: #ffffee;
+			border-style: double;
+			border-width: 5px;
+			padding: 3%;
+			margin-bottom: 20px;
+		}
+		
+		@media (max-width: 450px){
+			h3{
+				margin: 2% 3% 2% 3%;
+				font-size: 5vw;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="top">
+        <h1>レシピ提案</h1>
+        <button class="menu-toggle" aria-label="メニューを開閉する"></button>
+		</div>
+		<ul class="menu">                
+            <li><a href="/home">ホーム</a></li>
+	        <li><a href="/objective">目標入力</a></li>
+	        <li><a href="/graph">グラフ</a></li>
+	        <li><a href="/recipe">レシピ</a></li>
+	        <li><a href="/payment">収支入力</a></li>
+	        <li><a href="/difference">支出差額</a></li>
+	        <li><a href="/dataview">履歴</a></li>
+        </ul>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+			    const menuToggle = document.querySelector('.menu-toggle');
+			    const menu = document.querySelector('.menu');
+			    
+			    menuToggle.addEventListener('click', function() {
+			        menu.classList.toggle('open');
+			    });
+			});
+		</script>
+        <nav>
+            <ul>                
+	            <a href="/home">ホーム</a>
+		        <a href="/objective">目標入力</a>
+		        <a href="/graph">グラフ</a>
+		        <a href="/recipe">レシピ</a>
+		        <a href="/payment">収支入力</a>
+		        <a href="/difference">目標差額</a>
+		        <a href="/dataview">履歴</a>
+            </ul>
+        </nav>
+    </header>
+		<h3>今月の残り金額<span th:text="${difference} + '円'"></span></h3>
+		<h3>１食分の予算<span th:text="${budget} + '円'"></span></h3>
+		<h2>本日のおすすめレシピ</h2>
+		<div id="recipeText"></div>
+	    
+	    <script>
+	        /* Thymeleafから渡された変数をJavaScriptで処理 */
+	        var message = '[[@{${recipe}}]]';
+	        var htmlFormatted = message.replace(/\n/g, '<br>');
+	        
+	        /* HTMLに挿入 */
+	        document.getElementById('recipeText').innerHTML = htmlFormatted;
+	    </script>
+</body>
+</html>
