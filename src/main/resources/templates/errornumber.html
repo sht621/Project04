@@ -30,9 +30,10 @@
     </style>
 </head>
 <body>
-    <h1>目標金額に正しく数字を入力してください</h1>
-    <form action="/difference" method="get">
+    <h1>目標が存在しません</h1>
+    <form action="/updatediffer" method="get">
         <input type="submit" value="戻る">
+        <input type="hidden" name="userId" th:value="${userId}" />
     </form>
 </body>
 </html>

@@ -77,8 +77,14 @@ public class DifferService {
      *** Function            : 受け取った月、itemId、目標金額を基にデータベースを更新する
      *** Return              : 返り値なし
      ****************************************************************************/
-    public void updateTarget(int month, String itemId, int target, int userId) {
-        dao.updateTarget(userId, month, itemId, target);
+    public boolean updateTarget(int month, String itemId, int target, int userId) {
+        int updatenumber = dao.updateTarget(userId, month, itemId, target);
+        if(updatenumber <= 0) {	
+			return false;
+		}
+		else {			
+			return true;
+		}
     }
     
     /****************************************************************************
