@@ -21,10 +21,7 @@ public interface PaymentMapper {
     List<PaymentModel> findAll(@Param("userId") int userId);
 
     @Insert("INSERT INTO PAYMENT (ID, INCOME, SPEND, DAY, ITEMID, USERID) VALUES (#{id}, #{income}, #{spend}, #{day}, #{itemId}, #{userId})")
-    int inputIncome(PaymentModel payment);
-
-    @Insert("INSERT INTO PAYMENT (ID, INCOME, SPEND, DAY, ITEMID, USERID) VALUES (#{id}, #{income}, #{spend}, #{day}, #{itemId}, #{userId})")
-    int inputSpend(PaymentModel payment);
+    int inputPayment(PaymentModel payment);
 
     @Update("UPDATE PAYMENT SET INCOME = #{income}, SPEND = #{spend}, DAY = #{day}, ITEMID = #{itemId} WHERE ID = #{id} AND USERID = #{userId}")
     int updatePayment(@Param("income") int income, @Param("spend") int spend, @Param("day") int day, @Param("itemId") String itemId, @Param("id") int id, @Param("userId") int userId);
