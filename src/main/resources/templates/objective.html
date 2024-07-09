@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
+	<link rel="stylesheet" href="/style.css">
+	
     <meta charset="UTF-8" />
     <title>新規目標作成画面</title>
     <style>
@@ -48,16 +50,30 @@
 			text-align: center;
 			margin-top: 20px;
 		}
+		.update_button input[type="submit"]{
+			padding: 10px 20px;
+			background-color: #4caf50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 15px;
+		}
+		.update_button input[type="submit"]:hover{
+			background-color: #45a049;
+		}
 		
 		
 	</style>
-  </head>
+  </head> 
   <body>
-	<div class="container">
-    <h1>新規目標登録</h1>
-    
-<!--    メニュー選択-->
-	<ul class="menu">                
+<!--	  メニューヘッダー-->
+	 <header>
+		<div class="top">
+        <h1>HOME</h1>
+        <button class="menu-toggle" aria-label="メニューを開閉する"></button>
+		</div>
+		<ul class="menu">                
             <li><a href="/home">ホーム</a></li>
 	        <li><a href="/objective">目標入力</a></li>
 	        <li><a href="/graph">グラフ</a></li>
@@ -65,10 +81,33 @@
 	        <li><a href="/payment">収支入力</a></li>
 	        <li><a href="/difference">支出差額</a></li>
 	        <li><a href="/dataview">履歴</a></li>
-    </ul>
-
-    
-	
+        </ul>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+			    const menuToggle = document.querySelector('.menu-toggle');
+			    const menu = document.querySelector('.menu');
+			    
+			    menuToggle.addEventListener('click', function() {
+			        menu.classList.toggle('open');
+			        menuToggle.classList.toggle('close');
+			    });
+			});
+		</script>
+        <nav>
+            <ul>                
+	            <a href="/home">ホーム</a>
+		        <a href="/objective">目標入力</a>
+		        <a href="/graph">グラフ</a>
+		        <a href="/recipe">レシピ</a>
+		        <a href="/payment">収支入力</a>
+		        <a href="/difference">支出差額</a>
+		        <a href="/dataview">履歴</a>
+            </ul>
+        </nav>
+    </header> 
+	  
+	<div class="container">
+    <h1>新規目標登録</h1>
     <form action="#" th:action="@{/objective}" th:object="${month}" method="post">
 		<!-- 年と月の選択フォーム -->
 		<label for="year">年:</label>
@@ -103,8 +142,12 @@
       <div style="text-align: center; margin-top: 20px">
       	<button type="submit">新規</button>
       </div>
-
     </form>
+    
+    <form action="/updatediffer" method="get" class="update_button">
+		<input type="submit" value="目標金額更新はこちら">
+	</form>
+    
     <div class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
    </div>
   </body>
