@@ -24,7 +24,7 @@ public class PaymentService {
         return mapper.findAll(userId);
     }
 
-    public PaymentModel insertIncome(PaymentModel payment) {
+    public PaymentModel insertPayment(PaymentModel payment) {
     	int max = 0;
     	if(mapper.selectMaxIdFromPayment() != null) {
 			max = mapper.selectMaxIdFromPayment().intValue();
@@ -34,21 +34,7 @@ public class PaymentService {
 		}
 		int startId = max + 1;	
     	payment.setId(startId);
-    	mapper.inputIncome(payment);
-        return payment;
-    }
-
-    public PaymentModel insertSpend(PaymentModel payment) {
-    	int max = 0;
-    	if(mapper.selectMaxIdFromPayment() != null) {
-			max = mapper.selectMaxIdFromPayment().intValue();
-		}
-		else {
-			max = 0;
-		}
-		int startId = max + 1;	
-    	payment.setId(startId);
-    	mapper.inputSpend(payment);
+    	mapper.inputPayment(payment);
         return payment;
     }
 
