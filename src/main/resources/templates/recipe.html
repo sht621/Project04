@@ -23,6 +23,23 @@
 			border-color: #cccccc;
 		}
 		
+		#regenerateRecipe{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 0px;
+		}
+		
+		#regenerateRecipe a{
+			color: black;
+			background-color: orange;
+			text-decoration: none;
+			font-weight: bold;
+			padding: 10px;
+			border-radius: 10vw;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		
 		#recipeText{
 			background-color: #ffffee;
 			border-style: double;
@@ -32,9 +49,21 @@
 		}
 		
 		@media (max-width: 450px){
+			h2{
+				font-size: 6vw;
+			}
+			
 			h3{
 				margin: 2% 3% 2% 3%;
 				font-size: 5vw;
+			}
+			
+			#regenerateRecipe a{
+				font-size: 3vw;
+			}
+			
+			#recipeText{
+				font-size: 16px;
 			}
 		}
 	</style>
@@ -61,6 +90,7 @@
 			    
 			    menuToggle.addEventListener('click', function() {
 			        menu.classList.toggle('open');
+			        menuToggle.classList.toggle('close');
 			    });
 			});
 		</script>
@@ -78,9 +108,11 @@
     </header>
 		<h3>今月の残り金額<span th:text="${difference} + '円'"></span></h3>
 		<h3>１食分の予算<span th:text="${budget} + '円'"></span></h3>
-		<h2>本日のおすすめレシピ</h2>
+		<div id="regenerateRecipe">
+			<h2>本日のおすすめレシピ</h2>
+			<a href="/recipe">他のレシピを見る</a>
+		</div>
 		<div id="recipeText"></div>
-	    
 	    <script>
 	        /* Thymeleafから渡された変数をJavaScriptで処理 */
 	        var message = '[[@{${recipe}}]]';

@@ -13,7 +13,6 @@
         }
         header {
   	        background-color: #ffffff;
-            padding: 20px;
             text-align: center;
             position: relative;
         }
@@ -90,6 +89,44 @@
             color: #666;
             margin-top: 20px;
         }
+        #mobile{
+			display: none;
+		}
+        
+        @media (max-width: 450px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            #mobile{
+				display: block;
+				order: 1;
+				margin-bottom: -20px;
+			}
+			#mobile .selector{
+				display: flex;
+	            justify-content:space-evenly;
+	            align-items: center;
+			}
+			.container{
+                justify-content: center;
+                align-items: center;
+			}
+            #chart-container {
+				width: 90vw;
+                order: 2;
+                height: 500px; /* Adjusted height */
+            }
+            .left-panel {
+                order: 3;
+            }
+            .left-panel .selector{
+				display: none;
+			}
+            .selector-container {
+                flex-direction: column;
+            }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -131,6 +168,19 @@
 		        </ul>
 		    </nav>
 		</header>
+		
+	<div id="mobile" class="conteiner">
+	    <div class="selector">
+	        <button onclick="changeYear(-1)">◀</button>
+	        <div class="current-selection" id="currentYear" th:text="${year}"></div>
+	        <button onclick="changeYear(1)">▶</button>
+	    </div>
+	    <div class="selector">
+	        <button onclick="changeMonth(-1)">◀</button>
+	        <div class="current-selection" id="currentMonth" th:text="${month}"></div>
+	        <button onclick="changeMonth(1)">▶</button>
+	    </div>
+	</div>
 
     <div class="container">
         <div class="left-panel">
@@ -190,22 +240,6 @@
 	                    labels: labels,
 	                    datasets: [{
 	                        data: spendSums,
-	                        backgroundColor: [
-	                            'rgba(54, 162, 235, 0.8)',
-	                            'rgba(255, 206, 86, 0.8)',
-	                            'rgba(75, 192, 192, 0.8)',
-	                            'rgba(153, 102, 255, 0.8)',
-	                            'rgba(255, 159, 64, 0.8)',
-	                            'rgba(201, 203, 207, 0.8)',
-	                            'rgba(255, 145, 0, 0.8)',
-	                            'rgba(0, 255, 145, 0.8)',
-	                            'rgba(145, 0, 255, 0.8)',
-	                            'rgba(0, 145, 255, 0.8)',
-	                            'rgba(255, 99, 132, 0.8)',
-	                            'rgba(100, 100, 100, 0.8)'
-	                        ],
-	                        borderColor: 'rgba(255, 255, 255, 1)',
-	                        borderWidth: 1
 	                    }]
 	                },
 	                options: {

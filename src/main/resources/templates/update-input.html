@@ -4,95 +4,6 @@
     <meta charset="UTF-8">
     <title>更新入力</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            color: #007bff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 20px;
-        }
-
-        .active {
-            display: block;
-        }
-
-        button {
-            background-color: #007bff;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 10px 5px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        form div {
-            margin-bottom: 15px;
-        }
-
-        label {
-            font-size: 14px;
-            margin-bottom: 5px;
-            color: #333333;
-        }
-
-        input[type="number"], input[type="date"], select {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #cccccc;
-            font-size: 16px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        input[type="number"]:focus, input[type="date"]:focus, select:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-
-        input[type="submit"] {
-            background-color: #28a745;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-
-        .error {
-            color: #ff0000;
-            font-size: 14px;
-        }
         .tab-content {
             display: none;
         }
@@ -102,15 +13,16 @@
     </style>
 </head>
 <body>
-    <h1>更新入力</h1>
-   		<script>
-       		function showTab(tabName) {
-           		document.addEventListener('DOMContentLoaded', function() {
-           		showTab('spend');  // 初期表示で支出更新フォームを表示            	
-           		});
+	<header>
+    	<h1>更新入力</h1>
+    		<script>
+        		function showTab(tabName) {
+            		document.addEventListener('DOMContentLoaded', function() {
+            		showTab('spend');  // 初期表示で支出更新フォームを表示
+            	});
         	}
     	</script>
-    	
+    </header>
     <div>
         <button onclick="showTab('income')">収入更新</button>
         <button onclick="showTab('spend')">支出更新</button>
@@ -119,8 +31,8 @@
     <!-- 収入更新フォーム -->
     <div id="incomeTab" class="tab-content">
         <h2>収入更新</h2>
-        <form action="/updateIncome" method="post">
-			<input type="hidden" name="id" th:value="${payment.id}" />
+        <form action="/updateInput" method="post">
+            <input type="hidden" name="id" th:value="${payment.id}" />
             <div>
                 <label for="income">収入:</label>
                 <input type="number" id="income" name="income" required><br>
@@ -137,14 +49,14 @@
                 </select><br>
             </div>
             <input type="submit" value="更新">
+            <p th:if="${error}" th:text="${error}"></p>
         </form>
-        <p th:if="${error}" th:text="${error}"></p>
     </div>
 
     <!-- 支出更新フォーム -->
     <div id="spendTab" class="tab-content">
         <h2>支出更新</h2>
-        <form action="/updateSpend" method="post">
+        <form action="/updateInput" method="post">
             <input type="hidden" name="id" th:value="${payment.id}" />
             <div>
                 <label for="spend">支出:</label>
@@ -174,8 +86,8 @@
                 </select><br>
             </div>
             <input type="submit" value="更新">
+            <p th:if="${error}" th:text="${error}"></p>
         </form>
-        <p th:if="${error}" th:text="${error}"></p>
     </div>
 
     <script>
@@ -184,10 +96,6 @@
                 tab.style.display = 'none';
             });
             document.getElementById(tabName + 'Tab').style.display = 'block';
-        	
-        	document.addEventListener('DOMContentLoaded', function() {
-           		showTab('spend');  // 初期表示で支出更新フォームを表示            	
-           		});
         	
         	// 現在の日付を取得して設定する
             const today = new Date().toISOString().split('T')[0];

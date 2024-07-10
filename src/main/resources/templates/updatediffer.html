@@ -2,20 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/style.css">
     <title>支出目標金額更新</title>
     <style>
         body {
             text-align: center;
-            padding: 20px;
+            padding: 0px 20px;
             font-size: 1.3em; /* 全体のフォントサイズを1.5倍に設定 */
         }
         form {
             display: inline-block;
-            text-align: left;
-            height: 100;
+            height: 100%;
         }
         label {
+			text-align: left;
             display: block;
             margin-bottom: 15px; /* ラベル間の間隔を広くする */
             font-size: 1.0em; /* ラベルのフォントサイズを調整 */
@@ -33,6 +34,7 @@
             background-color: #4CAF50;
             color: white;
             padding: 12px 20px; /* ボタンのパディングを調整 */
+            margin-bottom: 10px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
