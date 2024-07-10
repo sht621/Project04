@@ -169,31 +169,39 @@
 		    </nav>
 		</header>
 		
-	<div id="mobile" class="conteiner">
-	    <div class="selector">
-	        <button onclick="changeYear(-1)">◀</button>
-	        <div class="current-selection" id="currentYear" th:text="${year}"></div>
-	        <button onclick="changeYear(1)">▶</button>
-	    </div>
-	    <div class="selector">
-	        <button onclick="changeMonth(-1)">◀</button>
-	        <div class="current-selection" id="currentMonth" th:text="${month}"></div>
-	        <button onclick="changeMonth(1)">▶</button>
-	    </div>
-	</div>
+    <!-- モバイル用セレクター -->
+    <div id="mobile" class="container">
+        <!-- 年選択 -->
+        <div class="selector">
+            <button onclick="changeYear(-1)">◀</button>
+            <div class="current-selection" id="currentYear" th:text="${year}"></div>
+            <button onclick="changeYear(1)">▶</button>
+        </div>
+        <!-- 月選択 -->
+        <div class="selector">
+            <button onclick="changeMonth(-1)">◀</button>
+            <div class="current-selection" id="currentMonth" th:text="${month}"></div>
+            <button onclick="changeMonth(1)">▶</button>
+        </div>
+    </div>
 
+    <!-- メインコンテンツ -->
     <div class="container">
+        <!-- 左パネル：年月選択と概要 -->
         <div class="left-panel">
+            <!-- 年選択（デスクトップ用） -->
             <div class="selector">
                 <button onclick="changeYear(-1)">◀</button>
                 <div class="current-selection" id="currentYear" th:text="${year}"></div>
                 <button onclick="changeYear(1)">▶</button>
             </div>
+            <!-- 月選択（デスクトップ用） -->
             <div class="selector">
                 <button onclick="changeMonth(-1)">◀</button>
                 <div class="current-selection" id="currentMonth" th:text="${month}"></div>
                 <button onclick="changeMonth(1)">▶</button>
             </div>
+            <!-- 概要テーブル -->
             <table class="summary-table">
                 <tbody>
                     <tr>
@@ -207,105 +215,131 @@
                 </tbody>
             </table>
         </div>
-
+        
+        <!-- グラフ表示エリア -->
         <div id="chart-container">
             <canvas id="myChart"></canvas>
-            <div id="noDataMessage" class="no-data" style="display: none;">データがありません</div>
         </div>
+        <!-- データがない場合のメッセージ -->
+        <div id="noDataMessage" class="no-data" style="display: none;"></div>
     </div>
 
-	<script th:inline="javascript">
-	    document.addEventListener('DOMContentLoaded', function() {
-	        var graphData = /*[[${graphData}]]*/ [];
-	        var labels = graphData.map(function(item) { return item.itemId; });
-	        var spendSums = graphData.map(function(item) { return item.spendSum; });
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var graphData = /*[[${graphData}]]*/ [];
+            
+            // データの前処理
+            var filteredData = graphData.filter(function(item) {
+                return item.spendSum > 0;  // 支出が0円より大きいデータのみ抽出
+            }).sort(function(a, b) {
+                return b.spendSum - a.spendSum;  // 支出額の降順にソート
+            });
 
-	        if (graphData.length === 0) {
-	            document.getElementById('myChart').style.display = 'none';
-	            document.getElementById('noDataMessage').style.display = 'block';
-	        } else {
-	            document.getElementById('myChart').style.display = 'block';
-	            document.getElementById('noDataMessage').style.display = 'none';
+            var labels = filteredData.map(function(item) { return item.itemId; });
+            var spendSums = filteredData.map(function(item) { return item.spendSum; });
 
-	            // データを降順にソート
-	            var sortedData = graphData.sort(function(a, b) { return b.spendSum - a.spendSum; });
+            // DOM要素の取得
+            var chartContainer = document.getElementById('chart-container');
+            var summaryTable = document.querySelector(".summary-table");
+            var noDataMessage = document.getElementById('noDataMessage');
 
-	            labels = sortedData.map(function(item) { return item.itemId; });
-	            spendSums = sortedData.map(function(item) { return item.spendSum; });
+            // データの有無に応じて表示を切り替え
+            if (filteredData.length === 0) {
+                chartContainer.style.display = 'none';
+                summaryTable.style.display = 'none';
+                noDataMessage.style.display = 'block';
+                noDataMessage.textContent = 'データがありません';
+            } else {
+                chartContainer.style.display = 'block';
+                summaryTable.style.display = 'table';
+                noDataMessage.style.display = 'none';
 
-	            var ctx = document.getElementById('myChart').getContext('2d');
-	            var myChart = new Chart(ctx, {
-	                type: 'pie',
-	                data: {
-	                    labels: labels,
-	                    datasets: [{
-	                        data: spendSums,
-	                    }]
-	                },
-	                options: {
-	                    responsive: true,
-	                    maintainAspectRatio: false,
-	                    plugins: {
-	                        legend: {
-	                            position: 'bottom',  // Changed legend position to bottom
-	                            labels: {
-	                                font: {
-	                                    size: 15
-	                                }
-	                            }
-	                        },
-	                        title: {
-	                            display: true,
-	                            text: '月別支出金額のグラフ',
-	                            font: {
-	                                size: 22
-	                            }
-	                        }
-	                    }
-	                }
-	            });
-
-                // テーブルにカテゴリごとの支出を表示
-                var tableBody = document.querySelector(".summary-table tbody");
-                sortedData.forEach(function(item) {
-                    var row = document.createElement("tr");
-                    var categoryCell = document.createElement("td");
-                    categoryCell.textContent = item.itemId;
-                    var spendCell = document.createElement("td");
-                    spendCell.textContent = item.spendSum + "円";
-                    row.appendChild(categoryCell);
-                    row.appendChild(spendCell);
-                    tableBody.appendChild(row);
+                // グラフの描画
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: spendSums,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { font: { size: 15 } }
+                            },
+                            title: {
+                                display: true,
+                                text: '月別支出金額のグラフ',
+                                font: { size: 22 }
+                            }
+                        }
+                    }
                 });
 
-                // 最大支出項目を表示
-                var maxExpense = Math.max(...spendSums);
-                var maxExpenseItems = sortedData.filter(item => item.spendSum === maxExpense);
-                var maxExpenseItemContainer = document.getElementById('maxExpenseItem');
-                maxExpenseItems.forEach(function(item, index) {
-                    var itemElement = document.createElement('div');
-                    itemElement.textContent = `${item.itemId} (${item.spendSum}円)`;
-                    maxExpenseItemContainer.appendChild(itemElement);
+                // 概要テーブルの更新
+                updateSummaryTable(filteredData);
+
+                // 最大支出項目の表示
+                displayMaxExpenseItems(filteredData);
+
+                // 総支出の表示
+                displayTotalExpense(spendSums);
+
+                // ウィンドウリサイズ時のグラフ調整
+                window.addEventListener('resize', function() {
+                    myChart.resize();
                 });
+            }
+        });
 
-                // 総支出を表示
-                var totalExpense = spendSums.reduce((a, b) => a + b, 0);
-                document.getElementById('totalExpense').textContent = totalExpense + '円';
+        // 概要テーブルを更新する関数
+        function updateSummaryTable(data) {
+            var tableBody = document.querySelector(".summary-table tbody");
+            tableBody.innerHTML = '';  // テーブルをクリア
+            data.forEach(function(item) {
+                var row = document.createElement("tr");
+                var categoryCell = document.createElement("td");
+                categoryCell.textContent = item.itemId;
+                var spendCell = document.createElement("td");
+                spendCell.textContent = item.spendSum + "円";
+                row.appendChild(categoryCell);
+                row.appendChild(spendCell);
+                tableBody.appendChild(row);
+            });
+        }
 
-				        function resizeChart() {
-				            myChart.resize();
-				        }
+        // 最大支出項目を表示する関数
+        function displayMaxExpenseItems(data) {
+            var maxExpense = Math.max(...data.map(item => item.spendSum));
+            var maxExpenseItems = data.filter(item => item.spendSum === maxExpense);
+            var maxExpenseItemContainer = document.getElementById('maxExpenseItem');
+            maxExpenseItemContainer.innerHTML = '';  // コンテナをクリア
+            maxExpenseItems.forEach(function(item) {
+                var itemElement = document.createElement('div');
+                itemElement.textContent = `${item.itemId} (${item.spendSum}円)`;
+                maxExpenseItemContainer.appendChild(itemElement);
+            });
+        }
 
-				        window.addEventListener('resize', resizeChart);
-				    }
-				});
+        // 総支出を表示する関数
+        function displayTotalExpense(spendSums) {
+            var totalExpense = spendSums.reduce((a, b) => a + b, 0);
+            document.getElementById('totalExpense').textContent = totalExpense + '円';
+        }
 
+        // 年月を更新する関数
         function updateMonth() {
             var year = document.getElementById('currentYear').innerText;
             var month = document.getElementById('currentMonth').innerText;
             window.location.href = `/graph?year=${year}&month=${month}`;
         }
 
+        // 年を変更する関数
         function changeYear(offset) {
             var currentYear = parseInt(document.getElementById('currentYear').innerText);
             var newYear = currentYear + offset;
@@ -313,6 +347,7 @@
             updateMonth();
         }
 
+        // 月を変更する関数
         function changeMonth(offset) {
             var currentMonth = parseInt(document.getElementById('currentMonth').innerText);
             var newMonth = currentMonth + offset;
