@@ -3,7 +3,7 @@
 ***  Version		: V1.0
 ***  Designer		: 佐藤　巧都
 ***  Date			: 2024.07.09
-***  Purpose       	: 収支入力、更新、削除処理を操作する
+***  Purpose       	: Serviceから処理を呼び出し、収支登録、更新、削除の操作を行う
 ***
 *******************************************************************/
 /*
@@ -132,15 +132,15 @@ public class PaymentController {
     }
 
     /****************************************************************************
-     *** Method Name         : goUpdate()
+     *** Method Name         : goUpdateAndDelete()
      *** Designer            : 佐藤　巧都
-     *** Date                : 2024.07.05
-     *** Function            : データ一覧(更新)画面を表示する
-     *** Return              : 収入支出画面
+     *** Date                : 2024.07.09
+     *** Function            : データ一覧画面を表示する
+     *** Return              : データ一覧画面
      ****************************************************************************/
-    // 更新画面へ遷移
+    // データ一覧画面へ遷移
     @GetMapping("/record")
-    public String goUpdate(Model model, HttpSession session) {
+    public String goUpdateAndDelete(Model model, HttpSession session) {
     	Object loggedInUser =  session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login"; //idを取得できない場合はログイン画面にリダイレクト
@@ -155,7 +155,7 @@ public class PaymentController {
     /****************************************************************************
      *** Method Name         : goUpdateInput()
      *** Designer            : 佐藤　巧都
-     *** Date                : 2024.07.05
+     *** Date                : 2024.07.09
      *** Function            : 収入支出画面を表示する
      *** Return              : 収入支出画面
      ****************************************************************************/
@@ -176,17 +176,16 @@ public class PaymentController {
     }
 
     /****************************************************************************
-     *** Method Name         : goInput()
+     *** Method Name         : updateIncome()
      *** Designer            : 佐藤　巧都
-     *** Date                : 2024.07.05
-     *** Function            : 収入支出画面を表示する
-     *** Return              : 収入支出画面
+     *** Date                : 2024.07.09
+     *** Function            : 収入更新処理を行う
+     *** Return              : 更新完了画面
      ****************************************************************************/
     // 更新処理を行う
-    @PostMapping("/updateInput")
-    public String updateInput(
+    @PostMapping("/updateIncome")
+    public String updateIncome(
     		@RequestParam("date") String date,
-			@RequestParam("spend") int spend,
 			@RequestParam("income") int income,
 			@RequestParam("itemId") String itemId,
 			Model model) {
@@ -202,42 +201,59 @@ public class PaymentController {
     	}
     	
     	payment.setIncome(income);
-        payment.setSpend(spend);
+        payment.setSpend(0);
         payment.setItemId(itemId);
         int userId = payment.getUserId();
         int DAY = payment.getDay();
+        int spend = payment.getSpend();
         model.addAttribute("payment", payment);
 		service.paymentUpdate(income, spend, DAY, itemId, id, userId);
         return "update-complete";
     }
     
     /****************************************************************************
-     *** Method Name         : goInput()
+     *** Method Name         : updateSpend()
      *** Designer            : 佐藤　巧都
-     *** Date                : 2024.07.05
-     *** Function            : 収入支出画面を表示する
-     *** Return              : 収入支出画面
+     *** Date                : 2024.07.09
+     *** Function            : 支出更新処理を行う
+     *** Return              : 更新完了画面
      ****************************************************************************/
-    // 削除画面へ遷移
-    @GetMapping("/record")
-    public String goDelete(Model model, HttpSession session) {
-    	Object loggedInUser =  session.getAttribute("loggedInUser");
-        if (loggedInUser == null) {
-            return "redirect:/login"; //idを取得できない場合はログイン画面にリダイレクト
-        }
-        int userId = (int) loggedInUser;
-    	List<PaymentModel> list = service.findAll(userId);
-        model.addAttribute("list", list);
-        model.addAttribute("userId", userId);
-        return "record"; // Assuming delete.html is your template file name
+    // 更新処理を行う
+    @PostMapping("/updateSpend")
+    public String updateSpend(
+    		@RequestParam("date") String date,
+			@RequestParam("spend") int spend,
+			@RequestParam("itemId") String itemId,
+			Model model) {
+    	
+    	int id = payment.getId();
+    	PaymentModel payment = service.findById(id); // IDで検索してモデルを取得する
+    	try {
+    		int day = Integer.parseInt(date.replaceAll("-", ""));
+    		payment.setDay(day);
+    	} catch (NumberFormatException e) {
+    		model.addAttribute("error", "Invalid date format");
+    		return "record";
+    	}
+    	
+    	payment.setIncome(0);
+        payment.setSpend(spend);
+        payment.setItemId(itemId);
+        int userId = payment.getUserId();
+        int DAY = payment.getDay();
+        int income = payment.getIncome();
+        model.addAttribute("payment", payment);
+		service.paymentUpdate(income, spend, DAY, itemId, id, userId);
+        return "update-complete";
     }
     
+    
     /****************************************************************************
-     *** Method Name         : goInput()
+     *** Method Name         : deletePayment()
      *** Designer            : 佐藤　巧都
-     *** Date                : 2024.07.05
-     *** Function            : 収入支出画面を表示する
-     *** Return              : 収入支出画面
+     *** Date                : 2024.07.09
+     *** Function            : 削除処理を行う
+     *** Return              : 削除完了画面
      ****************************************************************************/
     // 削除処理を行う
     @PostMapping("/delete")
