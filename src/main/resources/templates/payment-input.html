@@ -2,12 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>収支登録</title>
     <link rel="stylesheet" href="/style.css">
     <style>
-        .tab-content {
-            display: none;
-        }
         .active {
             display: block;
         }
@@ -26,6 +24,17 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: 20px;
         }
+        
+        #incomeTab{
+			border-style: solid;
+			border-color: darkblue;
+		}
+		
+		#spendTab{
+			border-style: solid;
+			border-color: green;
+		}
+
 
         .active {
             display: block;
@@ -39,8 +48,24 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            margin: 10px 5px;
+            margin: 10px -4px 0px 3px;
         }
+        
+        #tabButton{
+			margin: 0px 0px -20px 25px;
+		}
+		
+		#tabButton button{
+			border-radius: 15px 15px 0px 0px;
+		}
+		
+		#spendButton{
+			background-color: green;
+		}
+		
+		#incomeButton{
+			background-color: darkblue;
+		}
 
         button:hover {
             background-color: #0056b3;
@@ -77,33 +102,8 @@
         }
 
         h2 {
-            color: #007bff;
+            color: black;
             font-size: 24px;
-        }
-
-        .menu-toggle {
-            display: none;
-        }
-
-        .menu {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .menu li {
-            margin-right: 15px;
-        }
-
-        .menu a {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 16px;
-        }
-
-        .menu a:hover {
-            text-decoration: underline;
         }
 
         .error {
@@ -113,12 +113,12 @@
     </style>
 </head>
 <body>
-    <header>
+    <header	>
 		<div class="top">
         <h1>収入支出登録</h1>
         <button class="menu-toggle" aria-label="メニューを開閉する"></button>
 		</div>
-	<ul class="menu">                
+		<ul class="menu">                
             <li><a href="/home">ホーム</a></li>
 	        <li><a href="/objective">目標入力</a></li>
 	        <li><a href="/graph">グラフ</a></li>
@@ -140,22 +140,22 @@
                 showTab('spend');
 			});
 		</script>
-	<nav>
+		<nav>
             <ul>                
-	   	<a href="/home">ホーム</a>
-		<a href="/objective">目標入力</a>
-		<a href="/graph">グラフ</a>
-		<a href="/recipe">レシピ</a>
-		<a href="/input">収支入力</a>
-		<a href="/difference">支出差額</a>
-		<a href="/record">履歴</a>
+			   	<a href="/home">ホーム</a>
+				<a href="/objective">目標入力</a>
+				<a href="/graph">グラフ</a>
+				<a href="/recipe">レシピ</a>
+				<a href="/input">収支入力</a>
+				<a href="/difference">支出差額</a>
+				<a href="/record">履歴</a>
             </ul>
         </nav>
-    </header>
-
-    <div>
-        <button onclick="showTab('income')">収入登録</button>
-        <button onclick="showTab('spend')">支出登録</button>
+    </header>	
+	
+    <div id="tabButton">
+		<button id="spendButton" onclick="showTab('spend')">支出登録</button>
+        <button id="incomeButton" onclick="showTab('income')">収入登録</button>
     </div>
 
     <!-- 収入登録フォーム -->
