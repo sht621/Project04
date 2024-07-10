@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
 	<link rel="stylesheet" href="/style.css">
-	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <title>新規目標作成画面</title>
     <style>
 		body {
 			font-family: Arial, sans-serif;
-			margin: 20px
+			margin: 0px 20px 0px 20px;
 		}
 		h1 {
 			text-align: center;
@@ -58,11 +58,15 @@
 			border-radius: 4px;
 			cursor: pointer;
 			font-size: 15px;
+			margin: 20px;
 		}
 		.update_button input[type="submit"]:hover{
 			background-color: #45a049;
 		}
-		
+		.update_button{
+			display: flex;
+			justify-content: center;
+		}
 		
 	</style>
   </head> 
@@ -70,7 +74,7 @@
 <!--	  メニューヘッダー-->
 	 <header>
 		<div class="top">
-        <h1>HOME</h1>
+        <h1>新規目標登録</h1>
         <button class="menu-toggle" aria-label="メニューを開閉する"></button>
 		</div>
 		<ul class="menu">                
@@ -107,7 +111,6 @@
     </header> 
 	  
 	<div class="container">
-    <h1>新規目標登録</h1>
     <form action="#" th:action="@{/objective}" th:object="${month}" method="post">
 		<!-- 年と月の選択フォーム -->
 		<label for="year">年:</label>

@@ -45,9 +45,11 @@ public class HomeService {
 		
 		int[] homeData = new int[5];
 		
+		int income = 0;
 		int expense = 0;
 		int target = 0;
 		int difference = 0;
+		int balance = 0;
 		
 		LocalDate today = LocalDate.now();
     	int year = today.getYear();
@@ -55,7 +57,7 @@ public class HomeService {
 		int yearMonth = year * 100 + month;
 		
 		//収入取得
-		int income = calculateTotalIncome(userId, yearMonth);
+		income = calculateTotalIncome(userId, yearMonth);
 		
 		//支出・目標・差額取得
 		//differCalculationメソッドを流用
@@ -69,7 +71,7 @@ public class HomeService {
 		}
 		
 		//収支取得
-		int balance = income - expense;
+		balance = income - expense;
 		
 		//配列にデータを格納
 		homeData[0] = balance;
