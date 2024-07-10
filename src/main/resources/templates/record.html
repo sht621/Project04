@@ -4,6 +4,41 @@
     <meta charset="UTF-8">
     <title>更新削除画面</title>
     <link rel="stylesheet" href="/style.css">
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* 背景色を白に変更 */
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            background-color: #4682b4;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #5a9bd3;
+        }
+        form {
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -33,6 +68,17 @@
                 showTab('spend');
 			});
 		</script>
+		<nav>
+            <ul>                
+	            <a href="/home">ホーム</a>
+		        <a href="/objective">目標入力</a>
+		        <a href="/graph">グラフ</a>
+		        <a href="/recipe">レシピ</a>
+		        <a href="/input">収支入力</a>
+		        <a href="/difference">支出差額</a>
+		        <a href="/record">履歴</a>
+            </ul>
+        </nav>
     </header>
 
     <table border="1">
@@ -62,9 +108,9 @@
             </td>
             <td>
                 <form action="/delete" method="post">
-					<input type="submit" value="削除">
                     <input type="hidden" name="id" th:value="${payment.id}"/>
                     <input type="hidden" name="userId" th:value="${payment.userId}"/>
+                    <button type="submit">削除</button>
                 </form>
             </td>
         </tr>

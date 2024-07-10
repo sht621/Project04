@@ -11,6 +11,105 @@
         .active {
             display: block;
         }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        .active {
+            display: block;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+
+        input[type="number"], input[type="date"], select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="number"]:focus, input[type="date"]:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        h2 {
+            color: #007bff;
+            font-size: 24px;
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            margin-right: 15px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+
+        .menu a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #ff0000;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -19,15 +118,6 @@
         <h1>収入支出登録</h1>
         <button class="menu-toggle" aria-label="メニューを開閉する"></button>
 		</div>
-		<ul class="menu">                
-            <li><a href="/home">ホーム</a></li>
-	        <li><a href="/objective">目標入力</a></li>
-	        <li><a href="/graph">グラフ</a></li>
-	        <li><a href="/recipe">レシピ</a></li>
-	        <li><a href="/input">収支入力</a></li>
-	        <li><a href="/difference">支出差額</a></li>
-	        <li><a href="/record">履歴</a></li>
-        </ul>
 		<script>
 			document.addEventListener('DOMContentLoaded', function() {
 			    const menuToggle = document.querySelector('.menu-toggle');
@@ -41,6 +131,17 @@
                 showTab('spend');
 			});
 		</script>
+		<nav>
+            <ul>                
+	            <a href="/home">ホーム</a>
+		        <a href="/objective">目標入力</a>
+		        <a href="/graph">グラフ</a>
+		        <a href="/recipe">レシピ</a>
+		        <a href="/input">収支入力</a>
+		        <a href="/difference">支出差額</a>
+		        <a href="/record">履歴</a>
+            </ul>
+        </nav>
     </header>
 
     <div>
