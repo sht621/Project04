@@ -17,7 +17,7 @@ public interface PaymentMapper {
 	@Select("SELECT MAX(Id) FROM PAYMENT")
 	Integer selectMaxIdFromPayment();
 	
-    @Select("SELECT * FROM PAYMENT WHERE USERID = #{userId} ORDER BY ID")
+    @Select("SELECT * FROM PAYMENT WHERE USERID = #{userId} ORDER BY DAY DESC")
     List<PaymentModel> findAll(@Param("userId") int userId);
 
     @Insert("INSERT INTO PAYMENT (ID, INCOME, SPEND, DAY, ITEMID, USERID) VALUES (#{id}, #{income}, #{spend}, #{day}, #{itemId}, #{userId})")

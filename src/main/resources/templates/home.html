@@ -69,6 +69,14 @@
     		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 		}
 		
+		#error{
+			width: 350px;
+			height: 350px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		
 		canvas{
 			width: 350px;
 			height: 350px;
@@ -232,6 +240,11 @@
 		        width: 100%;
 		        height: auto;
 		    }
+		    
+		    #error{
+				width: 100%;
+				height: auto;
+			}
 		}
 	</style>
 </head>
@@ -277,12 +290,11 @@
     <main>
 		<section id="balanceInfomation">
 			<h2>今月の収支情報</h2>
-			<h3>収支<span th:if="${balance > 0}"th:text="'+' + ${balance} + '円'">
-					<span th:unless="${balance > 0}"th:text="${balance} + '円'">-</span></h3>
-			<h3>収入<span th:text="${income} + '円'">-</span></h3>
-			<h3>支出<span th:text="${expense} + '円'">-</span></h3>
-			<h3>目標支出<span th:text="${target} + '円'">-</span></h3>
-			<h3>今月使えるお金<span th:text="${difference} + '円'">-</span></h3>
+			<h3>収支<span th:text="${balance > 0} ? '+' + ${balance} + '円' : ${balance} + '円'"></span></h3>
+			<h3>収入<span th:text="${income} + '円'"></span></h3>
+			<h3>支出<span th:text="${expense} + '円'"></span></h3>
+			<h3>目標支出<span th:text="${target} + '円'"></span></h3>
+			<h3>今月使えるお金<span th:text="${difference} + '円'"></span></h3>
 		</section>
 		
 		<section id="expenseGraph">
@@ -290,14 +302,17 @@
 			<div>
 			<div id="graphContents">
 				<div id="graph">
-				<canvas id="homePieChart"></canvas>
+					<div id="error" th:if="${#lists.isEmpty(chartData)}">データがありません</div>
+				<canvas id="homePieChart" th:if="${not #lists.isEmpty(chartData)}"></canvas>
 				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 				<script th:inline="javascript">
 					document.addEventListener('DOMContentLoaded', function() {
 	        			var labels = /*[[${chartLabels}]]*/ [];
 	        			var data = /*[[${chartData}]]*/ [];
-						
-						var homePieChart = new Chart(document.getElementById('homePieChart').getContext('2d'), {
+	        			var canvas = document.getElementById('homePieChart');
+	        			var ctx = canvas.getContext('2d');
+		        			
+						var homePieChart = new Chart(ctx, {
 				            type: 'pie',
 				            data: {
 				                labels: labels,
@@ -313,11 +328,11 @@
 				                    }
 				                },
 				                 onClick: () => {
-	    						window.location.href = 'graph.html';
+	    						window.location.href = '/graph';
 	    						}
 				            }
-				        });
-			        
+				        });     
+		        
 			        	function resizeChart() {
 					        var chartContainer = document.getElementById('homePieChart').parentNode;
 					        var containerWidth = chartContainer.offsetWidth;
@@ -349,8 +364,8 @@
 				    </thead>
 				    <tbody>
 			            <tr th:each="index : ${#numbers.sequence(0, chartData.length-1)}">
-			                <td th:text="${chartLabels[index]}"></td>
-			                <td th:text="${chartData[index]} + 円" class="right-align"></td>
+			                <td th:if="${not #lists.isEmpty(chartLabels)}" th:text="${chartLabels[index]}"></td>
+			                <td th:if="${not #lists.isEmpty(chartData)}" th:text="${chartData[index]} + 円" class="right-align"></td>
 				        </tr>
 				    </tbody>
 				</table>

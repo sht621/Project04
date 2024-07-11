@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/style.css">
     <title>一覧画面</title>
     <style>
@@ -48,8 +49,16 @@
         }
         #chart-container {
             margin: 20px auto; /* グラフの上下の間隔を調整 */
-            max-width: 800px; /* グラフの最大幅を指定 */
+            width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
         }
+        #chart{
+			display: inline-block;
+			width: 100%; /* グラフの幅を指定 */
+			max-width: 800px;
+			min-width: 600px;
+		}
     </style>
     <!-- Chart.jsの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -57,7 +66,7 @@
 <body>
 	<header>
 		<div class="top">
-        <h1>支出差額一覧 <span th:text="${year + '年' + month + '月'}"></span></h1>
+        <h1>支出差額一覧</h1>
         <button class="menu-toggle" aria-label="メニューを開閉する"></button>
 		</div>
 		<ul class="menu">                
@@ -65,9 +74,9 @@
 	        <li><a href="/objective">目標入力</a></li>
 	        <li><a href="/graph">グラフ</a></li>
 	        <li><a href="/recipe">レシピ</a></li>
-	        <li><a href="/payment">収支入力</a></li>
+	        <li><a href="/input">収支入力</a></li>
 	        <li><a href="/difference">支出差額</a></li>
-	        <li><a href="/dataview">履歴</a></li>
+	        <li><a href="/record">履歴</a></li>
         </ul>
 		<script>
 			document.addEventListener('DOMContentLoaded', function() {
@@ -86,12 +95,14 @@
 		        <a href="/objective">目標入力</a>
 		        <a href="/graph">グラフ</a>
 		        <a href="/recipe">レシピ</a>
-		        <a href="/payment">収支入力</a>
+		        <a href="/input">収支入力</a>
 		        <a href="/difference">支出差額</a>
-		        <a href="/dataview">履歴</a>
+		        <a href="/record">履歴</a>
             </ul>
         </nav>
     </header>
+    
+    <h2><span th:text="${year + '年' + month + '月'}"></span></h2>
     
     <!-- 年と月の選択フォーム -->
     <form action="#" method="post">
@@ -127,8 +138,8 @@
     </table>
     
     <!-- グラフ -->
-    <div id="chart-container" style="width: 100%; max-width: 800px;">
-        <canvas id="myChart"></canvas>
+    <div id="chart-container">
+        <div id="chart"><canvas id="myChart"></canvas></div>
     </div>
 
     <!-- Updateに飛ぶボタン -->

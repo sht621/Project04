@@ -45,12 +45,15 @@ public class RecipeService {
 	
 	public int[] getRecipeData(int userId) {
 		int[]  recipeData = new int[2];
+		int difference = 0; //
 		
 		//差額計算メソッドを実行
 		List<MonthModel> differPay = differService.differCalculation(userId);
 		
 		//食費の差額のみを取得
-		int difference = differPay.get(0).getDiffer();
+		if (!differPay.isEmpty()) { //取得できない場合はdifferenceは0
+			difference = differPay.get(0).getDiffer();
+		}
 		
 		//1食分の予算を計算
 		int recipeBudget = calculateBudgetProcess.calculateBudget(difference);
