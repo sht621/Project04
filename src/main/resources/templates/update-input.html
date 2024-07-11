@@ -103,27 +103,14 @@
 </head>
 <body>
     <h1>更新入力</h1>
-   		<script>
-       		function showTab(tabName) {
-           		document.addEventListener('DOMContentLoaded', function() {
-           		showTab('spend');  // 初期表示で支出更新フォームを表示            	
-           		});
-        	}
-    	</script>
-    	
-    <div>
-        <button onclick="showTab('income')">収入更新</button>
-        <button onclick="showTab('spend')">支出更新</button>
-    </div>
-
     <!-- 収入更新フォーム -->
     <div id="incomeTab" class="tab-content">
         <h2>収入更新</h2>
         <form action="/updateIncome" method="post">
-			<input type="hidden" name="id" th:value="${payment.id}" />
+			<input type="hidden" name="id" th:value="${payment.id}"/>
             <div>
                 <label for="income">収入:</label>
-                <input type="number" id="income" name="income" required><br>
+                <input type="number" id="income" name="income" th:value="${payment.income}" required><br>
             </div>
             <div>
                 <label for="day">年月:</label>
@@ -139,16 +126,18 @@
             <input type="submit" value="更新">
         </form>
         <p th:if="${error}" th:text="${error}"></p>
+        <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
+        <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
     </div>
 
     <!-- 支出更新フォーム -->
     <div id="spendTab" class="tab-content">
         <h2>支出更新</h2>
         <form action="/updateSpend" method="post">
-            <input type="hidden" name="id" th:value="${payment.id}" />
+            <input type="hidden" name="id" th:value="${payment.id}"/>
             <div>
                 <label for="spend">支出:</label>
-                <input type="number" id="spend" name="spend" required><br>
+                <input type="number" id="spend" name="spend" th:value="${payment.spend}" required><br>
             </div>
             <div>
                 <label for="day">年月:</label>
@@ -176,18 +165,26 @@
             <input type="submit" value="更新">
         </form>
         <p th:if="${error}" th:text="${error}"></p>
+        <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
+        <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
     </div>
 
-    <script>
+    <script th:inline="javascript">
+    	document.addEventListener('DOMContentLoaded', function() {
+	        var itemId = /*[[${payment.itemId}]]*/ '';
+
+            if (itemId === '給料') {
+                showTab('income', itemId);
+            } else {
+                showTab('spend', itemId);
+            }            	
+   		});
+		
         function showTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(function(tab) {
                 tab.style.display = 'none';
             });
             document.getElementById(tabName + 'Tab').style.display = 'block';
-        	
-        	document.addEventListener('DOMContentLoaded', function() {
-           		showTab('spend');  // 初期表示で支出更新フォームを表示            	
-           		});
         	
         	// 現在の日付を取得して設定する
             const today = new Date().toISOString().split('T')[0];
