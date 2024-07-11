@@ -170,15 +170,9 @@ public class PaymentController {
         }
         int userId = (int) loggedInUser;
     	List<PaymentModel> list = service.findAll(userId);
-    	
-    	if (list == null) {
-    		model.addAttribute("error1", "データが格納されていません");
-    		return "payment-input";
-    	} else {
-    		model.addAttribute("list", list);
-            model.addAttribute("payment", payment);
-            return "record";
-    	}
+    	model.addAttribute("list", list);
+        model.addAttribute("payment", payment);
+        return "record";
     }
     
     /****************************************************************************
