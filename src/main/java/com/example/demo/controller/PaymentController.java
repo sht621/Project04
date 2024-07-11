@@ -170,9 +170,15 @@ public class PaymentController {
         }
         int userId = (int) loggedInUser;
     	List<PaymentModel> list = service.findAll(userId);
-        model.addAttribute("list", list);
-        model.addAttribute("payment", payment);
-        return "record"; 
+    	
+    	if (list == null) {
+    		model.addAttribute("error1", "データが格納されていません");
+    		return "payment-input";
+    	} else {
+    		model.addAttribute("list", list);
+            model.addAttribute("payment", payment);
+            return "record";
+    	}
     }
     
     /****************************************************************************
@@ -191,7 +197,7 @@ public class PaymentController {
         PaymentModel payment = service.findById(id); // IDで検索してモデルを取得する
         if (payment == null) {
             // IDに対応するデータが見つからない場合の処理
-            model.addAttribute("error", "データが見つかりません");
+            model.addAttribute("error2", "データが見つかりません");
             return "record";
         }
         model.addAttribute("payment", payment);
@@ -222,26 +228,30 @@ public class PaymentController {
     		payment.setDay(day);
     	} catch (NumberFormatException e) {
     		model.addAttribute("error", "無効な日付形式");
+    		model.addAttribute("payment", payment);
     		return "update-input";
     	}
     	
-    	if (day < 20000101 || day > 20991231) {
+		payment.setIncome(income);
+        payment.setSpend(0);
+        payment.setItemId(itemId);
+        model.addAttribute("payment", payment);
+        
+        if (day < 20000101 || day > 20991231) {
     		model.addAttribute("errorMes", "年月は2000年1月1日から2099年12月31日までで入力してください");
+    		model.addAttribute("payment", payment);
     		return "update-input";
     	}
     	
     	if (income < 0 || income > 10000000) {
             model.addAttribute("errorMessage", "収入は0以上10000000以下で入力してください");
+            model.addAttribute("payment", payment);
             return "update-input";
         }
     	
-    	payment.setIncome(income);
-        payment.setSpend(0);
-        payment.setItemId(itemId);
-        int userId = payment.getUserId();
-        int DAY = payment.getDay();
+    	int userId = payment.getUserId();
+    	int DAY = payment.getDay();
         int spend = payment.getSpend();
-        model.addAttribute("payment", payment);
 		service.paymentUpdate(income, spend, DAY, itemId, id, userId);
         return "update-complete";
     }
@@ -270,26 +280,30 @@ public class PaymentController {
     		payment.setDay(day);
     	} catch (NumberFormatException e) {
     		model.addAttribute("error", "無効な日付形式");
+    		model.addAttribute("payment", payment);
     		return "update-input";
     	}
     	
+		payment.setIncome(0);
+        payment.setSpend(spend);
+        payment.setItemId(itemId);
+        model.addAttribute("payment", payment);
+        
     	if (day < 20000101 || day > 20991231) {
     		model.addAttribute("errorMes", "年月は2000年1月1日から2099年12月31日までで入力してください");
+    		model.addAttribute("payment", payment);
     		return "update-input";
     	}
     	
     	if (spend < 0 || spend > 10000000) {
             model.addAttribute("errorMessage", "支出は0以上10000000以下で入力してください");
+            model.addAttribute("payment", payment);
             return "update-input";
         }
     	
-    	payment.setIncome(0);
-        payment.setSpend(spend);
-        payment.setItemId(itemId);
-        int userId = payment.getUserId();
-        int DAY = payment.getDay();
-        int income = payment.getIncome();
-        model.addAttribute("payment", payment);
+    	int userId = payment.getUserId();
+    	int DAY = payment.getDay();
+        int income = payment.getSpend();
 		service.paymentUpdate(income, spend, DAY, itemId, id, userId);
         return "update-complete";
     }
@@ -317,7 +331,9 @@ public class PaymentController {
      ****************************************************************************/
     // 削除処理を行う
     @PostMapping("/delete")
-    public String deletePayment(int id, int userId) {
+    public String deletePayment(Model model, int id, int userId) {
+    	PaymentModel payment = service.findByIdAndUserId(id, userId);
+    	model.addAttribute("payment", payment);
     	service.deleteAndRearrange(id, userId);
         return "delete-complete";
     }
