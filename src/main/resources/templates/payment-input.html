@@ -166,10 +166,13 @@
                 <label for="income">収入:</label>
                 <input type="number" id="income" name="income" required><br>
             </div>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
             <div>
                 <label for="incomeDay">年月:</label>
                 <input type="date" id="incomeDay" name="date" required><br>
             </div>
+            <p th:if="${error}" th:text="${error}"></p>
+        	<p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
             <div>
                 <label for="incomeItemId">項目:</label>
                 <select id="incomeItemId" name="itemId" required>
@@ -178,9 +181,6 @@
             </div>
             <button type="submit">登録</button>
         </form>
-        <p th:if="${error}" th:text="${error}"></p>
-        <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
-        <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
     </div>
 
     <!-- 支出登録フォーム -->
@@ -191,10 +191,13 @@
                 <label for="spend">支出:</label>
                 <input type="number" id="spend" name="spend" required><br>
             </div>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
             <div>
                 <label for="spendDay">年月:</label>
                 <input type="date" id="spendDay" name="date" required><br>
             </div>
+            <p th:if="${error}" th:text="${error}"></p>
+        	<p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
             <div>
                 <label for="spendItemId">項目:</label>
                 <select id="spendItemId" name="itemId" required>
@@ -216,9 +219,7 @@
             </div>
             <button type="submit">登録</button>
         </form>
-        <p th:if="${error}" th:text="${error}"></p>
-        <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
-        <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
+        
     </div>
 
     <script>
