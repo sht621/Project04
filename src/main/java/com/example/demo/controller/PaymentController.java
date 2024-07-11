@@ -1,14 +1,15 @@
 /*******************************************************************
 ***  File Name		: PaymentController.java
-***  Version		: V1.0
+***  Version		: V1.1
 ***  Designer		: 佐藤　巧都
-***  Date			: 2024.07.09
+***  Date			: 2024.07.11
 ***  Purpose       	: Serviceから処理を呼び出し、収支登録、更新、削除の操作を行う
 ***
 *******************************************************************/
 /*
 *** Revision :
 *** V1.0 : 佐藤　巧都, 2024.07.09
+*** V1.1 : 佐藤　巧都, 2024.07.11
 */
 
 package com.example.demo.controller;
@@ -78,17 +79,28 @@ public class PaymentController {
         }
         int userId = (int) loggedInUser;
     	
-    // 日付を日付フォーマットに変換し、dayに設定する
+        int day;
     	try {
-    		int day = Integer.parseInt(date.replaceAll("-", ""));
+    		day = Integer.parseInt(date.replaceAll("-", ""));
     		payment.setDay(day);
     	} catch (NumberFormatException e) {
-    		model.addAttribute("error", "Invalid date format");
+    		model.addAttribute("error", "無効な日付形式");
     		return "payment-input";
     	}
+    	
+    	if (day < 20000101 || day > 20991231) {
+    		model.addAttribute("errorMes", "年月は2000年1月1日から2099年12月31日までで入力してください");
+    		return "payment-input";
+    	}
+    	
+        if (income < 0 || income > 10000000) {
+            model.addAttribute("errorMessage", "収入は0以上10000000以下で入力してください");
+            return "payment-input";
+        }
+        
     	payment.setUserId(userId);
-    	payment.setSpend(0);
     	payment.setIncome(income);
+    	payment.setSpend(0);
     	payment.setItemId(itemId);
     	model.addAttribute("payment", payment);
     	service.insertPayment(payment);
@@ -114,14 +126,25 @@ public class PaymentController {
         }
         int userId = (int) loggedInUser;
     	
-    // 日付を日付フォーマットに変換し、dayに設定する
+        int day;
     	try {
-    		int day = Integer.parseInt(date.replaceAll("-", ""));
+    		day = Integer.parseInt(date.replaceAll("-", ""));
     		payment.setDay(day);
     	} catch (NumberFormatException e) {
-    		model.addAttribute("error", "Invalid date format");
+    		model.addAttribute("error", "無効な日付形式");
     		return "payment-input";
     	}
+    	
+    	if (day < 20000101 || day > 20991231) {
+    		model.addAttribute("errorMes", "年月は2000年1月1日から2099年12月31日までで入力してください");
+    		return "payment-input";
+    	}
+    	
+        if (spend < 0 || spend > 10000000) {
+            model.addAttribute("errorMessage", "支出は0以上10000000以下で入力してください");
+            return "payment-input";
+        }
+        
     	payment.setUserId(userId);
     	payment.setIncome(0);
     	payment.setSpend(spend);
@@ -168,7 +191,7 @@ public class PaymentController {
         PaymentModel payment = service.findById(id); // IDで検索してモデルを取得する
         if (payment == null) {
             // IDに対応するデータが見つからない場合の処理
-            model.addAttribute("error", "Payment not found");
+            model.addAttribute("error", "データが見つかりません");
             return "record";
         }
         model.addAttribute("payment", payment);
@@ -192,13 +215,25 @@ public class PaymentController {
     	
     	int id = payment.getId();
     	PaymentModel payment = service.findById(id); // IDで検索してモデルを取得する
+    	
+    	int day;
     	try {
-    		int day = Integer.parseInt(date.replaceAll("-", ""));
+    		day = Integer.parseInt(date.replaceAll("-", ""));
     		payment.setDay(day);
     	} catch (NumberFormatException e) {
-    		model.addAttribute("error", "Invalid date format");
-    		return "record";
+    		model.addAttribute("error", "無効な日付形式");
+    		return "update-input";
     	}
+    	
+    	if (day < 20000101 || day > 20991231) {
+    		model.addAttribute("errorMes", "年月は2000年1月1日から2099年12月31日までで入力してください");
+    		return "update-input";
+    	}
+    	
+    	if (income < 0 || income > 10000000) {
+            model.addAttribute("errorMessage", "収入は0以上10000000以下で入力してください");
+            return "update-input";
+        }
     	
     	payment.setIncome(income);
         payment.setSpend(0);
@@ -228,13 +263,25 @@ public class PaymentController {
     	
     	int id = payment.getId();
     	PaymentModel payment = service.findById(id); // IDで検索してモデルを取得する
+    	
+    	int day;
     	try {
-    		int day = Integer.parseInt(date.replaceAll("-", ""));
+    		day = Integer.parseInt(date.replaceAll("-", ""));
     		payment.setDay(day);
     	} catch (NumberFormatException e) {
-    		model.addAttribute("error", "Invalid date format");
-    		return "record";
+    		model.addAttribute("error", "無効な日付形式");
+    		return "update-input";
     	}
+    	
+    	if (day < 20000101 || day > 20991231) {
+    		model.addAttribute("errorMes", "年月は2000年1月1日から2099年12月31日までで入力してください");
+    		return "update-input";
+    	}
+    	
+    	if (spend < 0 || spend > 10000000) {
+            model.addAttribute("errorMessage", "支出は0以上10000000以下で入力してください");
+            return "update-input";
+        }
     	
     	payment.setIncome(0);
         payment.setSpend(spend);
@@ -247,6 +294,19 @@ public class PaymentController {
         return "update-complete";
     }
     
+    /****************************************************************************
+     *** Method Name         : deleteCheck()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.11
+     *** Function            : 削除するデータを検索する
+     *** Return              : 削除確認画面
+     ****************************************************************************/
+    @PostMapping("/deleteCheck")
+    public String deleteCheck(Model model, int id, int userId) {
+        PaymentModel payment = service.findByIdAndUserId(id, userId);
+        model.addAttribute("payment", payment);
+        return "delete-check"; 
+    }
     
     /****************************************************************************
      *** Method Name         : deletePayment()
@@ -257,10 +317,8 @@ public class PaymentController {
      ****************************************************************************/
     // 削除処理を行う
     @PostMapping("/delete")
-    public String deletePayment(Model model, int id, int userId) {
-    	 PaymentModel payment = service.findByIdAndUserId(id, userId);
-    	 model.addAttribute("payment", payment);
-         service.deleteAndRearrange(id, userId);
-        return "delete-complete"; // Assuming delete-complete.html is your template file name
+    public String deletePayment(int id, int userId) {
+    	service.deleteAndRearrange(id, userId);
+        return "delete-complete";
     }
 }

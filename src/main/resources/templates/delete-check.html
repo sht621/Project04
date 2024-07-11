@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>削除確認</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 50px;
+        }
+        .confirmation {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #4682b4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #5a9bd3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>削除確認</h1>
+        <p>以下の項目を削除しますか？</p>
+        <div class="confirmation">
+            <p>日付: <span th:text="${#temporals.format(T(java.time.LocalDate).parse(payment.day.toString(), T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')), 'yyyy/MM/dd')}"></span></p>
+            <p>項目: <span th:text="${payment.itemId}"></span></p>
+            <p th:if="${payment.itemId} == '給料'">金額: <span th:text="${payment.income} + ' 円'"></span></p>
+            <p th:if="${payment.itemId} != '給料'">金額: <span th:text="${payment.spend} + ' 円'"></span></p>
+        </div>
+        <form action="/delete" method="post">
+            <input type="hidden" name="id" th:value="${payment.id}"/>
+            <input type="hidden" name="userId" th:value="${payment.userId}"/>
+            <button type="submit">削除</button>
+            <a href="/record"><button type="button">キャンセル</button></a>
+        </form>
+    </div>
+</body>
+</html>

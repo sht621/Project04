@@ -107,7 +107,7 @@
     <div id="incomeTab" class="tab-content">
         <h2>収入更新</h2>
         <form action="/updateIncome" method="post">
-			<input type="hidden" name="id" th:value="${payment.id} " />
+			<input type="hidden" name="id" th:value="${payment.id}"/>
             <div>
                 <label for="income">収入:</label>
                 <input type="number" id="income" name="income" th:value="${payment.income}" required><br>
@@ -126,13 +126,15 @@
             <input type="submit" value="更新">
         </form>
         <p th:if="${error}" th:text="${error}"></p>
+        <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
+        <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
     </div>
 
     <!-- 支出更新フォーム -->
     <div id="spendTab" class="tab-content">
         <h2>支出更新</h2>
         <form action="/updateSpend" method="post">
-            <input type="hidden" name="id" th:value="${payment.id}" />
+            <input type="hidden" name="id" th:value="${payment.id}"/>
             <div>
                 <label for="spend">支出:</label>
                 <input type="number" id="spend" name="spend" th:value="${payment.spend}" required><br>
@@ -163,6 +165,8 @@
             <input type="submit" value="更新">
         </form>
         <p th:if="${error}" th:text="${error}"></p>
+        <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
+        <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
     </div>
 
     <script th:inline="javascript">
