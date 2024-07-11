@@ -89,6 +89,7 @@
             <th>更新</th>
             <th>削除</th>
         </tr>
+        <p th:if="${error1}" th:text="${error1}" class="error"></p>
         <tr th:each="payment : ${list}">
 			<td th:text="${#temporals.format(T(java.time.LocalDate).parse(payment.day.toString(), 
 			    		 T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')), 'yyyy/MM/dd')}"></td>
@@ -103,7 +104,7 @@
                 </form>
             </td>
             <td>
-                <form action="/delete" method="post">
+                <form action="/deleteCheck" method="post">
                     <input type="hidden" name="id" th:value="${payment.id}"/>
                     <input type="hidden" name="userId" th:value="${payment.userId}"/>
                     <button type="submit">削除</button>
