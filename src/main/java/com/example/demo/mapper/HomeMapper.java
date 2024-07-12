@@ -50,7 +50,7 @@ public interface HomeMapper {
 	
 	@Select("SELECT * FROM PAYMENT "
 	        + "WHERE USERId = #{userid} "
-	        + "ORDER BY ID DESC "
+	        + "ORDER BY DAY DESC, ID DESC "
 	        + "LIMIT 10")
 	List<PaymentModel> getRecord(@Param("userid")int userId);
 

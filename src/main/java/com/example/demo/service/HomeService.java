@@ -152,7 +152,7 @@ public class HomeService {
 			String[] data = new String[3];
 			data[0] = convertToDate(dataList.get(i).getDay()); //日付を取得
 			data[1] = dataList.get(i).getItemId(); //カテゴリを取得
-			if(!data[1].equals("")) { //支出を取得
+			if(!data[1].equals("収入")) { //支出を取得
 				data[1] = dataList.get(i).getItemId();
 				data[2] = String.valueOf(dataList.get(i).getSpend()) + "円";
 			}else { //収入を取得

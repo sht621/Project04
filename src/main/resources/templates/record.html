@@ -9,7 +9,6 @@
          body {
             font-family: Arial, sans-serif;
             background-color: #ffffff; /* 背景色を白に変更 */
-            margin: 0;
             padding: 0;
         }
         table {
@@ -89,13 +88,12 @@
             <th>更新</th>
             <th>削除</th>
         </tr>
-        <p th:if="${error1}" th:text="${error1}" class="error"></p>
         <tr th:each="payment : ${list}">
 			<td th:text="${#temporals.format(T(java.time.LocalDate).parse(payment.day.toString(), 
 			    		 T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')), 'yyyy/MM/dd')}"></td>
 			<td th:text="${payment.itemId}"></td>
-            <td th:if="${payment.itemId} == '給料'" th:text="${payment.income} + 円"></td>
-            <td th:if="${payment.itemId} != '給料'" th:text="${payment.spend} + 円"></td>
+            <td th:if="${payment.itemId} == '収入'" th:text="${payment.income} + 円"></td>
+            <td th:if="${payment.itemId} != '収入'" th:text="${payment.spend} + 円"></td>
             <td>
                 <form action="/updateInput" method="get">
                     <input type="hidden" name="id" th:value="${payment.id}"/>

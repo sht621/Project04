@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+body{
+	font-family: Arial, sans-serif;
+	max-width: 95%;
+	margin: 0 auto;
+}
+
 .top{
 	display: flex;
 	justify-content: space-between;
