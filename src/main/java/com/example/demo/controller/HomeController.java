@@ -1,6 +1,6 @@
 /*******************************************************************
 ***  File Name		: HomeController.java
-***  Version		: V1.1
+***  Version		: V1.2
 ***  Designer		: 菅 匠汰
 ***  Date			: 2024.07.04
 ***  Purpose       	: ホーム画面を表示する
@@ -10,6 +10,7 @@
 *** Revision :
 *** V1.0 : 菅 匠汰, 2024.06.18
 *** V1.1 : 菅 匠汰, 2024.07.04
+*** V1.2 : 菅 匠汰，2024.07.12
 */
 
 package com.example.demo.controller;
@@ -73,5 +74,37 @@ public class HomeController {
 		model.addAttribute("record", record);
 		
 		return "home";
+	}
+	
+	 /****************************************************************************
+	 *** Method Name         : logoutConfirm()
+	 *** Designer            : 菅 匠汰
+	 *** Date                : 2024.07.12
+	 *** Function            : ログアウト確認画面を表示する
+	 *** Return              : ログアウト確認画面
+	 ****************************************************************************/
+	
+	@GetMapping("/logout-confirm")
+	public String logoutComfirm(Model model, HttpSession session) {
+		Object loggedInUser =  session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login"; //idを取得できない場合はログイン画面にリダイレクト
+        }
+        
+		return "logout-confirm"; //ログアウト確認画面
+	}
+	
+	 /****************************************************************************
+	 *** Method Name         : logout()
+	 *** Designer            : 菅 匠汰
+	 *** Date                : 2024.07.12
+	 *** Function            : ログアウトする
+	 *** Return              : ログイン画面
+	 ****************************************************************************/
+	
+	@GetMapping("/logout")
+	public String logout(Model model, HttpSession session) {
+		session.invalidate(); //保持していたユーザIDを消去
+		return "redirect:/login"; //ログイン画面
 	}
 }

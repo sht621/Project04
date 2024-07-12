@@ -71,11 +71,10 @@
 <body>
 	<div class="container">
     	<h1>削除項目</h1>
-    	<p>ID: <span th:text="${payment.id}"></span></p>
-    	<p>userID: <span th:text="${payment.userId}"></span></p>
-    	<p>収入: <span th:text="${payment.income}"></span></p>
-    	<p>支出: <span th:text="${payment.spend}"></span></p>
-    	<p>年月: <span th:text="${payment.day}"></span></p>
+    	<p th:if="${payment.itemId} == '収入'">収入: <span th:text="${payment.income} + 円"></span></p>
+    	<p th:if="${payment.itemId} != '収入'">支出: <span th:text="${payment.spend} + 円"></span></p>
+    	<p>日付: <span th:text="${#temporals.format(T(java.time.LocalDate).parse(payment.day.toString(), 
+			    		 		 T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')), 'yyyy/MM/dd')}"></span></p>
     	<p>項目: <span th:text="${payment.itemId}"></span></p>
     	<a href="/record">データ一覧画面へ戻る</a>
 	</div>
