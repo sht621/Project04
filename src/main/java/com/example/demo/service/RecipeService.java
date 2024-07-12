@@ -28,9 +28,6 @@ public class RecipeService {
     
 	@Autowired
     private com.example.demo.service.BudgetService calculateBudgetProcess;
-	
-    @Autowired
-    private com.example.demo.util.PromptProcess promptProcess;
     
     @Autowired
     private com.example.demo.service.ChatGPTService chatGPTService;
@@ -74,7 +71,7 @@ public class RecipeService {
 	
 	public String getRecipeText(int recipeBudget){
 		//質問文を作成
-		String prompt = promptProcess.generatePrompt(recipeBudget);
+		String prompt = chatGPTService.generatePrompt(recipeBudget);
 
 		//レシピ生成
 	    String recipeText = chatGPTService.chatGPT(prompt);
