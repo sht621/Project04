@@ -28,7 +28,10 @@ import jakarta.servlet.http.HttpSession;
 public class HomeController {
 	
 	@Autowired
-	private com.example.demo.service.HomeService homeService;
+	private com.example.demo.service.PaymentService paymentService;
+	
+	@Autowired
+	private com.example.demo.service.GraphService graphService;
 	
 	 /****************************************************************************
 	 *** Method Name         : displayHome()
@@ -46,7 +49,7 @@ public class HomeController {
         int userId = (int) loggedInUser;
 		
 		//今月の収入、支出、収支を取得するメソッドを利用
-		int[] homeData = homeService.getHomeData(userId);
+		int[] homeData = paymentService.getHomeData(userId);
 		int balance = homeData[0];
 		int income = homeData[1];
 		int expense = homeData[2];
@@ -62,7 +65,7 @@ public class HomeController {
 		model.addAttribute("difference", difference);
 		
 		//円グラフのデータを取得
-		List<Object> sortedData = homeService.getSortedData(userId);
+		List<Object> sortedData = graphService.getSortedData(userId);
 		int[] chartData = (int[]) sortedData.get(0);
 		String[] chartLabels = (String[]) sortedData.get(1);
 		model.addAttribute("chartData", chartData);
@@ -70,7 +73,7 @@ public class HomeController {
 		
 		
 		//直近の入力履歴を新しい順に最大10件表示
-		List<String[]> record = homeService.getRecords(userId);
+		List<String[]> record = paymentService.getRecords(userId);
 		model.addAttribute("record", record);
 		
 		return "home";

@@ -37,4 +37,32 @@ public interface PaymentMapper {
 
     @Update("UPDATE PAYMENT SET ID = ID - 1 WHERE ID > #{id}")
     int decrementIdsAfter(int id);
+    
+    
+    /****************************************************************************
+    *** Method Name         : getIncomes()
+    *** Designer            : 菅 匠汰
+    *** Date                : 2024.07.02
+    *** Function            : 指定されたユーザと月の収支データを全て取得する
+    *** Return              : PAYMENTデータ
+    ****************************************************************************/
+	
+	@Select("SELECT * FROM PAYMENT "
+	        + "WHERE USERId = #{userid} AND DAY LIKE #{day} || '%'")
+	List<PaymentModel> getIncomes(@Param("userid") int userId, @Param("day") int day);
+	
+	
+    /****************************************************************************
+    *** Method Name         : getRecord()
+    *** Designer            : 菅 匠汰
+    *** Date                : 2024.07.02
+    *** Function            : 指定されたユーザの入力履歴を新しい順に最大10件取得する
+    *** Return              : 入力履歴データ
+    ****************************************************************************/
+	
+	@Select("SELECT * FROM PAYMENT "
+	        + "WHERE USERId = #{userid} "
+	        + "ORDER BY DAY DESC, ID DESC "
+	        + "LIMIT 10")
+	List<PaymentModel> getRecord(@Param("userid")int userId);
 }
