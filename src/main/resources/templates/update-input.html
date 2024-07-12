@@ -114,10 +114,13 @@
                 <label for="income">収入:</label>
                 <input type="number" id="income" name="income" th:value="${payment.income}" required><br>
             </div>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
             <div>
                 <label for="day">日付:</label>
                 <input type="date" id="incomeDay" name="date" required><br>
             </div>
+            <p th:if="${error}" th:text="${error}"></p>
+            <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>    
             <div>
                 <label for="itemId">項目:</label>
                 <select id="itemId" name="itemId" required>
@@ -126,9 +129,6 @@
             </div>
             <input type="submit" value="更新">
         </form>
-        <p th:if="${error}" th:text="${error}"></p>
-        <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
-        <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
     </div>
 
     <!-- 支出更新フォーム -->
