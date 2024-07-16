@@ -61,7 +61,8 @@ public class ChatGPTService {
                 String body = "{\"model\": \"" + model + "\", \"messages\": [{\"role\": \"user\","
                 		    + " \"content\": \"" + prompt + "\"}]}";
                 connection.setDoOutput(true);
-                try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8)) {
+                try (OutputStreamWriter writer = new OutputStreamWriter(
+                								 connection.getOutputStream(), StandardCharsets.UTF_8)) {
                     writer.write(body);
                     writer.flush();
                 }
@@ -69,7 +70,8 @@ public class ChatGPTService {
                 // レスポンス取得
                 int responseCode = connection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(
+                    						 connection.getInputStream(), StandardCharsets.UTF_8))) {
                         StringBuilder response = new StringBuilder();
                         String line;
                         while ((line = br.readLine()) != null) {
