@@ -110,7 +110,8 @@
 			<input type="hidden" name="id" th:value="${payment.id}"/>
             <div>
                 <label for="income">収入:</label>
-                <input type="number" id="income" name="income" th:value="${payment.income}" required><br>
+                <input type="number" id="income" name="income" th:value="${payment.income}" required
+                 max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);"><br>
             </div>
              <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
             <div>
@@ -137,7 +138,8 @@
             <input type="hidden" name="id" th:value="${payment.id}"/>
             <div>
                 <label for="spend">支出:</label>
-                <input type="number" id="spend" name="spend" th:value="${payment.spend}" required><br>
+                <input type="number" id="spend" name="spend" th:value="${payment.spend}" required
+                 max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);"><br>
             </div>
             <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
             <div>
