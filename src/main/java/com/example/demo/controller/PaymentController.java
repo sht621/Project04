@@ -225,6 +225,11 @@ public class PaymentController {
     		return "update-input";
     	}
     	
+    	payment.setIncome(income);
+        payment.setSpend(0);
+        payment.setItemId(itemId);
+    	model.addAttribute("payment", payment);
+    	
     	if (day < 20000101 || day > 20991231) {
     		model.addAttribute("errorMes", "年月は2000年1月1日から2099年12月31日までで入力してください");
     		return "update-input";
@@ -235,13 +240,9 @@ public class PaymentController {
             return "update-input";
         }
     	
-    	payment.setIncome(income);
-        payment.setSpend(0);
-        payment.setItemId(itemId);
         int userId = payment.getUserId();
         int DAY = payment.getDay();
         int spend = payment.getSpend();
-        model.addAttribute("payment", payment);
 		service.paymentUpdate(income, spend, DAY, itemId, id, userId);
         return "update-complete";
     }
