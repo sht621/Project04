@@ -9,6 +9,7 @@
 /*
 *** Revision :
 *** V1.0 : 堀江咲希, 2024.06.18
+*** V1.2 : 堀江咲希, 2024,07,09
 */
 
 package com.example.demo.mapper;
