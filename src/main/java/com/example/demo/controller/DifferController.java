@@ -1,11 +1,20 @@
 /*******************************************************************
 ***  File Name		: DifferController.java
-***  Version		: V1.3
+***  Version		: V1.4
 ***  Designer		: 東野　魁耶
-***  Date		: 2024.07.09
+***  Date		: 2024.07.16
 ***  Purpose       	: Serviceクラスを呼び出し画面遷移の処理を行う
 ***
 *******************************************************************/
+/*
+*** Revision :
+*** V1.0 : 東野魁耶, 2024.06.18
+*** V1.1 : 東野魁耶　2024.06.24
+*** V1.2 : 東野魁耶　2024.07.02
+*** V1.3 : 東野魁耶　2024.07.09
+*** V1.4 : 東野魁耶　2024.07.16
+*
+*/
 
 package com.example.demo.controller;
 
@@ -72,17 +81,18 @@ public class DifferController {
         
         // 初回表示は現在の年月で表示
         List<MonthModel> differ = paymentService.differCalculation(userId);
-        if (differ.isEmpty()) {
-	       	model.addAttribute("year", currentYear);
-	       	model.addAttribute("month", currentMonth);
-	       	return "errornumber";
-        }
-        
         model.addAttribute("differ", differ);
+        
         model.addAttribute("userId", userId);
         LocalDate today = LocalDate.now();
     	int year = today.getYear();
     	int month = today.getMonthValue();
+    	
+    	if (differ.isEmpty()) {
+        	model.addAttribute("year", year);
+            model.addAttribute("month", month);
+            return "errornumber";
+        }
     	
     	model.addAttribute("year", year);
     	model.addAttribute("month", month);
@@ -95,7 +105,7 @@ public class DifferController {
      *** Method Name         : displayDifferByMonth(@RequestParam("year") int year,
      *								 @RequestParam("month") int month, @RequestParam("userId") int userId, Model model)
      *** Designer            : 東野　魁耶
-     *** Date                : 2024.07.09
+     *** Date                : 2024.07.16
      *** Function            : htmlファイルから受けとった年月を基に差額計算を行い
      						　対応したhtmlを返す
      *** Return              : htmlファイル
@@ -125,9 +135,9 @@ public class DifferController {
         
         List<MonthModel> differ = paymentService.differCalculation(year, month, userId);
         if (differ.isEmpty()) {
-        	 model.addAttribute("year", year);
-        	 model.addAttribute("month", month);
-        	 return "errornumber";
+        	model.addAttribute("year", year);
+            model.addAttribute("month", month);
+            return "errornumber";
         }
         model.addAttribute("differ", differ);
         
