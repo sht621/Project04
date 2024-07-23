@@ -116,8 +116,9 @@ public class GoalController {
 
     
     @PostMapping("/objective")
-    public String createNewObject(@Validated @RequestParam("targetValues") Integer[] targetValues, Model model, HttpSession session,
-    		 					  @RequestParam("year") int year, @RequestParam("month") int month) {
+    public String createNewObject(@Validated @RequestParam("targetValues") Integer[] targetValues, Model model, 
+								  HttpSession session,@RequestParam("year") int year, 
+								  @RequestParam("month") int month) {
     	//UserIdがないときログイン画面へ飛ばす
     	if((Integer)session.getAttribute("loggedInUser") == null) {
     		return "redirect:login";
