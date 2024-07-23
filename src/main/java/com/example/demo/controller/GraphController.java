@@ -2,10 +2,15 @@
 ***  File Name        : GraphController.java
 ***  Version          : V1.1
 ***  Designer         : 保泉 雄祐
-***  Date             : 2024.07.07
+***  Date             : 2024.07.08
 ***  Purpose          : グラフ表示ページのコントロールを行う
 ***
 *******************************************************************/
+/*
+*** Revision :
+*** V1.0 : 保泉雄祐, 2024.07.07
+*** V1.1 : 保泉雄祐,　2024.07.08
+*/
 
 package com.example.demo.controller;
 
@@ -30,16 +35,16 @@ public class GraphController {
     private GraphService graphService;
 
     /****************************************************************************
-    *** Method Name         : displayGraph
-    *** Designer            : 保泉 雄祐
-    *** Date                : 2024.07.07
-    *** Function            : グラフ表示ページを表示し、ユーザー入力を処理する
-    *** Return              : グラフ表示ページのビュー名
-    ****************************************************************************/
+     *** Method Name : displayGraph
+     *** Designer : 保泉 雄祐
+     *** Date : 2024.07.07
+     *** Function : グラフ表示ページを表示し、ユーザー入力を処理する
+     *** Return : グラフ表示ページのビュー名
+     ****************************************************************************/
     @GetMapping("/graph")
     public String displayGraph(@RequestParam(required = false) Integer year,
-                               @RequestParam(required = false) Integer month,
-                               Model model, HttpSession session) {
+            @RequestParam(required = false) Integer month,
+            Model model, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("loggedInUser");
         if (userId == null) {
             return "redirect:/login";
@@ -53,16 +58,16 @@ public class GraphController {
     }
 
     /****************************************************************************
-    *** Method Name         : getGraphData
-    *** Designer            : 保泉 雄祐
-    *** Date                : 2024.07.07
-    *** Function            : グラフデータを取得し、モデルに追加する
-    *** Return              : グラフ表示ページのビュー名
-    ****************************************************************************/
+     *** Method Name : getGraphData
+     *** Designer : 保泉 雄祐
+     *** Date : 2024.07.08
+     *** Function : グラフデータを取得し、モデルに追加する
+     *** Return : グラフ表示ページのビュー名
+     ****************************************************************************/
     private String getGraphData(Model model, int userId, int year, int month) {
         List<MonthModel> graphData = graphService.getGraphData(userId, year, month);
         model.addAttribute("graphData", graphData);
-        
+
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("userId", userId);
