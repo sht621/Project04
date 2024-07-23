@@ -39,11 +39,11 @@
         <h1>削除確認</h1>
         <p>以下の項目を削除しますか？</p>
         <div class="confirmation">
-			<p th:if="${payment.itemId} == '収入'">金額: <span th:text="${payment.income} + ' 円'"></span></p>
-            <p th:if="${payment.itemId} != '収入'">金額: <span th:text="${payment.spend} + ' 円'"></span></p>
-            <p>日付: <span th:text="${#temporals.format(T(java.time.LocalDate).parse(payment.day.toString(),
-            						T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')), 'yyyy/MM/dd')}"></span></p>
+            <p>日付: <span th:text="${#temporals.format(T(java.time.LocalDate).parse(payment.day.toString(), 
+            T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')), 'yyyy/MM/dd')}"></span></p>
             <p>項目: <span th:text="${payment.itemId}"></span></p>
+            <p th:if="${payment.itemId} == '給料'">金額: <span th:text="${payment.income} + ' 円'"></span></p>
+            <p th:if="${payment.itemId} != '給料'">金額: <span th:text="${payment.spend} + ' 円'"></span></p>
         </div>
         <form action="/delete" method="post">
             <input type="hidden" name="id" th:value="${payment.id}"/>
