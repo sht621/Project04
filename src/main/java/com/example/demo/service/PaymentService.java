@@ -1,3 +1,12 @@
+/*******************************************************************
+***  File Name	: PaymentService.java
+***  Version	: V1.0
+***  Designer	: 佐藤　巧都　
+***  Date		: 2024.07.09
+***  Purpose    : Mapperクラスから処理を呼び出し、Controllerから呼ばれた処理を行うクラス
+***
+*******************************************************************/
+
 package com.example.demo.service;
 
 import java.time.LocalDate;
@@ -27,10 +36,24 @@ public class PaymentService {
     private com.example.demo.service.DifferService differService;
     
 
+    /****************************************************************************
+     *** Method Name         : findAll()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.09
+     *** Function            : mapperによりuserIdの情報からデータ一覧を取得し返す
+     *** Return              : mapper.findAll()
+     ****************************************************************************/
     public List<PaymentModel> findAll(int userId) {
         return mapper.findAll(userId);
     }
 
+    /****************************************************************************
+     *** Method Name         : insertPayment()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.09
+     *** Function            : idを設定し、mapperのinputPaymentを呼び出しpaymentを返す
+     *** Return              : payment
+     ****************************************************************************/
     public PaymentModel insertPayment(PaymentModel payment) {
     	int max = 0;
     	if(mapper.selectMaxIdFromPayment() != null) {
@@ -45,19 +68,47 @@ public class PaymentService {
         return payment;
     }
 
+    /****************************************************************************
+     *** Method Name         : paymentUpdate()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.09
+     *** Function            : mapperのupdatePaymentを呼び出しそれを返す
+     *** Return              : mapper.updatePayment
+     ****************************************************************************/
     @Transactional
     public int paymentUpdate(int income, int spend, int day, String itemId, int id, int userId) {
         return mapper.updatePayment(income, spend, day, itemId, id, userId);
     }
     
+    /****************************************************************************
+     *** Method Name         : findById()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.09
+     *** Function            : mapperのfindByIdを呼び出しそれを返す
+     *** Return              : mapper.findById()
+     ****************************************************************************/
     public PaymentModel findById(int id) {
         return mapper.findById(id);  // 引数を PaymentModel から int に変更
     }
     
+    /****************************************************************************
+     *** Method Name         : findByIdAndUserId()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.09
+     *** Function            : mapperのfindByIdAndUserIdを呼び出しそれを返す
+     *** Return              : mapper.findByIdAndUserId
+     ****************************************************************************/
     public PaymentModel findByIdAndUserId(int id, int userId) {
         return mapper.findByIdAndUserId(id, userId);
     }
     
+    /****************************************************************************
+     *** Method Name         : deleteAndRearrange()
+     *** Designer            : 佐藤　巧都
+     *** Date                : 2024.07.09
+     *** Function            : mapperのdeletePaymentByIdとdcrementIdsAfterを呼び出す
+     *** Return              : なし
+     ****************************************************************************/
     @Transactional
     public void deleteAndRearrange(int id, int userId) {
     	 
