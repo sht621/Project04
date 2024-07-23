@@ -2,10 +2,15 @@
 ***  File Name		: MyBatisMapperScannerConfig.java
 ***  Version		: V1.0
 ***  Designer		: 東野　魁耶
-***  Date		: 2024.07.23
+***  Date		: 2024.06.18
 ***  Purpose       	: MyBatisのMapperインターフェースをスキャンし、自動的に検出する設定を行う
 ***
 *******************************************************************/
+/*
+*** Revision :
+*** V1.0 : 東野魁耶, 2024.06.18
+*
+*/
 
 package com.example.demo.config;
 

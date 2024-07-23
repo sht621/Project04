@@ -2,10 +2,15 @@
 ***  File Name		: MyBatisConfig.java
 ***  Version		: V1.0
 ***  Designer		: 東野　魁耶
-***  Date		: 2024.07.23
+***  Date		: 2024.06.18
 ***  Purpose       	: DataSourceの設定を行い、SQLiteデータベースを利用可能にする
 ***
 *******************************************************************/
+/*
+*** Revision :
+*** V1.0 : 東野魁耶, 2024.06.18
+*
+*/
 
 package com.example.demo.config;
 
