@@ -81,18 +81,16 @@ public class DifferController {
         
         // 初回表示は現在の年月で表示
         List<MonthModel> differ = paymentService.differCalculation(userId);
+        if (differ.isEmpty()) {
+	       	model.addAttribute("year", currentYear);
+	       	model.addAttribute("month", currentMonth);
+	       	return "errornumber";
+        }
         model.addAttribute("differ", differ);
-        
         model.addAttribute("userId", userId);
         LocalDate today = LocalDate.now();
     	int year = today.getYear();
     	int month = today.getMonthValue();
-    	
-    	if (differ.isEmpty()) {
-        	model.addAttribute("year", year);
-            model.addAttribute("month", month);
-            return "errornumber";
-        }
     	
     	model.addAttribute("year", year);
     	model.addAttribute("month", month);
