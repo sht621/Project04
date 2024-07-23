@@ -1,3 +1,12 @@
+/*******************************************************************
+***  File Name		: MyBatisConfig.java
+***  Version		: V1.0
+***  Designer		: 東野　魁耶
+***  Date		: 2024.07.23
+***  Purpose       	: DataSourceの設定を行い、SQLiteデータベースを利用可能にする
+***
+*******************************************************************/
+
 package com.example.demo.config;
 
 import javax.sql.DataSource;
@@ -12,7 +21,16 @@ import org.sqlite.SQLiteDataSource;
 public class MyBatisConfig {
     @Autowired
     private DataSourceProperties dataSourceProperties;
+    
+    
 
+	/****************************************************************************
+     *** Method Name         : dataSource()
+     *** Designer            : 東野　魁耶
+     *** Date                : 2024.07.23
+     *** Function            : このメソッドは、SQLiteのDataSourceを設定し返します。
+     *** Return              : DataSource
+     ****************************************************************************/
     @Bean(name="dataSource")
     public DataSource dataSource() {
         SQLiteDataSource dataSource = new SQLiteDataSource();
