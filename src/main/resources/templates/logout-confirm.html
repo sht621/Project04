@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ログアウト確認</title>
+<link rel="stylesheet" href="/style.css">
+<style>
+	body{
+		display: flex;
+		justify-content: center;
+	}
+	
+	div{
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+        padding: 20px;
+        margin-top: 30vh;
+	}
+	
+	p{
+		font-weight: bold;
+	}
+	
+	a{
+		text-decoration: none;
+		background-color: #007bff;
+		padding: 5px;
+		margin: 5px;
+		border-radius: 5px;
+		color: white;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	}
+	
+	a:hover{
+		background-color: #0056b3;
+	}
+</style>
+</head>
+<body>
+	<div>
+		<p>本当にログアウトしますか？</p>
+		<a href="/logout" id="logoutLink">ログアウト</a>
+		<a href="/home" id="homeLink">戻る</a>
+	</div>
+</body>
+</html>

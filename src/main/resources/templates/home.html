@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>home</title>
+	<title>HOME</title>
 	<link rel="stylesheet" href="/style.css">
 	<style>
 		body{
@@ -140,8 +140,18 @@
 		}
 		
 		.showMore a{
-			font-weight: bold;
 			text-decoration: none;
+			font-weight: bold;
+			background-color: #007bff;
+			padding: 5px;
+			margin: 10px;
+			border-radius: 5px;
+			color: white;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+		}
+		
+		.showMore a:hover{
+			background-color: #0056b3;
 		}
 		
 		/*入力ボタン*/
@@ -186,6 +196,19 @@
 		
 		#recipeLink:hover{
 			transform: scale(1.05);
+		}
+		
+		footer{
+			margin: 10px 0px;
+		}
+		
+		#logoutLink{
+			display: block;
+			color: red;
+			font-weight: bold;
+			text-decoration: none;
+			text-align: center;
+			padding: 30px 0px;
 		}
 		
 		@media(max-width: 950px){			
@@ -407,5 +430,9 @@
 
 	</aside>
 	</div>
+	<footer>
+		<a href="/logout-confirm" id="logoutLink">ログアウト</a>
+	</footer>
 </body>
+
 </html>

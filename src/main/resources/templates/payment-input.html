@@ -12,7 +12,6 @@
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f9;
-            margin: 0;
             padding: 0;
         }
 
@@ -167,21 +166,21 @@
                 <input type="number" id="income" name="income" required
                  max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);"><br>
             </div>
-            <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
             <div>
-                <label for="incomeDay">年月:</label>
+                <label for="incomeDay">日付:</label>
                 <input type="date" id="incomeDay" name="date" required><br>
             </div>
-            <p th:if="${error}" th:text="${error}"></p>
-        	<p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
             <div>
                 <label for="incomeItemId">項目:</label>
                 <select id="incomeItemId" name="itemId" required>
-                    <option value="給料">給料</option>
+                    <option value="収入">収入</option>
                 </select><br>
             </div>
             <button type="submit">登録</button>
         </form>
+        <p th:if="${error}" th:text="${error}"></p>
+        <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
+        <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
     </div>
 
     <!-- 支出登録フォーム -->
@@ -193,13 +192,10 @@
                 <input type="number" id="spend" name="spend" required
                  max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);"><br>
             </div>
-            <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
             <div>
-                <label for="spendDay">年月:</label>
+                <label for="spendDay">日付:</label>
                 <input type="date" id="spendDay" name="date" required><br>
             </div>
-            <p th:if="${error}" th:text="${error}"></p>
-        	<p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
             <div>
                 <label for="spendItemId">項目:</label>
                 <select id="spendItemId" name="itemId" required>
@@ -221,7 +217,9 @@
             </div>
             <button type="submit">登録</button>
         </form>
-        
+        <p th:if="${error}" th:text="${error}"></p>
+        <p th:if="${errorMes}" th:text="${errorMes}" class="error"></p>
+        <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
     </div>
 
     <script>

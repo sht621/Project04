@@ -125,7 +125,7 @@ public interface PaymentMapper {
 	*** Return              : 入力履歴データ
 	****************************************************************************/
 	
-    @Select("SELECT * FROM PAYMENT "
+  @Select("SELECT * FROM PAYMENT "
 		+ "WHERE USERId = #{userid} "
 		+ "ORDER BY DAY DESC, ID DESC "
 		+ "LIMIT 10")

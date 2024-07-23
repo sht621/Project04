@@ -13,10 +13,14 @@
 
 package com.example.demo.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ApiService {
+	
+    @Value("${gpt.api.key}")
+    private String apiKey;
 	
 	/****************************************************************************
      *** Method Name         : getApiKey()
@@ -26,7 +30,6 @@ public class ApiService {
      *** Return              : APIキー
      ****************************************************************************/
 	public String getApiKey() {
-		String apiKey = System.getenv("GPT_API_KEY"); //環境変数から取得
 		return apiKey; //APIキー
 	}
 }

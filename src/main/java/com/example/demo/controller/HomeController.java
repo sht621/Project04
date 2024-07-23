@@ -1,6 +1,6 @@
 /*******************************************************************
 ***  File Name		: HomeController.java
-***  Version		: V1.1
+***  Version		: V1.2
 ***  Designer		: 菅 匠汰
 ***  Date			: 2024.07.04
 ***  Purpose       	: ホーム画面を表示する
@@ -10,6 +10,7 @@
 *** Revision :
 *** V1.0 : 菅 匠汰, 2024.06.18
 *** V1.1 : 菅 匠汰, 2024.07.04
+*** V1.2 : 菅 匠汰，2024.07.12
 */
 
 package com.example.demo.controller;
@@ -27,7 +28,10 @@ import jakarta.servlet.http.HttpSession;
 public class HomeController {
 	
 	@Autowired
-	private com.example.demo.service.HomeService homeService;
+	private com.example.demo.service.PaymentService paymentService;
+	
+	@Autowired
+	private com.example.demo.service.GraphService graphService;
 	
 	 /****************************************************************************
 	 *** Method Name         : displayHome()
@@ -45,7 +49,7 @@ public class HomeController {
         int userId = (int) loggedInUser;
 		
 		//今月の収入、支出、収支を取得するメソッドを利用
-		int[] homeData = homeService.getHomeData(userId);
+		int[] homeData = paymentService.getHomeData(userId);
 		int balance = homeData[0];
 		int income = homeData[1];
 		int expense = homeData[2];
@@ -61,7 +65,7 @@ public class HomeController {
 		model.addAttribute("difference", difference);
 		
 		//円グラフのデータを取得
-		List<Object> sortedData = homeService.getSortedData(userId);
+		List<Object> sortedData = graphService.getSortedData(userId);
 		int[] chartData = (int[]) sortedData.get(0);
 		String[] chartLabels = (String[]) sortedData.get(1);
 		model.addAttribute("chartData", chartData);
@@ -69,9 +73,41 @@ public class HomeController {
 		
 		
 		//直近の入力履歴を新しい順に最大10件表示
-		List<String[]> record = homeService.getRecords(userId);
+		List<String[]> record = paymentService.getRecords(userId);
 		model.addAttribute("record", record);
 		
 		return "home";
+	}
+	
+	 /****************************************************************************
+	 *** Method Name         : logoutConfirm()
+	 *** Designer            : 菅 匠汰
+	 *** Date                : 2024.07.12
+	 *** Function            : ログアウト確認画面を表示する
+	 *** Return              : ログアウト確認画面
+	 ****************************************************************************/
+	
+	@GetMapping("/logout-confirm")
+	public String logoutComfirm(Model model, HttpSession session) {
+		Object loggedInUser =  session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login"; //idを取得できない場合はログイン画面にリダイレクト
+        }
+        
+		return "logout-confirm"; //ログアウト確認画面
+	}
+	
+	 /****************************************************************************
+	 *** Method Name         : logout()
+	 *** Designer            : 菅 匠汰
+	 *** Date                : 2024.07.12
+	 *** Function            : ログアウトする
+	 *** Return              : ログイン画面
+	 ****************************************************************************/
+	
+	@GetMapping("/logout")
+	public String logout(Model model, HttpSession session) {
+		session.invalidate(); //保持していたユーザIDを消去
+		return "redirect:/login"; //ログイン画面
 	}
 }

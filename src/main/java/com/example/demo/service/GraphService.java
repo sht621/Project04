@@ -9,6 +9,7 @@
 
 package com.example.demo.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,4 +66,57 @@ public class GraphService {
         }
         return months;
     }
+    
+    
+    /****************************************************************************
+     *** Method Name         : getSortedData()
+     *** Designer            : 菅 匠汰
+     *** Date                : 2024.07.08
+     *** Function            : 月の支出グラフのデータを取得する
+     *** Return              : 月の支出グラフのデータ
+     ****************************************************************************/
+ 	
+ 	public List<Object> getSortedData(int userId) {
+ 		LocalDate today = LocalDate.now();
+     	int year = today.getYear();
+     	int month = today.getMonthValue();
+ 		int yearMonth = year * 100 + month;
+ 		//今月のyearMonthを入れて取得
+ 		return getSortedData(userId, yearMonth);
+ 	}
+     
+ 	public List<Object> getSortedData(int userId, int yearMonth) {
+ 		//引数のIDと年月を使いデータを取得
+ 		List<MonthModel> dataList = graphMapper.getExpenseData(userId, yearMonth);
+
+         List<Integer> chartData = new ArrayList<>();
+         List<String> chartLabels = new ArrayList<>();
+
+         for (int i=0; i<dataList.size(); i++) {
+         	int spendSum = dataList.get(i).getSpendSum();
+         	String itemId = dataList.get(i).getItemId();
+         	if(spendSum > 0) { //支出が0円の場合は除く
+         		chartData.add(spendSum);
+         		chartLabels.add(itemId);
+         	}else {
+         		break;
+         	}
+         }
+         
+         int[] dataArray = new int[chartData.size()];
+         for (int i = 0; i < chartData.size(); i++) {
+             dataArray[i] = chartData.get(i);
+         }
+         
+         String[] labelsArray = new String[chartLabels.size()];
+         for (int i = 0; i < chartLabels.size(); i++) {
+             labelsArray[i] = chartLabels.get(i);
+         }
+
+         List<Object> sortedData = new ArrayList<>();
+         sortedData.add(dataArray);
+         sortedData.add(labelsArray);
+
+         return sortedData; //月の支出データ
+ 	}
 }
