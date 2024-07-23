@@ -9,6 +9,7 @@
 /*
 *** Revision :
 *** V1.0 : 堀江咲希, 2024.06.18
+*** V1.2 : 堀江咲希, 2024,07,09
 */
 
 
@@ -97,13 +98,15 @@ public class LoginController {
         		return "redirect:userlist";
         		
         	}
-        	else if (enteredUsername.equals(existingUser.getUserid()) && enteredUserpass.equals(existingUser.getPass())) {
+        	else if (enteredUsername.equals(existingUser.getUserid()) && enteredUserpass.equals(existingUser.getPass()))
+        	{
         		
         		session.setAttribute("loggedInUser", existingUser.getId());
                 model.addAttribute("users", use);
                 return "redirect:home";
                 
-            }else if(enteredUsername.equals(existingUser.getUserid()) && !enteredUserpass.equals(existingUser.getPass())) {
+            }else if(enteredUsername.equals(existingUser.getUserid()) && !enteredUserpass.equals(existingUser.getPass()))
+            {
             	
             	model.addAttribute("error", "パスワードが違います");
                 return "redirect:login?error=true";
@@ -161,7 +164,8 @@ public class LoginController {
         		
         	}
         	
-        	else if(enteredUsername.equals(existingUser.getUserid()) && enteredUserpass.equals(existingUser.getPass())) {
+        	else if(enteredUsername.equals(existingUser.getUserid()) && enteredUserpass.equals(existingUser.getPass())) 
+        	{
         		validCredentials = false;
         		model.addAttribute("error2", "このアカウントは存在します");
         		
