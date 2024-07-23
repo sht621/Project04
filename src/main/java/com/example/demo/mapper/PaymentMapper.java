@@ -1,11 +1,16 @@
 /*******************************************************************
 ***  File Name	: PaymentMapper.java
-***  Version	: V1.0
-***  Designer	: 佐藤　巧都
-***  Date		: 2024.07.09
+***  Version	: V1.1
+***  Designer	: 佐藤 巧都/菅 匠汰
+***  Date		: 2024.07.11
 ***  Purpose    : Serviceから呼ばれた処理を行うクラス。データベース処理を行う
 ***
 *******************************************************************/
+/*
+*** Revision :
+*** V1.0 : 佐藤 巧都, 2024.07.09
+*** V1.1 : 菅 匠汰, 2024.07.11
+*/
 
 package com.example.demo.mapper;
 
@@ -50,7 +55,8 @@ public interface PaymentMapper {
      *** Function            : 取得した値をデータベースに挿入する
      *** Return              : int
      ****************************************************************************/
-    @Insert("INSERT INTO PAYMENT (ID, INCOME, SPEND, DAY, ITEMID, USERID) VALUES (#{id}, #{income}, #{spend}, #{day}, #{itemId}, #{userId})")
+    @Insert("INSERT INTO PAYMENT (ID, INCOME, SPEND, DAY, ITEMID, USERID) "
+    		+ "VALUES (#{id}, #{income}, #{spend}, #{day}, #{itemId}, #{userId})")
     int inputPayment(PaymentModel payment);
 
     /****************************************************************************
@@ -60,8 +66,10 @@ public interface PaymentMapper {
      *** Function            : 特定のデータを取得した値に更新する
      *** Return              : int
      ****************************************************************************/
-    @Update("UPDATE PAYMENT SET INCOME = #{income}, SPEND = #{spend}, DAY = #{day}, ITEMID = #{itemId} WHERE ID = #{id} AND USERID = #{userId}")
-    int updatePayment(@Param("income") int income, @Param("spend") int spend, @Param("day") int day, @Param("itemId") String itemId, @Param("id") int id, @Param("userId") int userId);
+    @Update("UPDATE PAYMENT SET INCOME = #{income}, SPEND = #{spend}, DAY = #{day}, ITEMID = #{itemId} "
+    		+ "WHERE ID = #{id} AND USERID = #{userId}")
+    int updatePayment(@Param("income") int income, @Param("spend") int spend, @Param("day") int day,
+    		@Param("itemId") String itemId, @Param("id") int id, @Param("userId") int userId);
     
     /****************************************************************************
      *** Method Name         : findById()
@@ -107,7 +115,7 @@ public interface PaymentMapper {
 	/****************************************************************************
 	*** Method Name         : getIncomes()
 	*** Designer            : 菅 匠汰
-	*** Date                : 2024.07.02
+	*** Date                : 2024.07.11
 	*** Function            : 指定されたユーザと月の収支データを全て取得する
 	*** Return              : PAYMENTデータ
 	****************************************************************************/
@@ -120,12 +128,12 @@ public interface PaymentMapper {
 	/****************************************************************************
 	*** Method Name         : getRecord()
 	*** Designer            : 菅 匠汰
-	*** Date                : 2024.07.02
+	*** Date                : 2024.07.11
 	*** Function            : 指定されたユーザの入力履歴を新しい順に最大10件取得する
 	*** Return              : 入力履歴データ
 	****************************************************************************/
 	
-  	@Select("SELECT * FROM PAYMENT "
+    @Select("SELECT * FROM PAYMENT "
 		+ "WHERE USERId = #{userid} "
 		+ "ORDER BY DAY DESC, ID DESC "
 		+ "LIMIT 10")
